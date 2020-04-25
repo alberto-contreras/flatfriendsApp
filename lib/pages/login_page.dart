@@ -1,3 +1,5 @@
+import 'package:flatfriendsapp/models/user.dart';
+import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -7,6 +9,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController useremailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+  UserModel userLogin = new UserModel();
+  UserService userService = new UserService();
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,13 +72,18 @@ class _LoginState extends State<Login> {
   }
 
   Widget _loginButton() {
-    return FlatButton(onPressed: () {
-      /** Petición a la api aquí!! */
-      print(useremailController.text);
-      // Y al obtener respuesta sería:
-      // user.setUsername(usernameController.text);
-      // user.setUserPassword(passwordController.text);
-      Navigator.pushReplacementNamed(context, '/home');
+    return FlatButton(onPressed: () async {
+
+      print('Dentro Login');
+        userLogin.setEmail(useremailController.text);
+        userLogin.setPassword(passwordController.text);
+        int res = await userService.logUser(this.userLogin);
+        if( res == 0){
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+        else{
+          print('Error en el login, vuelve a intentarlo');
+        }
     },
         child: Text('Login'),
         shape: StadiumBorder(),

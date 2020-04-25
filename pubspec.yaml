@@ -1,4 +1,4 @@
-name: flatandfriendsapp
+name: flatfriendsapp
 description: Flat & Friends App.
 
 # The following defines the version and build number for your application.
@@ -19,6 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^0.12.0+4
 
 
   # The following adds the Cupertino Icons font to your application.

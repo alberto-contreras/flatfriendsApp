@@ -1,3 +1,5 @@
+import 'package:flatfriendsapp/models/user.dart';
+import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -11,6 +13,8 @@ class _RegisterState extends State<Register> {
   TextEditingController flatIdController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController repitePasswordController = new TextEditingController();
+  UserService userService = new UserService();
+  UserModel userToAdd = new UserModel();
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,13 +144,22 @@ class _RegisterState extends State<Register> {
   }
 
   Widget _registerButton() {
-    return FlatButton(onPressed: () {
-      /** Petición a la api aquí!! */
-      //print(usernameController.text);
-      // Y al obtener respuesta sería:
-      // user.setUsername(usernameController.text);
-      // user.setUserPassword(passwordController.text);
-      //Navigator.pushReplacementNamed(context, '/login');
+    return FlatButton(onPressed: () async  {
+      print('Dentro Registro');
+      if(passwordController.text == repitePasswordController.text) {
+        userToAdd.setFirstname(firstnameController.text);
+        userToAdd.setLastname(lastnameController.text);
+        userToAdd.setEmail(useremailController.text);
+        //userToAdd.setIdPiso(flatIdController.text);
+        userToAdd.setPassword(passwordController.text);
+        int res = await userService.registerUser(this.userToAdd);
+        if( res == 0){
+          Navigator.pop(context);
+        }
+        else{
+          print('Error en el registro, vuelve a intentarlo');
+        }
+      }
     },
         child: Text('Register'),
         shape: StadiumBorder(),
