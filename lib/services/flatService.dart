@@ -5,14 +5,15 @@ import 'package:http/http.dart'as http;
 import 'dart:convert';
 
 
-class UserService {
-  String url = 'http://localhost:3702/flat/'; //location url for api endpoint
+class FlatService {
+  String url = 'http://10.0.2.2:3702/flat/'; //location url for api endpoint
   SharedData sharedData = SharedData.getInstance();
 
   Future<int> registerFlat(FlatModel flatToAdd) async {
     try {
       print('Sending new Flat');
       var response = await http.post(this.url + 'addFlat/', body: json.encode({
+        '_id': sharedData.getUser().getIdUser(),
         'name': flatToAdd.getName(),
         'description': flatToAdd.getDescription(),
       }),

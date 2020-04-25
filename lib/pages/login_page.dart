@@ -73,11 +73,11 @@ class _LoginState extends State<Login> {
 
   Widget _loginButton() {
     return FlatButton(onPressed: () async {
-
       print('Dentro Login');
         userLogin.setEmail(useremailController.text);
         userLogin.setPassword(passwordController.text);
         int res = await userService.logUser(this.userLogin);
+        print(res);
         if( res == 0){
           Navigator.pushReplacementNamed(context, '/home');
         }

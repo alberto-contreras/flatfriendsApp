@@ -1,9 +1,10 @@
-
 import 'package:flatfriendsapp/pages/flat_page.dart';
 import 'package:flatfriendsapp/pages/home_page.dart';
 import 'package:flatfriendsapp/pages/login_page.dart';
+import 'package:flatfriendsapp/pages/register_flat_page.dart';
 import 'package:flatfriendsapp/pages/register_page.dart';
 import 'package:flatfriendsapp/pages/splash_page.dart';
+import 'package:flatfriendsapp/pages/update_user_page.dart';
 import 'package:flatfriendsapp/pages/user_page.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,9 @@ class MyApp extends StatelessWidget {
         '/login':(context) => Login(),
         '/register': (context) => Register(),
         '/user': (context) => User(),
-        '/flat': (context) => Flat()
+        '/flat': (context) => Flat(),
+        '/regflat': (context) => RegisterFlat(),
+        '/userSettings': (context) => UpdateUser(),
       },
     );
   }

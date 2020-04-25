@@ -1,6 +1,7 @@
 
 
 class UserModel {
+  String _id;
   String _firstname;
   String _lastname;
   String _email;
@@ -11,6 +12,10 @@ class UserModel {
   String get firstname => _firstname;
 
   UserModel();
+
+  setIdUser(String id){
+    this._id = id;
+  }
 
    setPassword(String value) {
     _password = value;
@@ -35,7 +40,11 @@ class UserModel {
   setFirstname(String value) {
     _firstname = value;
   }
+
+  String getIdUser(){return this._id;}
+
   String getFirstname (){ return _firstname;}
+
   String getLastname (){ return _lastname;}
 
   String getPassword (){ return _password;}

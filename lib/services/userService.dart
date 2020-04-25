@@ -6,7 +6,7 @@ import 'dart:convert';
 
 class UserService {
 
-  String url = 'http://localhost:3702/user/';//location url for api endpoint
+  String url = 'http://10.0.2.2:3702/user/';//location url for api endpoint
   SharedData sharedData = SharedData.getInstance();
 
   Future<int> registerUser(UserModel userToAdd) async {
@@ -48,6 +48,7 @@ class UserService {
         'password' : userToLog.getPassword(),
       }),
           headers: {"accept": "application/json", "content-type": "application/json" });
+      print(response.statusCode);
       if(response.statusCode == 400)
       {
         print('Error');
@@ -56,11 +57,12 @@ class UserService {
       else {
         print('Succesfully logged');
         Map userData = jsonDecode(response.body);
+        userToLog.setIdUser(userData['_id']);
         userToLog.setFirstname(userData['firstname']);
         userToLog.setLastname(userData['lastname']);
         userToLog.setEmail(userData['email']);
         userToLog.setPhoneNumber(userData['phoneNumber']);
-        //userToLog.setIdPiso(userData['idPiso']);
+        userToLog.setIdPiso(userData['idPiso']);
         userToLog.setPassword(userData['password']);
         sharedData.setUser(userToLog);
         //sharedData.setToken(tokensiko);
