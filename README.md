@@ -14,6 +14,6 @@ First you need to install the [Flutter SDK](https://flutter-es.io/docs/get-start
 
 Android Studio & Android Emulator | Android Studio & iOS Emulator
 ------------ | -------------
- Open the Android Studio and install the plug-in of Flutter and Dart
- After the installation open the Flat&Friends Project of this repository
+ Open the Android Studio and install the plug-in of Flutter and Dart |  Open the Android Studio and install the plug-in of Flutter and Dart
+ After the installation open the Flat&Friends Project of this repository | After the installation open the Flat&Friends Project of this repository
  Open the Andoid Emulator that you have installed and run the App | Choose and open the iOS Emulator (by default it's installed w/ Xcode) and run the App
