@@ -3,11 +3,10 @@ import 'package:flatfriendsapp/models/user.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
 
+SharedData sharedData = SharedData.getInstance();
 
 class UserService {
-
-  String url = 'http://10.0.2.2:3702/user/';//location url for api endpoint
-  SharedData sharedData = SharedData.getInstance();
+  String url = sharedData.getUrlDevUser(); //location url for api endpoint
 
   // Register a new user
   Future<int> registerUser(UserModel userToAdd) async {

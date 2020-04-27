@@ -14,40 +14,40 @@ class UserModel {
   }
 
    setPassword(String value) {
-    _password = value;
+    this._password = value;
   }
 
   setIdPiso(String value) {
-    _idPiso = value;
+    this._idPiso = value;
   }
 
   setPhoneNumber(String value) {
-    _phoneNumber = value;
+    this._phoneNumber = value;
   }
 
   setEmail(String value) {
-    _email = value;
+    this._email = value;
   }
 
   setLastname(String value) {
-    _lastname = value;
+    this._lastname = value;
   }
 
   setFirstname(String value) {
-    _firstname = value;
+    this._firstname = value;
   }
 
   String getIdUser() => this._id;
 
-  String getFirstname() => _firstname;
+  String getFirstname() => this._firstname;
 
-  String getLastname() => _lastname;
+  String getLastname() => this._lastname;
 
-  String getPassword() => _password;
+  String getPassword() => this._password;
 
-  String getIdPiso() => _idPiso;
+  String getIdPiso() => this._idPiso;
 
-  String getPhoneNumber() => _phoneNumber;
+  String getPhoneNumber() => this._phoneNumber;
 
-  String getEmail() => _email;
+  String getEmail() => this._email;
 }

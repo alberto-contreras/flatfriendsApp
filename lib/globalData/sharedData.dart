@@ -7,6 +7,10 @@ class SharedData {
   UserModel infoUser;
   FlatModel infoFlat;
   String token;
+  String urlDevUser = 'http://10.0.2.2:3702/user/';
+  String urlProdUser = '';
+  String urlDevFlat = 'http://10.0.2.2:3702/flat/';
+  String urlProdFlat = '';
 
   SharedData();
 
@@ -25,20 +29,22 @@ class SharedData {
     print(infoUser.getEmail());
   }
 
-  UserModel getUser()
-  {
-    return this.infoUser;
-  }
-
   setFlat(FlatModel a)
   {
     this.infoFlat = a;
   }
 
-  FlatModel getFlat()
-  {
-    return this.infoFlat;
-  }
+  UserModel getUser() => this.infoUser;
+
+  FlatModel getFlat() => this.infoFlat;
+
+  String getUrlDevUser() => this.urlDevUser;
+
+  String getUrlProdUser() => this.urlProdUser;
+
+  String getUrlDevFlat() => this.urlDevFlat;
+
+  String getUrlProdFlat() => this.urlProdFlat;
 
 
 
