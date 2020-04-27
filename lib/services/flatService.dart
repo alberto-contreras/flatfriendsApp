@@ -1,6 +1,5 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
-import 'package:flatfriendsapp/models/User.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
 
@@ -21,7 +20,10 @@ class FlatService {
         'description': flatToAdd.getDescription(),
         'full': flatToAdd.getFull(),
         'maxPersons': flatToAdd.getMaxPersons(),
-        'location': flatToAdd.getLocation()
+        'location': {
+          'latitude': flatToAdd.getLocation().getLatitude(),
+          'longitude': flatToAdd.getLocation().getLongitude()
+        },
       }),
           headers: {"accept": "application/json", "content-type": "application/json"});
       if (response.statusCode == 404) {

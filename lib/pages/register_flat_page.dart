@@ -1,7 +1,5 @@
 import 'package:flatfriendsapp/models/Flat.dart';
-import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
-import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flutter/material.dart';
 
 class RegisterFlat extends StatefulWidget {
@@ -148,7 +146,7 @@ class _RegisterFlat extends State<RegisterFlat> {
         flat.setFull(false);
         flat.setMaxPersons(int.parse(maxPersonsController.text));
         flat.setLocation(latitudeController.text, longitudeController.text);
-        print("latitude: " + flat.getLocation()[0].latitude + ", longitude: " + flat.getLocation()[0].longitude);
+        print("latitude: " + flat.getLocation().getLatitude() + ", longitude: " + flat.getLocation().getLongitude());
         int res = await flatService.registerFlat(flat);
         print(res);
         if (res == 0) {

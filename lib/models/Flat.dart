@@ -1,10 +1,14 @@
+
+
+import 'package:flatfriendsapp/models/Location.dart';
+
 class FlatModel {
   String _id;
   String _name;
   String _description;
   bool _full;
   int _maxPersons;
-  List<Location> _location;
+  LocationModel _location;
 
   FlatModel();
 
@@ -32,9 +36,8 @@ class FlatModel {
   }
 
   setLocation(String lat, String lon){
-    Location loc = new Location(lat, lon);
-    this._location = new List<Location>();
-    this._location.add(loc);
+    LocationModel loc = new LocationModel(lat, lon);
+    this._location = loc;
   }
 
   String getID() => this._id;
@@ -47,14 +50,6 @@ class FlatModel {
 
   int getMaxPersons() => this._maxPersons;
 
-  List<Location> getLocation() => this._location;
+  LocationModel getLocation() => this._location;
 }
 
-class Location {
-  String latitude, longitude;
-
-  Location(String lat, String lon){
-    this.latitude = lat;
-    this.longitude = lon;
-  }
-}
