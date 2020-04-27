@@ -1,4 +1,4 @@
-import 'package:flatfriendsapp/models/user.dart';
+import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flutter/material.dart';
 

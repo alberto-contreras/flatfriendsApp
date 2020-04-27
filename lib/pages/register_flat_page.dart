@@ -1,5 +1,5 @@
-import 'package:flatfriendsapp/models/flat.dart';
-import 'package:flatfriendsapp/models/user.dart';
+import 'package:flatfriendsapp/models/Flat.dart';
+import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
 import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,9 @@ class RegisterFlat extends StatefulWidget {
 class _RegisterFlat extends State<RegisterFlat> {
   TextEditingController flatNameController = new TextEditingController();
   TextEditingController flatDescriptionController = new TextEditingController();
+  TextEditingController maxPersonsController = new TextEditingController();
+  TextEditingController latitudeController = new TextEditingController();
+  TextEditingController longitudeController = new TextEditingController();
   FlatModel flat = new FlatModel();
   FlatService flatService = new FlatService();
   static const TextStyle optionStyle = TextStyle(
@@ -41,6 +44,13 @@ class _RegisterFlat extends State<RegisterFlat> {
                 _textFlatname(),
                 Divider(),
                 _textFlatDescription(),
+                Divider(),
+                _textMaxPersons(),
+                Divider(),
+                Text('Localización del piso:', style: labelStyle),
+                _textLatitude(),
+                Divider(),
+                _textLongitude(),
                 Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -86,12 +96,59 @@ class _RegisterFlat extends State<RegisterFlat> {
     );
   }
 
+  Widget _textMaxPersons(){
+    return TextField(
+      controller: maxPersonsController,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+          labelText: 'Número máximo de inquilinos',
+          hintText: 'Indica la cantidad máxima de inquilinos',
+          suffixIcon: Icon(Icons.assignment, color: Colors.blue),
+          icon: Icon(Icons.assignment)
+      ),
+    );
+  }
+
+  Widget _textLatitude(){
+    return TextField(
+      controller: latitudeController,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+          labelText: 'Longitud',
+          hintText: 'Escribe la longitud',
+          suffixIcon: Icon(Icons.assignment, color: Colors.blue),
+          icon: Icon(Icons.assignment)
+      ),
+    );
+  }
+
+  Widget _textLongitude(){
+    return TextField(
+      controller: longitudeController,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+          labelText: 'Latitud',
+          hintText: 'Escribe la latitud',
+          suffixIcon: Icon(Icons.assignment, color: Colors.blue),
+          icon: Icon(Icons.assignment)
+      ),
+    );
+  }
+
   Widget _registerButton() {
     return FlatButton(onPressed: () async {
       print('Dentro Registro de piso');
-      if (flatNameController.text != '') {
+      if (flatNameController.text != '' && maxPersonsController.text != '' &&
+      latitudeController.text != '' && longitudeController.text != '') {
         flat.setName(flatNameController.text);
         flat.setDescription(flatDescriptionController.text);
+        flat.setFull(false);
+        flat.setMaxPersons(int.parse(maxPersonsController.text));
+        flat.setLocation(latitudeController.text, longitudeController.text);
+        print("latitude: " + flat.getLocation()[0].latitude + ", longitude: " + flat.getLocation()[0].longitude);
         int res = await flatService.registerFlat(flat);
         print(res);
         if (res == 0) {

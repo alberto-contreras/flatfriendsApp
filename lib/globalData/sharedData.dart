@@ -1,18 +1,22 @@
-import 'package:flatfriendsapp/models/flat.dart';
-import 'package:flatfriendsapp/models/user.dart';
+import 'package:flatfriendsapp/models/Flat.dart';
+import 'package:flatfriendsapp/models/User.dart';
 
 class SharedData {
 
   static  SharedData instance;
+
   UserModel infoUser;
   FlatModel infoFlat;
   String token;
-  String urlDevUser = 'http://10.0.2.2:3702/user/';
-  String urlProdUser = '';
-  String urlDevFlat = 'http://10.0.2.2:3702/flat/';
-  String urlProdFlat = '';
+  String apiUrl = 'http://10.0.2.2:3703';
+  String urlUser;
+  String urlFlat;
 
-  SharedData();
+
+  SharedData() {
+    this.urlUser = this.apiUrl + '/user';
+    this.urlFlat = this.apiUrl + '/flat';
+  }
 
   static SharedData getInstance()
   {
@@ -38,16 +42,7 @@ class SharedData {
 
   FlatModel getFlat() => this.infoFlat;
 
-  String getUrlDevUser() => this.urlDevUser;
+  String getUrlUser() => this.urlUser;
 
-  String getUrlProdUser() => this.urlProdUser;
-
-  String getUrlDevFlat() => this.urlDevFlat;
-
-  String getUrlProdFlat() => this.urlProdFlat;
-
-
-
-
-
+  String getUrlFlat() => this.urlFlat;
 }

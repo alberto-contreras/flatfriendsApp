@@ -1,18 +1,18 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
-import 'package:flatfriendsapp/models/user.dart';
+import 'package:flatfriendsapp/models/User.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
 
 SharedData sharedData = SharedData.getInstance();
 
 class UserService {
-  String url = sharedData.getUrlDevUser(); //location url for api endpoint
+  String url = sharedData.getUrlUser(); //location url for api endpoint
 
   // Register a new user
   Future<int> registerUser(UserModel userToAdd) async {
     try {
       print('Sending new User');
-      var response = await http.post(this.url+'addUser/',body: json.encode({
+      var response = await http.post(this.url + '/addUser',body: json.encode({
         'firstname': userToAdd.getFirstname(),
         'lastname' : userToAdd.getLastname(),
         'email' : userToAdd.getEmail(),
@@ -42,7 +42,7 @@ class UserService {
   // Make loging in of an user
   Future<Object> logUser(UserModel userToLog) async {
     try {
-      var response = await http.post(this.url+'login/',body: json.encode({
+      var response = await http.post(this.url + '/login', body: json.encode({
         'email' : userToLog.getEmail(),
         'password' : userToLog.getPassword(),
       }),
@@ -79,7 +79,7 @@ class UserService {
     try {
       //make the request
       print('Erasing user');
-      var response = await http.delete(this.url+'del/'+email);
+      var response = await http.delete(this.url + '/del/' + email);
       if(response.statusCode == 404)
       {
         print('Error erasing user');
@@ -104,7 +104,7 @@ class UserService {
   Future<int> updateUser(UserModel u) async {
     try {
       print('Updating usuario');
-      var response = await http.put(this.url+'update/',body: json.encode({
+      var response = await http.put(this.url + '/update', body: json.encode({
         ///TAMBIEN EL TOKEN!
         'firstname': u.getFirstname(),
         'lastname' : u.getLastname(),

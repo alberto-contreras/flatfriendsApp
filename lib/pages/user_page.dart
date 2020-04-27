@@ -6,7 +6,6 @@ class User extends StatefulWidget {
 }
 
 class _UserState extends State<User> {
-
   SharedData sharedData = SharedData.getInstance();
   int _selectedIndex = 0;
   static const TextStyle optionStyle = TextStyle(
@@ -80,6 +79,7 @@ class _UserState extends State<User> {
   }
 
   Widget _showUserData() {
+    print('Showing user data.');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

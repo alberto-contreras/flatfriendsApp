@@ -1,5 +1,5 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
-import 'package:flatfriendsapp/models/user.dart';
+import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flutter/material.dart';
 
@@ -99,7 +99,7 @@ class _UpdateUser extends State<UpdateUser> {
       print('Dentro Update Usuario');
       if(newPasswordController.text == repiteNewPasswordController.text && actualPasswordController.text == sharedData.getUser().getPassword()) {
         userToUpdate.setPassword(newPasswordController.text);
-        int res = await userService.registerUser(this.userToUpdate);
+        int res = await userService.updateUser(this.userToUpdate);
         if( res == 0){
           Navigator.pop(context);
         }

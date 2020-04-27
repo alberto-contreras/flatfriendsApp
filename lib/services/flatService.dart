@@ -1,22 +1,27 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
-import 'package:flatfriendsapp/models/flat.dart';
-import 'package:flatfriendsapp/models/user.dart';
+import 'package:flatfriendsapp/models/Flat.dart';
+import 'package:flatfriendsapp/models/User.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
 
 SharedData sharedData = SharedData.getInstance();
 
 class FlatService {
-  String url = sharedData.getUrlDevFlat(); //location url for api endpoint
+  String url = sharedData.getUrlFlat(); //location url for api endpoint
 
   // Register a new flat and add to the user which registered
   Future<int> registerFlat(FlatModel flatToAdd) async {
+    print(flatToAdd);
+    print(flatToAdd.getLocation());
     try {
       print('Sending new Flat');
-      var response = await http.post(this.url + 'addFlat/', body: json.encode({
+      var response = await http.post(this.url + '/addFlat', body: json.encode({
         '_id': sharedData.getUser().getIdUser(),
         'name': flatToAdd.getName(),
         'description': flatToAdd.getDescription(),
+        'full': flatToAdd.getFull(),
+        'maxPersons': flatToAdd.getMaxPersons(),
+        'location': flatToAdd.getLocation()
       }),
           headers: {"accept": "application/json", "content-type": "application/json"});
       if (response.statusCode == 404) {
@@ -29,6 +34,9 @@ class FlatService {
         flatToAdd.setID(flatData['_id']);
         flatToAdd.setName(flatData['name']);
         flatToAdd.setDescription(flatData['description']);
+        flatToAdd.setFull(flatData['full']);
+        flatToAdd.setMaxPersons(flatData['maxPersonas']);
+        flatToAdd.setLocation(flatData['location[0].latitude'], flatData['location[0].longitude']);
         //Global Flat added
         sharedData.setFlat(flatToAdd);
         //Added to the user the Flat ID that have been created
