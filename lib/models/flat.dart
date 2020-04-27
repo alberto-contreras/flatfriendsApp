@@ -20,20 +20,9 @@ class FlatModel {
     this._description = description;
   }
 
-  String getID()
-  {
-    return this._id;
-  }
+  String getID() => this._id;
 
-  String getName()
-  {
-    return this._name;
-  }
+  String getName() => this._name;
 
-  String getDescription()
-  {
-    return this._description;
-  }
-
-
+  String getDescription() => this._description;
 }

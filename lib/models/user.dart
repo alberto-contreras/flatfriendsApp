@@ -1,5 +1,3 @@
-
-
 class UserModel {
   String _id;
   String _firstname;
@@ -8,8 +6,6 @@ class UserModel {
   String _phoneNumber;
   String _idPiso;
   String _password;
-
-  String get firstname => _firstname;
 
   UserModel();
 
@@ -41,18 +37,17 @@ class UserModel {
     _firstname = value;
   }
 
-  String getIdUser(){return this._id;}
+  String getIdUser() => this._id;
 
-  String getFirstname (){ return _firstname;}
+  String getFirstname() => _firstname;
 
-  String getLastname (){ return _lastname;}
+  String getLastname() => _lastname;
 
-  String getPassword (){ return _password;}
+  String getPassword() => _password;
 
-  String getIdPiso(){ return _idPiso;}
+  String getIdPiso() => _idPiso;
 
-  String getPhoneNumber (){ return _phoneNumber;}
+  String getPhoneNumber() => _phoneNumber;
 
-  String getEmail (){ return _email;}
-
+  String getEmail() => _email;
 }

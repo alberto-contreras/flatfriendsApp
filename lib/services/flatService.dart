@@ -9,6 +9,7 @@ class FlatService {
   String url = 'http://10.0.2.2:3702/flat/'; //location url for api endpoint
   SharedData sharedData = SharedData.getInstance();
 
+  // Register a new flat and add to the user which registered
   Future<int> registerFlat(FlatModel flatToAdd) async {
     try {
       print('Sending new Flat');
@@ -17,10 +18,7 @@ class FlatService {
         'name': flatToAdd.getName(),
         'description': flatToAdd.getDescription(),
       }),
-          headers: {
-            "accept": "application/json",
-            "content-type": "application/json"
-          });
+          headers: {"accept": "application/json", "content-type": "application/json"});
       if (response.statusCode == 404) {
         print('Already exist a Flat with this name');
         return 1;

@@ -9,8 +9,8 @@ class UserService {
   String url = 'http://10.0.2.2:3702/user/';//location url for api endpoint
   SharedData sharedData = SharedData.getInstance();
 
+  // Register a new user
   Future<int> registerUser(UserModel userToAdd) async {
-
     try {
       print('Sending new User');
       var response = await http.post(this.url+'addUser/',body: json.encode({
@@ -40,8 +40,8 @@ class UserService {
     }
   }
 
+  // Make loging in of an user
   Future<Object> logUser(UserModel userToLog) async {
-
     try {
       var response = await http.post(this.url+'login/',body: json.encode({
         'email' : userToLog.getEmail(),
@@ -75,11 +75,10 @@ class UserService {
     }
   }
 
+  // Delete an user account
   Future<int> deleteUser(String email) async {
-
     try {
       //make the request
-
       print('Erasing user');
       var response = await http.delete(this.url+'del/'+email);
       if(response.statusCode == 404)
@@ -102,8 +101,8 @@ class UserService {
     }
   }
 
+  // Update the user data
   Future<int> updateUser(UserModel u) async {
-
     try {
       print('Updating usuario');
       var response = await http.put(this.url+'update/',body: json.encode({

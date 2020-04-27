@@ -8,34 +8,6 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 1;
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: User',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Flat',
-      style: optionStyle,
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      switch (_selectedIndex){
-        case 0:
-          Navigator.pushReplacementNamed(context, '/user');
-          break;
-        case 2:
-          Navigator.pushReplacementNamed(context, '/flat');
-          break;
-      }
-    });
-  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +15,7 @@ class _HomeState extends State<Home> {
         title: Text('Flat & Friends'),
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: Text('Estás en el home.', style: optionStyle,),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -65,5 +37,20 @@ class _HomeState extends State<Home> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  // Do an action depending on the pushed button from bottom nav bar
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      switch (_selectedIndex){
+        case 0:
+          Navigator.pushReplacementNamed(context, '/user');
+          break;
+        case 2:
+          Navigator.pushReplacementNamed(context, '/flat');
+          break;
+      }
+    });
   }
 }

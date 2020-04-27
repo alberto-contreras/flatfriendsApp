@@ -31,7 +31,6 @@ class _UpdateUser extends State<UpdateUser> {
             Text('Cambiar contraseña:',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-
             Divider(),
             _textActualPassword(),
             Divider(),

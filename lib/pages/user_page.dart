@@ -118,7 +118,7 @@ class _UserState extends State<User> {
       );
     }
     else {
-      print('Estoy en el else');
+      print('The user do not has any flat registered. Showing button.');
       return FlatButton(onPressed: () {
         Navigator.pushNamed(context, '/regflat');
       },
@@ -129,14 +129,3 @@ class _UserState extends State<User> {
     }
   }
 }
-
-//  Widget _addFlatButton(){
-//    return FlatButton(onPressed: () {
-//      Navigator.pushNamed(context, '/regflat');
-//    },
-//        child: Text('Registrat tu piso'),
-//        shape: StadiumBorder(),
-//        color: Colors.blue,
-//        textColor: Colors.white);
-//  }
-//}
