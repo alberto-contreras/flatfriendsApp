@@ -1,5 +1,3 @@
-
-
 import 'package:flatfriendsapp/models/Location.dart';
 
 class FlatModel {
