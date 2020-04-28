@@ -1,5 +1,6 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
+import 'package:flatfriendsapp/models/Location.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
 
@@ -33,18 +34,18 @@ class FlatService {
       else if (response.statusCode == 201) {
         print('Succesfully created');
         Map flatData = jsonDecode(response.body);
+        Map location = flatData['location'];
+
         flatToAdd.setID(flatData['_id']);
         flatToAdd.setName(flatData['name']);
         flatToAdd.setDescription(flatData['description']);
         flatToAdd.setFull(flatData['full']);
-        flatToAdd.setMaxPersons(flatData['maxPersonas']);
-        print(flatData.values);
-        print(flatData['location']);
-        //flatToAdd.setLocation(flatData['location'].longitude, flatData['location.longitude'].longitude);
-        print(flatToAdd.getLocation().getLongitude());
+        flatToAdd.setMaxPersons(flatData['maxPersons']);
+        flatToAdd.setLocation(location['latitude'], location['longitude']);
         //Global Flat added
         print('Okey');
         sharedData.setFlat(flatToAdd);
+
         //Added to the user the Flat ID that have been created
         sharedData.infoUser.setIdPiso(flatToAdd.getID());
         return 0;

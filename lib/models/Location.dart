@@ -5,6 +5,7 @@ class LocationModel {
     this.latitude = lat;
     this.longitude = lon;
   }
+
   getLatitude(){
     return this.latitude;
   }
