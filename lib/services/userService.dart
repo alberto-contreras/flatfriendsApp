@@ -103,9 +103,12 @@ class UserService {
   // Update the user data
   Future<int> updateUser(UserModel u) async {
     try {
+      print('-----');
+      print(u);
       print('Updating usuario');
       var response = await http.put(this.url + '/update', body: json.encode({
         ///TAMBIEN EL TOKEN!
+        '_id' : u.getIdUser(),
         'firstname': u.getFirstname(),
         'lastname' : u.getLastname(),
         'email' : u.getEmail(),

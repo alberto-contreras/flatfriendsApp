@@ -38,8 +38,12 @@ class FlatService {
         flatToAdd.setDescription(flatData['description']);
         flatToAdd.setFull(flatData['full']);
         flatToAdd.setMaxPersons(flatData['maxPersonas']);
-        flatToAdd.setLocation(flatData['location[0].latitude'], flatData['location[0].longitude']);
+        print(flatData.values);
+        print(flatData['location']);
+        //flatToAdd.setLocation(flatData['location'].longitude, flatData['location.longitude'].longitude);
+        print(flatToAdd.getLocation().getLongitude());
         //Global Flat added
+        print('Okey');
         sharedData.setFlat(flatToAdd);
         //Added to the user the Flat ID that have been created
         sharedData.infoUser.setIdPiso(flatToAdd.getID());

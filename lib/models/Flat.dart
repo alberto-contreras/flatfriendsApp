@@ -40,6 +40,10 @@ class FlatModel {
     this._location = loc;
   }
 
+  setLocationModel(LocationModel a){
+    this._location = a;
+  }
+
   String getID() => this._id;
 
   String getName() => this._name;

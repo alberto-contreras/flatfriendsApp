@@ -98,6 +98,7 @@ class _UpdateUser extends State<UpdateUser> {
     return FlatButton(onPressed: () async  {
       print('Dentro Update Usuario');
       if(newPasswordController.text == repiteNewPasswordController.text && actualPasswordController.text == sharedData.getUser().getPassword()) {
+        userToUpdate = this.sharedData.infoUser;
         userToUpdate.setPassword(newPasswordController.text);
         int res = await userService.updateUser(this.userToUpdate);
         if( res == 0){

@@ -8,7 +8,7 @@ class SharedData {
   UserModel infoUser;
   FlatModel infoFlat;
   String token;
-  String apiUrl = 'http://localhost:3703';
+  String apiUrl = 'http://147.83.7.155:3702';
   String urlUser;
   String urlFlat;
 
