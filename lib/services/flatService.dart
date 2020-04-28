@@ -42,8 +42,8 @@ class FlatService {
         flatToAdd.setFull(flatData['full']);
         flatToAdd.setMaxPersons(flatData['maxPersons']);
         flatToAdd.setLocation(location['latitude'], location['longitude']);
-
         //Global Flat added
+        print('Okey');
         sharedData.setFlat(flatToAdd);
 
         //Added to the user the Flat ID that have been created
