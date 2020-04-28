@@ -16,7 +16,7 @@ class FlatService {
     try {
       print('Sending new Flat');
       var response = await http.post(this.url + '/addFlat', body: json.encode({
-        '_id': sharedData.getUser().getIdUser(),
+        'idUser': sharedData.getUser().getIdUser(),
         'name': flatToAdd.getName(),
         'description': flatToAdd.getDescription(),
         'full': flatToAdd.getFull(),
