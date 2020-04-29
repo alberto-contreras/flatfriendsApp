@@ -1,6 +1,5 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
-import 'package:flatfriendsapp/models/Location.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
 
