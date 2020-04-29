@@ -16,6 +16,7 @@ class UserService {
         'firstname': userToAdd.getFirstname(),
         'lastname' : userToAdd.getLastname(),
         'email' : userToAdd.getEmail(),
+        'idPiso': null,
         'password' : userToAdd.getPassword(),
       }),
         headers: {"accept": "application/json", "content-type": "application/json" });

@@ -30,7 +30,7 @@ class SharedData {
   setUser(UserModel a)
   {
     this.infoUser = a;
-    print(infoUser.getEmail());
+    print(infoUser.getIdUser());
   }
 
   setFlat(FlatModel a)
