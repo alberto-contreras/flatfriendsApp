@@ -56,6 +56,7 @@ class UserService {
       }
       else {
         print('Succesfully logged');
+        print(response.body);
         Map userData = jsonDecode(response.body);
         userToLog.setIdUser(userData['_id']);
         userToLog.setFirstname(userData['firstname']);

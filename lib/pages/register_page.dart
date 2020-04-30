@@ -1,6 +1,7 @@
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flutter/material.dart';
+import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 
 class Register extends StatefulWidget {
   _RegisterState createState() => _RegisterState();
@@ -140,13 +141,18 @@ class _RegisterState extends State<Register> {
           Navigator.pop(context);
         }
         else{
-          print('Error en el registro, vuelve a intentarlo');
+          //Alert error adding the user
+          showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return _alertRegisterUser();
+              });
         }
       }
     },
         child: Text('Register'),
         shape: StadiumBorder(),
-        color: Colors.blue,
+        color: Colors.green,
         textColor: Colors.white);
   }
 
@@ -156,9 +162,29 @@ class _RegisterState extends State<Register> {
     },
         child: Text('Cancel'),
         shape: StadiumBorder(),
-        color: Colors.blue,
+        color: Colors.red,
         textColor: Colors.white);
   }
-
+  Widget _alertRegisterUser(){
+    return PlatformAlertDialog(
+      title: Text('Hey!'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text('Error en el registro vuelve a intentarlo.'),
+            Text('Ayuda: Revisa el email.'),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        PlatformDialogAction(
+          child: Text('Aceptar'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
 
 }

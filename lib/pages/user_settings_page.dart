@@ -2,12 +2,13 @@ import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flutter/material.dart';
+import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 
-class UpdateUser extends StatefulWidget {
+class UserSettings extends StatefulWidget {
   _UpdateUser createState() => _UpdateUser();
 }
 
-class _UpdateUser extends State<UpdateUser> {
+class _UpdateUser extends State<UserSettings> {
   SharedData sharedData = SharedData.getInstance();
   TextEditingController actualPasswordController = new TextEditingController();
   TextEditingController newPasswordController = new TextEditingController();
@@ -18,37 +19,38 @@ class _UpdateUser extends State<UpdateUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flat & Friends'),
+        title: Text('Settings'),
         centerTitle: true,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blue,
         elevation: 0.0,
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: ListView(
-          //mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Cambiar contraseña:',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-            Divider(),
-            _textActualPassword(),
-            Divider(),
-            _textNewPassword(),
-            Divider(),
-            _textNewRepitePassword(), // Creating a text field widget to get password
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: ListView(
+              //mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                _updateButton(), // Creating a button widget for Login
-                SizedBox(width: 60,),
-                _cancelButton()
+                Text('Cambiar contraseña:',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+                Divider(),
+                _textActualPassword(),
+                Divider(),
+                _textNewPassword(),
+                Divider(),
+                _textNewRepitePassword(), // Creating a text field widget to get password
+                Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    _updateButton(), // Creating a button widget for Login
+                    SizedBox(width: 60,),
+                    _cancelButton()
+                  ],
+                ), // Creating a button widget for Register
               ],
-            ), // Creating a button widget for Register
-          ],
-        ),
-      ),
+            ),
+          ),
+
     );
   }
 
@@ -105,11 +107,24 @@ class _UpdateUser extends State<UpdateUser> {
           Navigator.pop(context);
         }
         else{
-          print('Error en el registro, vuelve a intentarlo');
+          //Error cambiando la contraseña
+          //Alert password or email incorrect
+          showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return _alertNotPossibleChangePassword();
+              });
+
         }
       }
       else {
-        print('Contraseñas mal introducidas.');
+        //Password not well introduced
+        showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return _alertWrongFields();
+            });
+
       }
     },
         child: Text('Actualizar'),
@@ -126,5 +141,46 @@ class _UpdateUser extends State<UpdateUser> {
         shape: StadiumBorder(),
         color: Colors.red,
         textColor: Colors.white);
+  }
+  Widget _alertNotPossibleChangePassword() {
+    return PlatformAlertDialog(
+      title: Text('Error'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text('No ha sido posible cambiar la contraseña.'),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        PlatformDialogAction(
+          child: Text('Aceptar'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
+  Widget _alertWrongFields() {
+    return PlatformAlertDialog(
+      title: Text('Hey!'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text('Contraseñas introducidas incorrectamente.'),
+            Text('Ayuda: Revisalas con cuidado.'),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        PlatformDialogAction(
+          child: Text('Aceptar'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
   }
 }

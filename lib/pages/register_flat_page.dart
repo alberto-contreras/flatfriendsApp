@@ -1,6 +1,7 @@
 import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
 import 'package:flutter/material.dart';
+import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 
 class RegisterFlat extends StatefulWidget {
   _RegisterFlat createState() => _RegisterFlat();
@@ -157,12 +158,21 @@ class _RegisterFlat extends State<RegisterFlat> {
           });
         }
         else {
-          print('Error en el login, vuelve a intentarlo');
+          //Error adding new flat
+          showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return _alertRegisterFlat();
+              });
         }
       }
       else{
-        print('Campos vacíos!!');
-        // Pop up here
+        //Empty fields
+        showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return _alertEmptyFields();
+            });
       }
     },
         child: Text('Registrar piso'),
@@ -181,6 +191,47 @@ class _RegisterFlat extends State<RegisterFlat> {
         textColor: Colors.white);
   }
 
+  Widget _alertRegisterFlat() {
+    return PlatformAlertDialog(
+      title: Text('Error'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text('Error en el registro vuelve a intentarlo.'),
+            Text('Ayuda: Revisa los datos del piso.'),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        PlatformDialogAction(
+          child: Text('Aceptar'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
 
-
+    Widget _alertEmptyFields() {
+      return PlatformAlertDialog(
+        title: Text('Hey!'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Error en el registro vuelve a intentarlo.'),
+              Text('Ayuda: Revisa los datos del piso.'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          PlatformDialogAction(
+            child: Text('Aceptar'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    }
 }

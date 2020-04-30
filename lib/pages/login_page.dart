@@ -1,6 +1,7 @@
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flutter/material.dart';
+import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
@@ -79,15 +80,21 @@ class _LoginState extends State<Login> {
         int res = await userService.logUser(this.userLogin);
         print(res);
         if( res == 0){
+
           Navigator.pushReplacementNamed(context, '/home');
         }
         else{
-          print('Error en el login, vuelve a intentarlo');
+          //Alert password or email incorrect
+          showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+              return _alertLogin();
+              });
         }
     },
         child: Text('Login'),
         shape: StadiumBorder(),
-        color: Colors.blue,
+        color: Colors.green,
         textColor: Colors.white);
   }
 
@@ -101,6 +108,26 @@ class _LoginState extends State<Login> {
         textColor: Colors.white);
   }
 
-
+   Widget _alertLogin(){
+     return PlatformAlertDialog(
+       title: Text('Hey!'),
+       content: SingleChildScrollView(
+         child: ListBody(
+           children: <Widget>[
+             Text('El correo o la contraseña son incorrectos.'),
+           ],
+         ),
+       ),
+       actions: <Widget>[
+         PlatformDialogAction(
+           child: Text('Aceptar'),
+           onPressed: () {
+             Navigator.of(context).pop();
+           },
+         ),
+       ],
+     );
+   }
 
 }
+

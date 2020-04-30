@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class Splash extends StatelessWidget {
 
   Widget build(BuildContext context) {
-    new Future.delayed(const Duration(seconds: 3), () {
+    new Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, '/login');
     });
 
@@ -23,7 +23,6 @@ class Splash extends StatelessWidget {
                   print("Tap Event");
                 },
                 text: [
-                  "Welcome to",
                   "Flat&Friends"
                 ],
                 textStyle: TextStyle(

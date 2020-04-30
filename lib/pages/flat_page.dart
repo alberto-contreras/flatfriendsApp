@@ -1,23 +1,35 @@
+import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flutter/material.dart';
+import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 
 class Flat extends StatefulWidget {
   _FlatState createState() => _FlatState();
 }
 
 class _FlatState extends State<Flat> {
-
+  SharedData sharedData = SharedData.getInstance();
   int _selectedIndex = 2;
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontWeight: FontWeight.bold);
+  static const TextStyle labelStyle = TextStyle(
+      fontSize: 20, fontWeight: FontWeight.bold);
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flat & Friends'),
       ),
-      body: Center(
-        child: Text('Datos de tu piso:', style: optionStyle),
+      body: Padding(padding: const EdgeInsets.only(left: 16, top: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text('Perfil del piso:', style: optionStyle),
+            Divider(height: 15, color: Colors.white),
+              _showFlatData(),
+          ],
+        ),
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -44,7 +56,7 @@ class _FlatState extends State<Flat> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      switch (_selectedIndex){
+      switch (_selectedIndex) {
         case 0:
           Navigator.pushReplacementNamed(context, '/user');
           break;
@@ -54,4 +66,31 @@ class _FlatState extends State<Flat> {
       }
     });
   }
+
+
+  Widget _showFlatData() {
+    if (sharedData.getFlat() != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text('Nombre del Piso:', style: labelStyle ),
+          Text('' + sharedData.getFlat().getName().toString(),
+            textScaleFactor: 1.5,),
+          Divider(height: 10, color: Colors.white,),
+          Text('Descripción del Piso:', style: labelStyle ),
+          Text('' + sharedData.getFlat().getDescription().toString(),
+            textScaleFactor: 1.5,),
+          Divider(height: 10, color: Colors.white,),
+          Text('Numero maximo de inquilinos:', style: labelStyle ),
+          Text('' + sharedData.getFlat().getMaxPersons().toString(),
+            textScaleFactor: 1.5,),
+          Divider(height: 10, color: Colors.white,),
+        ],
+      );
+    }
+    else {
+      return Text('No estas registrado en un piso.',style: labelStyle);
+    }
+  }
+
 }
