@@ -39,8 +39,6 @@ class _RegisterState extends State<Register> {
             Divider(),
             _textUseremail(),
             Divider(),
-            _textFlatId(), // Creating a text field widget to get username
-            Divider(),
             _textPassword(),     // Creating a text field widget to get password
             Divider(),
             _textRepitePassword(),
@@ -101,20 +99,6 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Widget _textFlatId(){
-    return TextField(
-      controller: flatIdController,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          labelText: 'Id del piso',
-          hintText: 'Introduce el identificador del piso',
-          suffixIcon: Icon(Icons.home, color: Colors.blue),
-          icon: Icon(Icons.home)
-      ),
-    );
-  }
-
   Widget _textPassword() {
     return TextField(
       controller: passwordController,
@@ -150,7 +134,6 @@ class _RegisterState extends State<Register> {
         userToAdd.setFirstname(firstnameController.text);
         userToAdd.setLastname(lastnameController.text);
         userToAdd.setEmail(useremailController.text);
-        //userToAdd.setIdPiso(flatIdController.text);
         userToAdd.setPassword(passwordController.text);
         int res = await userService.registerUser(this.userToAdd);
         if( res == 0){

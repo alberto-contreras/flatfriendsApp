@@ -27,25 +27,27 @@ class _RegisterFlat extends State<RegisterFlat> {
           backgroundColor: Colors.red,
           elevation: 0.0,
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
+        body: ListView(
           children: <Widget>[
             Container(
               child: Text('Registrar un nuevo piso:', style: optionStyle),
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Text('Datos del piso:', style: labelStyle),
+                SizedBox(height: 10,),
                 _textFlatname(),
                 Divider(),
                 _textFlatDescription(),
                 Divider(),
                 _textMaxPersons(),
-                Divider(),
+                SizedBox(height: 30,),
                 Text('Localización del piso:', style: labelStyle),
+                SizedBox(height: 10,),
                 _textLatitude(),
                 Divider(),
                 _textLongitude(),
@@ -150,7 +152,9 @@ class _RegisterFlat extends State<RegisterFlat> {
         int res = await flatService.registerFlat(flat);
         print(res);
         if (res == 0) {
-          Navigator.pushReplacementNamed(context, '/user');
+          Navigator.pop(context, () {
+            setState(() {});
+          });
         }
         else {
           print('Error en el login, vuelve a intentarlo');
@@ -163,7 +167,7 @@ class _RegisterFlat extends State<RegisterFlat> {
     },
         child: Text('Registrar piso'),
         shape: StadiumBorder(),
-        color: Colors.blue,
+        color: Colors.green,
         textColor: Colors.white);
   }
 

@@ -119,7 +119,7 @@ class _UserState extends State<User> {
     }
     else {
       print('The user do not has any flat registered. Showing button.');
-      return FlatButton(onPressed: () {
+      return FlatButton(onPressed: ()  {
         Navigator.pushNamed(context, '/regflat');
       },
           child: Text('Registrat tu piso'),

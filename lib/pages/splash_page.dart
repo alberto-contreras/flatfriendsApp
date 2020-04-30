@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class Splash extends StatelessWidget {
 
   Widget build(BuildContext context) {
-    new Future.delayed(const Duration(seconds: 5), () {
+    new Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, '/login');
     });
 
