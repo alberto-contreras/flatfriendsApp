@@ -25,6 +25,11 @@ class Oauth2ClientExample {
     http.Response resp =
     await hlp.get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json');
 
+    /**
+     * After defining the basic parameters for enable sign in with google
+     * we work with the response that google server send to us with user data
+     */
+
     print(resp.body);
     print(resp.statusCode);
     if(resp.statusCode == 200){
@@ -34,9 +39,23 @@ class Oauth2ClientExample {
       userGoogle.setFirstname(userData['given_name']);
       userGoogle.setLastname(userData['family_name']);
       userGoogle.setEmail(userData['email']);
-      int answer = await userService.registerUser(userGoogle); // Sending to the database the Google User and checking if already exist
+      /**
+       * Now we send the userGoogle to our backend to register
+       */
+      int answer = await userService.registerUser(userGoogle);
       print(answer);
+      /**
+       * If the answer of the register is 2 or null (means that we can not add this user)
+       * we return a 1 to the login page in order to show an error POPUP
+       */
       if(answer != 2 && answer != null){
+        /**
+         * If it's different of 2 and null  what we do is sending a GET
+         * to the backend and getting all the other fields that we need
+         * that google does not provide because are those provided by our backend
+         * like user_id, flat_id, phoneNumber
+         * Finally we return a 0 in order to navigate to /home page
+         */
         sharedData.setUser(userGoogle);
         int answerToGet = await userService.getUserByEmail(sharedData.getUser().getEmail());
         return 0;

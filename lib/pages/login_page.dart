@@ -3,6 +3,7 @@ import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flatfriendsapp/services/GoogleAuth.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
@@ -115,26 +116,23 @@ class _LoginState extends State<Login> {
 
   Widget _registerGoogleButton() {
 
-    return FlatButton(onPressed: () async {
+    return GoogleSignInButton(onPressed: () async {
       int answer = await googleAuth.fetchFiles();
-      if(answer == 0){
+      if (answer == 0) {
         Navigator.pushReplacementNamed(context, '/home');
       }
-      else{
+      else {
         print('POPUP BAD REQUEST GOOGLE');
         showDialog<void>(
             context: context,
             builder: (BuildContext context) {
               return _alertLoginGoogle();
             });
-
       }
-    }, child: Text('Sing in w/ Google'));
-
+    },
+      splashColor: Colors.transparent,
+    );
   }
-
-
-
 
    Widget _alertLogin(){
      return PlatformAlertDialog(

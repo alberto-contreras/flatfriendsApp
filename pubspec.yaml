@@ -23,6 +23,7 @@ dependencies:
   animated_text_kit: ^2.0.0
   platform_alert_dialog: ^1.0.0+2
   oauth2_client: ^1.2.0
+  flutter_auth_buttons: ^0.8.0
 
 
   # The following adds the Cupertino Icons font to your application.
