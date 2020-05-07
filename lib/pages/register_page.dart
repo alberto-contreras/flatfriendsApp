@@ -136,6 +136,7 @@ class _RegisterState extends State<Register> {
         userToAdd.setLastname(lastnameController.text);
         userToAdd.setEmail(useremailController.text);
         userToAdd.setPassword(passwordController.text);
+        userToAdd.setGoogleAuth(false);
         int res = await userService.registerUser(this.userToAdd);
         if( res == 0){
           Navigator.pop(context);

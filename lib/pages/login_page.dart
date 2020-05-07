@@ -1,5 +1,6 @@
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/userService.dart';
+import 'package:flatfriendsapp/services/GoogleAuth.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 
@@ -12,6 +13,8 @@ class _LoginState extends State<Login> {
   TextEditingController passwordController = new TextEditingController();
   UserModel userLogin = new UserModel();
   UserService userService = new UserService();
+  Oauth2ClientExample googleAuth = new Oauth2ClientExample();
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +41,8 @@ class _LoginState extends State<Login> {
                 _registerButton()
               ],
             ),
+            SizedBox(height: 10,),
+            _registerGoogleButton(),
           ],
         ),
       ),
@@ -108,6 +113,29 @@ class _LoginState extends State<Login> {
         textColor: Colors.white);
   }
 
+  Widget _registerGoogleButton() {
+
+    return FlatButton(onPressed: () async {
+      int answer = await googleAuth.fetchFiles();
+      if(answer == 0){
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+      else{
+        print('POPUP BAD REQUEST GOOGLE');
+        showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return _alertLoginGoogle();
+            });
+
+      }
+    }, child: Text('Sing in w/ Google'));
+
+  }
+
+
+
+
    Widget _alertLogin(){
      return PlatformAlertDialog(
        title: Text('Hey!'),
@@ -128,6 +156,27 @@ class _LoginState extends State<Login> {
        ],
      );
    }
+
+  Widget _alertLoginGoogle(){
+    return PlatformAlertDialog(
+      title: Text('Hey!'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text('Problemas con Google.'),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        PlatformDialogAction(
+          child: Text('Aceptar'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
 
 }
 

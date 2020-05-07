@@ -18,6 +18,7 @@ class UserService {
         'email' : userToAdd.getEmail(),
         'idPiso': null,
         'password' : userToAdd.getPassword(),
+        'googleAuth' : userToAdd.getGoogleAuth(),
       }),
         headers: {"accept": "application/json", "content-type": "application/json" });
       if(response.statusCode == 409)
@@ -31,12 +32,12 @@ class UserService {
       }
       else {
         print('General Error adding User');
-        return 1;
+        return 2;
       }
     }
     catch(error){
       print(error);
-      return 1;
+      return 2;
     }
   }
 
@@ -135,6 +136,34 @@ class UserService {
       return 1;
     }
   }
+
+  Future<int> getUserByEmail(String emailUser) async {
+    try {
+      var response = await http.get(this.url + '/getUserByEmail/'+emailUser);
+      print(response.statusCode);
+      if(response.statusCode == 400)
+      {
+        print('Error');
+        return 1;
+      }
+      else {
+        print('Succesfully arrived');
+        print(response.body);
+        Map userData = jsonDecode(response.body);
+        sharedData.getUser().setIdUser(userData['_id']);
+        sharedData.getUser().setPhoneNumber(userData['phoneNumber']);
+        sharedData.getUser().setIdPiso(userData['idPiso']);
+
+        //sharedData.setToken(tokensiko);
+        return 0;
+      }
+    }
+    catch(error){
+      print(error);
+      return 1;
+    }
+  }
+
 
 }
 

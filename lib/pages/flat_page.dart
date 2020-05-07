@@ -1,6 +1,5 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flutter/material.dart';
-import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 
 class Flat extends StatefulWidget {
   _FlatState createState() => _FlatState();

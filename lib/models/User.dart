@@ -1,3 +1,4 @@
+
 class UserModel {
   String _id;
   String _firstname;
@@ -6,6 +7,7 @@ class UserModel {
   String _phoneNumber;
   String _idPiso;
   String _password;
+  bool _googleAuth;
 
   UserModel();
 
@@ -36,6 +38,9 @@ class UserModel {
   setFirstname(String value) {
     this._firstname = value;
   }
+  setGoogleAuth(bool value){
+    this._googleAuth = value;
+  }
 
   String getIdUser() => this._id;
 
@@ -50,4 +55,6 @@ class UserModel {
   String getPhoneNumber() => this._phoneNumber;
 
   String getEmail() => this._email;
+
+  bool getGoogleAuth() => this._googleAuth;
 }
