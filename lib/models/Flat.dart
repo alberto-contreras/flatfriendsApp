@@ -1,3 +1,4 @@
+import 'package:flatfriendsapp/models/Chat.dart';
 import 'package:flatfriendsapp/models/Location.dart';
 
 class FlatModel {
@@ -7,6 +8,7 @@ class FlatModel {
   bool _full;
   int _maxPersons;
   LocationModel _location;
+  ChatModel _chat;
 
   FlatModel();
 

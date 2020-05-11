@@ -1,4 +1,6 @@
+import 'package:flatfriendsapp/models/Chat.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
+import 'package:flatfriendsapp/models/Message.dart';
 import 'package:flatfriendsapp/models/User.dart';
 
 class SharedData {
@@ -8,10 +10,11 @@ class SharedData {
   UserModel infoUser;
   FlatModel infoFlat;
   String token;
-  String apiUrl = 'http://localhost:3702';
-//  String apiUrl = 'http://10.0.2.2:3702';
+//  String apiUrl = 'http://localhost:3702';
+  String apiUrl = 'http://10.0.2.2:3702';
   String urlUser;
   String urlFlat;
+  List<String> messages = [];
 
 
   SharedData() {
@@ -38,6 +41,12 @@ class SharedData {
   {
     this.infoFlat = a;
   }
+
+  setMessage(String message) {
+    this.messages.add(message);
+  }
+
+  List<String> getMessages() => this.messages;
 
   UserModel getUser() => this.infoUser;
 

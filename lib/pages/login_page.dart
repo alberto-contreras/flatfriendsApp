@@ -86,7 +86,6 @@ class _LoginState extends State<Login> {
         int res = await userService.logUser(this.userLogin);
         print(res);
         if( res == 0){
-
           Navigator.pushReplacementNamed(context, '/home');
         }
         else{
