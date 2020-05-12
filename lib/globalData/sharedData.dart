@@ -1,7 +1,5 @@
-import 'package:flatfriendsapp/models/ChatMessage.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/User.dart';
-import 'package:flatfriendsapp/services/chatService.dart';
 
 class SharedData {
 
@@ -12,17 +10,15 @@ class SharedData {
   String token;
 //  String apiUrl = 'http://localhost:3702';
   String apiUrl = 'http://10.0.2.2:3702';
+//  String chatServerUrl = 'http://localhost:8080';
+  String chatServerUrl = 'http://10.0.2.2:8080';
   String urlUser;
   String urlFlat;
-  bool chatRunning = false;
-  List<ChatMessageModel> messages = new List<ChatMessageModel>();
-  ChatService chatService = new ChatService();
 
 
   SharedData() {
     this.urlUser = this.apiUrl + '/user';
     this.urlFlat = this.apiUrl + '/flat';
-
   }
 
   static SharedData getInstance()
@@ -45,12 +41,6 @@ class SharedData {
     this.infoFlat = a;
   }
 
-  setMessage(ChatMessageModel message) {
-    this.messages.add(message);
-  }
-
-  List<ChatMessageModel> getMessages() => this.messages;
-
   UserModel getUser() => this.infoUser;
 
   FlatModel getFlat() => this.infoFlat;
@@ -59,5 +49,5 @@ class SharedData {
 
   String getUrlFlat() => this.urlFlat;
 
-  // String getChatServerUrl() => this.chatServerUrl;
+  String getChatServerUrl() => this.chatServerUrl;
 }

@@ -1,4 +1,3 @@
-import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flatfriendsapp/services/GoogleAuth.dart';
@@ -16,7 +15,6 @@ class _LoginState extends State<Login> {
   UserModel userLogin = new UserModel();
   UserService userService = new UserService();
   Oauth2ClientExample googleAuth = new Oauth2ClientExample();
-  SharedData sharedData = SharedData.getInstance();
 
 
   Widget build(BuildContext context) {
@@ -88,13 +86,7 @@ class _LoginState extends State<Login> {
         int res = await userService.logUser(this.userLogin);
         print(res);
         if( res == 0){
-          if (sharedData.getUser().getIdPiso() != null) {
-            print('antes de llamar initChatService');
-            await sharedData.chatService.initChatService(
-                sharedData.getUser().getIdPiso());
-            sharedData.chatService.onMessage();
-            sharedData.chatRunning = true;
-          }
+
           Navigator.pushReplacementNamed(context, '/home');
         }
         else{

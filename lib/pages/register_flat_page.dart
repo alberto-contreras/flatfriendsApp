@@ -153,7 +153,6 @@ class _RegisterFlat extends State<RegisterFlat> {
         int res = await flatService.registerFlat(flat);
         print(res);
         if (res == 0) {
-          sharedData.chatRunning = true;
           Navigator.pop(context, () {
             setState(() {});
           });
