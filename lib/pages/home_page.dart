@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
@@ -15,8 +14,11 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text('Flat & Friends'),
       ),
-      body: Center(
-        child: Text('Estás en el home.', style: optionStyle,),
+      body: Column(
+        children: <Widget>[
+          Text('Estás en el home.', style: optionStyle,),
+         // _chatButton(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -44,7 +46,7 @@ class _HomeState extends State<Home> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      switch (_selectedIndex){
+      switch (_selectedIndex) {
         case 0:
           Navigator.pushReplacementNamed(context, '/user');
           break;
@@ -53,5 +55,15 @@ class _HomeState extends State<Home> {
           break;
       }
     });
+  }
+
+  Widget _chatButton() {
+    return FlatButton(onPressed: () {
+      Navigator.pushNamed(context, '/chat');
+    },
+        child: Text('Cancel'),
+        shape: StadiumBorder(),
+        color: Colors.red,
+        textColor: Colors.white);
   }
 }

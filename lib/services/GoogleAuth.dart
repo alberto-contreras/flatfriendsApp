@@ -19,8 +19,8 @@ class Oauth2ClientExample {
 
     hlp.setAuthorizationParams(
         grantType: OAuth2Helper.AUTHORIZATION_CODE,
-        //clientId: '456324064137-bkcl1cgmn3iqu7jh40uv1tfu3agmkupv.apps.googleusercontent.com',
-        clientId: '456324064137-jh755v6epavpffouchkjsobfc69rbhg9.apps.googleusercontent.com',
+        clientId: '456324064137-bkcl1cgmn3iqu7jh40uv1tfu3agmkupv.apps.googleusercontent.com',
+        //clientId: '456324064137-jh755v6epavpffouchkjsobfc69rbhg9.apps.googleusercontent.com',
         scopes: ['https://www.googleapis.com/auth/userinfo.profile','https://www.googleapis.com/auth/userinfo.email']);
 
     http.Response resp =

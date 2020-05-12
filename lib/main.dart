@@ -1,3 +1,4 @@
+import 'package:flatfriendsapp/pages/chat_page.dart';
 import 'package:flatfriendsapp/pages/flat_page.dart';
 import 'package:flatfriendsapp/pages/home_page.dart';
 import 'package:flatfriendsapp/pages/login_page.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/flat': (context) => Flat(),
         '/regflat': (context) => RegisterFlat(),
         '/userSettings': (context) => UserSettings(),
+        '/chat': (context) => Chat(),
       },
     );
   }

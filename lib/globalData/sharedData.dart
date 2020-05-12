@@ -8,8 +8,10 @@ class SharedData {
   UserModel infoUser;
   FlatModel infoFlat;
   String token;
-  String apiUrl = 'http://localhost:3702';
-//  String apiUrl = 'http://10.0.2.2:3702';
+//  String apiUrl = 'http://localhost:3702';
+  String apiUrl = 'http://10.0.2.2:3702';
+//  String chatServerUrl = 'http://localhost:8080';
+  String chatServerUrl = 'http://10.0.2.2:8080';
   String urlUser;
   String urlFlat;
 
@@ -46,4 +48,6 @@ class SharedData {
   String getUrlUser() => this.urlUser;
 
   String getUrlFlat() => this.urlFlat;
+
+  String getChatServerUrl() => this.chatServerUrl;
 }

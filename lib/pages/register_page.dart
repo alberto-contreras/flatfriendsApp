@@ -166,6 +166,7 @@ class _RegisterState extends State<Register> {
         color: Colors.red,
         textColor: Colors.white);
   }
+
   Widget _alertRegisterUser(){
     return PlatformAlertDialog(
       title: Text('Hey!'),
