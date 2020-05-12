@@ -1,4 +1,9 @@
+import 'package:flatfriendsapp/models/ChatMessage.dart';
+import 'package:flatfriendsapp/models/Message.dart';
+import 'package:flatfriendsapp/services/chatService.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
@@ -14,11 +19,12 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text('Flat & Friends'),
       ),
-      body: Column(
-        children: <Widget>[
-          Text('Estás en el home.', style: optionStyle,),
-         // _chatButton(),
-        ],
+      body: Center(
+          child: Column(
+            children: <Widget>[
+              _chatButton(),
+            ],
+          )
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -59,11 +65,13 @@ class _HomeState extends State<Home> {
 
   Widget _chatButton() {
     return FlatButton(onPressed: () {
-      Navigator.pushNamed(context, '/chat');
+      if (sharedData.chatRunning == true){
+        Navigator.pushNamed(context, '/chat');
+      }
     },
-        child: Text('Cancel'),
+        child: Text('Chat'),
         shape: StadiumBorder(),
-        color: Colors.red,
+        color: Colors.green,
         textColor: Colors.white);
   }
 }
