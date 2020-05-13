@@ -2,6 +2,7 @@ import 'package:flatfriendsapp/models/ChatMessage.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
+import 'package:flutter/cupertino.dart';
 
 class SharedData {
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bubble/bubble.dart';
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/ChatMessage.dart';
@@ -12,7 +14,7 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
   TextEditingController messageController = new TextEditingController();
-  bool dentro = false;
+  int _numMessages;
   ChatMessageModel _messageToSend = new ChatMessageModel();
   List<Widget> messagesList = new List<Widget>();
   static const TextStyle nameStyle = TextStyle(
@@ -29,13 +31,20 @@ class _ChatState extends State<Chat> {
         ),
         body: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
+                color: Colors.teal,
+              child: Container(
+                margin: const EdgeInsets.only(left: 8, right: 8),
+
                 height: MediaQuery
                     .of(context)
                     .size
-                    .height * 0.84,
+                    .height * 0.83,
                 child: ListView(
+
+                  reverse: true,
                   scrollDirection: Axis.vertical,
                   children: <Widget>[
                     _messages(),
@@ -43,22 +52,23 @@ class _ChatState extends State<Chat> {
                   ],
                 ),
               ),
+              ),
+
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
                     margin: const EdgeInsets.all(8.0),
                     child: _textMessage(),
-                    width: 250.0,
-                    height: 55.0,
-
+                    width: 280.0,
+                    height: 40.0,
                   ),
                   // _textMessage(),
                   _sendButton()
-
                 ],
-              )
+              ),
             ],
-
           ),
         )
     );
@@ -66,6 +76,7 @@ class _ChatState extends State<Chat> {
 
   void initState() {
     super.initState();
+    _numMessages = sharedData.getMessages().length;
     sharedData.getMessages().forEach((message) {
       print(message.getMessage());
       if (sharedData.getUser().getFirstname() == message.getUserName()) {
@@ -141,7 +152,49 @@ class _ChatState extends State<Chat> {
 //            ));
 //      }
 //    });
-//    dentro = true;
+//
+  while (_numMessages < sharedData.getMessages().length) {
+      setState(() {
+        if (sharedData.getUser().getFirstname() == sharedData.getMessages()[_numMessages].getUserName()) {
+          this.messagesList.add(Bubble(
+              margin: BubbleEdges.only(
+                  top: 10),
+              alignment: Alignment.topRight,
+              nip: BubbleNip.rightTop,
+              color: Color.fromRGBO(225, 255, 199, 1.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(sharedData.getMessages()[_numMessages].getUserName() + ':', style: nameStyle,),
+                  Text(sharedData.getMessages()[_numMessages].getMessage(), style: messageStyle)
+                ],
+              )
+          ));
+        }
+        else {
+          this.messagesList.add(
+              Bubble(
+                margin: BubbleEdges.only(top: 10),
+                alignment: Alignment.topLeft,
+                nipWidth: 8,
+                nipHeight: 24,
+                nip: BubbleNip.leftTop,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      sharedData.getMessages()[_numMessages].getUserName() +
+                          ':',
+                      style: nameStyle,),
+                    Text(sharedData.getMessages()[_numMessages].getMessage(),
+                        style: messageStyle)
+                  ],
+                ),
+              ));
+        }
+      });
+      _numMessages++;
+  }
     print('He cargado la lista de mensajes');
     return Column(
         children: messagesList
@@ -168,50 +221,13 @@ class _ChatState extends State<Chat> {
           _messageToSend.setDateTime(DateTime.now().toString());
           await sharedData.chatService.sendMessage(_messageToSend);
           // Navigator.pushReplacementNamed(context, '/chat');
-          messageController.text = '';
+          messageController.clear();
         }
+
       },
           child: Text('Send Message'),
           shape: StadiumBorder(),
           color: Colors.green,
           textColor: Colors.white);
-  }
-
-  newMessage(ChatMessageModel message) {
-    setState(() {
-      if (sharedData.getUser().getFirstname() == message.getUserName()) {
-        this.messagesList.add(Bubble(
-            margin: BubbleEdges.only(
-                top: 10),
-            alignment: Alignment.topRight,
-            nip: BubbleNip.rightTop,
-            color: Color.fromRGBO(225, 255, 199, 1.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(message.getUserName() + ':', style: nameStyle,),
-                Text(message.getMessage(), style: messageStyle)
-              ],
-            )
-        ));
-      }
-      else {
-        this.messagesList.add(
-            Bubble(
-              margin: BubbleEdges.only(top: 10),
-              alignment: Alignment.topLeft,
-              nipWidth: 8,
-              nipHeight: 24,
-              nip: BubbleNip.leftTop,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(message.getUserName() + ':', style: nameStyle,),
-                  Text(message.getMessage(), style: messageStyle)
-                ],
-              ),
-            ));
-      }
-    });
   }
 }
