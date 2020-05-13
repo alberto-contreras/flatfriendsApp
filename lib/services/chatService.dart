@@ -5,7 +5,6 @@ import 'package:socket_io_client/socket_io_client.dart';
 import 'dart:convert';
 
 SharedData sharedData = SharedData.getInstance();
-Chat pinchewey = new Chat();
 
 class ChatService {
   Socket socket = io('http://10.0.2.2:8080', <String, dynamic>{

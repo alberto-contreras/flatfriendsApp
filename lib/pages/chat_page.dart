@@ -28,44 +28,22 @@ class _ChatState extends State<Chat> {
           title: Text('Chat'),
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.84,
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  children: <Widget>[
-                    _messages(),
-//                    Padding(padding: EdgeInsets.all(5.00)),
-                  ],
-                ),
-              ),
-              Row(
+            child: Container(
+              margin: const EdgeInsets.all(8.0),
+              child: Column(
                 children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.all(8.0),
-                    child: _textMessage(),
-                    width: 250.0,
-                    height: 55.0,
-
-                  ),
-                  // _textMessage(),
-                  _sendButton()
-
+                  messagesView(),
+                  sendMessageTab(),
                 ],
-              )
-            ],
-
-          ),
+              ),
+            )
         )
     );
   }
 
   void initState() {
     super.initState();
+    print('en el initState los mensajes:' + sharedData.getMessages().toString());
     sharedData.getMessages().forEach((message) {
       print(message.getMessage());
       if (sharedData.getUser().getFirstname() == message.getUserName()) {
@@ -102,6 +80,43 @@ class _ChatState extends State<Chat> {
             ));
       }
     });
+  }
+
+  Widget sendMessageTab () {
+    return Container(
+      height: 40.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+              height: 30.0,
+              width: MediaQuery.of(context).size.width - 166.0,
+              child: _textMessage(),
+            ),
+            Container(
+              width: 130.0,
+                child: _sendButton()
+            )
+          ],
+        )
+    );
+  }
+
+  Widget messagesView () {
+    return Container(
+      height: MediaQuery.of(context).size.height - 140.0,
+      width: MediaQuery.of(context).size.width,
+      child: ListView(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        children: <Widget>[
+          Column(
+              children: messagesList
+          ),
+//                    Padding(padding: EdgeInsets.all(5.00)),
+        ],
+      ),
+    );
   }
 
   Widget _messages() {
@@ -157,61 +172,65 @@ class _ChatState extends State<Chat> {
       );
   }
 
-  Widget _sendButton() {
-    return FlatButton(onPressed: () async {
-        print('mandando mensaje');
-        if (messageController.text != '' && messageController.text != null) {
-          print('antes de mandar mensaje');
-          _messageToSend.setChatRoom(sharedData.getUser().getIdPiso());
-          _messageToSend.setMessage(messageController.text);
-          _messageToSend.setUserName(sharedData.getUser().getFirstname());
-          _messageToSend.setDateTime(DateTime.now().toString());
-          await sharedData.chatService.sendMessage(_messageToSend);
-          // Navigator.pushReplacementNamed(context, '/chat');
-          messageController.text = '';
-        }
-      },
-          child: Text('Send Message'),
-          shape: StadiumBorder(),
-          color: Colors.green,
-          textColor: Colors.white);
+  Widget _sendButton () {
+    return FlatButton(
+        onPressed: () async {
+          print('mandando mensaje');
+          if (messageController.text != '' && messageController.text != null) {
+            print('antes de mandar mensaje');
+            _messageToSend.setChatRoom(sharedData.getUser().getIdPiso());
+            _messageToSend.setMessage(messageController.text);
+            _messageToSend.setUserName(sharedData.getUser().getFirstname());
+            _messageToSend.setDateTime(DateTime.now().toString());
+            await sharedData.chatService.sendMessage(_messageToSend);
+            // Navigator.pushReplacementNamed(context, '/chat');
+            messageController.text = '';
+            setState(() {
+              if (sharedData.getUser().getFirstname() == _messageToSend.getUserName()) {
+                this.messagesList.add(Bubble(
+                    margin: BubbleEdges.only(
+                        top: 10),
+                    alignment: Alignment.topRight,
+                    nip: BubbleNip.rightTop,
+                    color: Color.fromRGBO(225, 255, 199, 1.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(_messageToSend.getUserName() + ':', style: nameStyle,),
+                        Text(_messageToSend.getMessage(), style: messageStyle)
+                      ],
+                    )
+                ));
+              }
+              else {
+                this.messagesList.add(
+                    Bubble(
+                      margin: BubbleEdges.only(top: 10),
+                      alignment: Alignment.topLeft,
+                      nipWidth: 8,
+                      nipHeight: 24,
+                      nip: BubbleNip.leftTop,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(_messageToSend.getUserName() + ':', style: nameStyle,),
+                          Text(_messageToSend.getMessage(), style: messageStyle)
+                        ],
+                      ),
+                    )
+                );
+              }
+            });
+          }
+        },
+        child: Text('Send Message'),
+        shape: StadiumBorder(),
+        color: Colors.green,
+        textColor: Colors.white
+    );
   }
 
-  newMessage(ChatMessageModel message) {
-    setState(() {
-      if (sharedData.getUser().getFirstname() == message.getUserName()) {
-        this.messagesList.add(Bubble(
-            margin: BubbleEdges.only(
-                top: 10),
-            alignment: Alignment.topRight,
-            nip: BubbleNip.rightTop,
-            color: Color.fromRGBO(225, 255, 199, 1.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(message.getUserName() + ':', style: nameStyle,),
-                Text(message.getMessage(), style: messageStyle)
-              ],
-            )
-        ));
-      }
-      else {
-        this.messagesList.add(
-            Bubble(
-              margin: BubbleEdges.only(top: 10),
-              alignment: Alignment.topLeft,
-              nipWidth: 8,
-              nipHeight: 24,
-              nip: BubbleNip.leftTop,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(message.getUserName() + ':', style: nameStyle,),
-                  Text(message.getMessage(), style: messageStyle)
-                ],
-              ),
-            ));
-      }
-    });
-  }
+//  newMessage(ChatMessageModel message) {
+//
+//  }
 }
