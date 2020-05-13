@@ -1,15 +1,14 @@
-import 'package:flatfriendsapp/models/ChatMessage.dart';
-import 'package:flatfriendsapp/models/Message.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  var ioConnection;
+  ChatService chatService = new ChatService();
   int _selectedIndex = 1;
   static const TextStyle optionStyle = TextStyle(
       fontSize: 30, fontWeight: FontWeight.bold);

@@ -1,8 +1,6 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/ChatMessage.dart';
-import 'package:flatfriendsapp/models/Message.dart';
 import 'package:flatfriendsapp/pages/chat_page.dart';
-import 'package:http/http.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'dart:convert';
 
