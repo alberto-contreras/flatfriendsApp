@@ -77,6 +77,8 @@ class _ChatState extends State<Chat> {
   void initState() {
     super.initState();
     _numMessages = sharedData.getMessages().length;
+
+    print('en el initState los mensajes:' + sharedData.getMessages().toString());
     sharedData.getMessages().forEach((message) {
       print(message.getMessage());
       if (sharedData.getUser().getFirstname() == message.getUserName()) {
@@ -113,6 +115,43 @@ class _ChatState extends State<Chat> {
             ));
       }
     });
+  }
+
+  Widget sendMessageTab () {
+    return Container(
+      height: 40.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+              height: 30.0,
+              width: MediaQuery.of(context).size.width - 166.0,
+              child: _textMessage(),
+            ),
+            Container(
+              width: 130.0,
+                child: _sendButton()
+            )
+          ],
+        )
+    );
+  }
+
+  Widget messagesView () {
+    return Container(
+      height: MediaQuery.of(context).size.height - 140.0,
+      width: MediaQuery.of(context).size.width,
+      child: ListView(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        children: <Widget>[
+          Column(
+              children: messagesList
+          ),
+//                    Padding(padding: EdgeInsets.all(5.00)),
+        ],
+      ),
+    );
   }
 
   Widget _messages() {
@@ -209,6 +248,7 @@ class _ChatState extends State<Chat> {
           )
       );
   }
+
 
   Widget _sendButton() {
     return FlatButton(onPressed: () async {
