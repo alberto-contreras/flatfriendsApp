@@ -1,8 +1,8 @@
 import 'package:flatfriendsapp/models/ChatMessage.dart';
+import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
-import 'package:flutter/cupertino.dart';
 
 class SharedData {
 
@@ -11,12 +11,13 @@ class SharedData {
   UserModel infoUser;
   FlatModel infoFlat;
   String token;
-//  String apiUrl = 'http://localhost:3702';
-  String apiUrl = 'http://10.0.2.2:3702';
+  String apiUrl = 'http://147.83.7.155:3702';
+//  String apiUrl = 'http://10.0.2.2:3702';
   String urlUser;
   String urlFlat;
   bool chatRunning = false;
   List<ChatMessageModel> messages = new List<ChatMessageModel>();
+  List<EventModel> eventsFlat = new List<EventModel>();
   ChatService chatService = new ChatService();
 
 
@@ -50,7 +51,13 @@ class SharedData {
     this.messages.add(message);
   }
 
+  setEvent(EventModel event){
+    this.eventsFlat.add(event);
+  }
+
   List<ChatMessageModel> getMessages() => this.messages;
+
+  List<EventModel> getEvents() => this.eventsFlat;
 
   UserModel getUser() => this.infoUser;
 
@@ -60,5 +67,4 @@ class SharedData {
 
   String getUrlFlat() => this.urlFlat;
 
-  // String getChatServerUrl() => this.chatServerUrl;
 }

@@ -1,7 +1,9 @@
 import 'package:flatfriendsapp/pages/chat_page.dart';
+import 'package:flatfriendsapp/pages/event_page.dart';
 import 'package:flatfriendsapp/pages/flat_page.dart';
 import 'package:flatfriendsapp/pages/home_page.dart';
 import 'package:flatfriendsapp/pages/login_page.dart';
+import 'package:flatfriendsapp/pages/register_event_page.dart';
 import 'package:flatfriendsapp/pages/register_flat_page.dart';
 import 'package:flatfriendsapp/pages/register_page.dart';
 import 'package:flatfriendsapp/pages/splash_page.dart';
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
         '/regflat': (context) => RegisterFlat(),
         '/userSettings': (context) => UserSettings(),
         '/chat': (context) => Chat(),
+        '/event': (context) => Event(),
+        '/regevent': (context) => RegisterEvent(),
       },
     );
   }

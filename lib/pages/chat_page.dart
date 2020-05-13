@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bubble/bubble.dart';
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/ChatMessage.dart';
@@ -41,7 +39,7 @@ class _ChatState extends State<Chat> {
                 height: MediaQuery
                     .of(context)
                     .size
-                    .height * 0.83,
+                    .height * 0.80,
                 child: ListView(
 
                   reverse: true,
@@ -61,7 +59,7 @@ class _ChatState extends State<Chat> {
                   Container(
                     margin: const EdgeInsets.all(8.0),
                     child: _textMessage(),
-                    width: 280.0,
+                    width: 260.0,
                     height: 40.0,
                   ),
                   // _textMessage(),

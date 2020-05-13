@@ -1,13 +1,17 @@
+import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
+import 'package:flatfriendsapp/services/flatService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+SharedData sharedData = SharedData.getInstance();
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   var ioConnection;
+  FlatService flatService = new FlatService();
   ChatService chatService = new ChatService();
   int _selectedIndex = 1;
   static const TextStyle optionStyle = TextStyle(
@@ -22,6 +26,7 @@ class _HomeState extends State<Home> {
           child: Column(
             children: <Widget>[
               _chatButton(),
+              _eventButton(),
             ],
           )
       ),
@@ -71,6 +76,20 @@ class _HomeState extends State<Home> {
         child: Text('Chat'),
         shape: StadiumBorder(),
         color: Colors.green,
+        textColor: Colors.white);
+  }
+
+  Widget _eventButton() {
+    return FlatButton(onPressed: () async {
+
+       await flatService.getEventFlat();
+        //print(sharedData.eventsFlat);
+        Navigator.pushNamed(context, '/event');
+
+    },
+        child: Text('Event'),
+        shape: StadiumBorder(),
+        color: Colors.purple,
         textColor: Colors.white);
   }
 }
