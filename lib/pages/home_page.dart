@@ -92,4 +92,18 @@ class _HomeState extends State<Home> {
         color: Colors.purple,
         textColor: Colors.white);
   }
+
+  Widget _taskButton() {
+    return FlatButton(onPressed: () async {
+
+       await flatService.getTaskFlat();
+        //print(sharedData.eventsFlat);
+        Navigator.pushNamed(context, '/task');
+
+    },
+        child: Text('Task'),
+        shape: StadiumBorder(),
+        color: Colors.purple,
+        textColor: Colors.white);
+  }
 }

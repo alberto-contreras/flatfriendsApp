@@ -1,6 +1,7 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
+import 'package:flatfriendsapp/models/Task.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
@@ -136,6 +137,75 @@ class FlatService {
     }
   }
 
+//Add a new task to flat tasks
+  Future<int> addTaskFlat(EventModel taskToAdd) async {
+    print(taskToAdd);
+    try {
+      print('Sending new Task');
+      var response = await http.post(this.url + '/task/addTask', body: json.encode({
+        'idPiso': taskToAdd.getIdPiso(),
+        'tittle': taskToAdd.getTittle(),
+        'description': taskToAdd.getDescription(),
+        'idUser': taskToAdd.getIdUser(),
+      },
+      ),
+          headers: {"accept": "application/json", "content-type": "application/json"});
+      if (response.statusCode == 500) {
+        return 1;
+      }
+      else if (response.statusCode == 201) {
+        print('Succesfully created');
+        return 0;
+      }
+      else {
+        print('General Error adding Task');
+        return 1;
+      }
+    }
+    catch (error) {
+      print(error);
+      return 1;
+    }
+  }
 
+  Future<int> getEventFlat() async {
+    print('Searching all the Tasks of a Flat');
+    try {
+      final response = await http.get(this.url + '/task/getFlatTask'+sharedData.getUser().getIdPiso(),
+          headers: {"accept": "application/json", "content-type": "application/json"});
+
+      print(response.body);
+
+
+      if (response.statusCode == 404) {
+        print('No tasks found');
+        return 1;
+      }
+      else if (response.statusCode == 200) {
+        var extractTasks = jsonDecode(response.body);
+        List events;
+        tasks = extractTasks;
+        sharedData.tasksFlat.clear();
+        for(int i = 0;i<tasks.length;i++){
+          TaskModel addTask = new TaskModel();
+          addTask.setTittle(tasks[i]['tittle']);
+          addTask.setIdPiso(tasks[i]['idPiso']);
+          addTask.setDescription(tasks[i]['description']);
+          addTask.setIdUser(tasks[i]['idUser']);
+          sharedData.setTask(addTask);
+          print(addTask.getTittle());
+        }
+        return 0;
+      }
+      else {
+        print('General Error adding a task');
+        return 1;
+      }
+    }
+    catch (error) {
+      print(error);
+      return 1;
+    }
+  }
 
 }
