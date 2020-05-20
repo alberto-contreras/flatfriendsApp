@@ -27,6 +27,7 @@ class _EventState extends State<Event> {
           elevation: 0,
         ),
         floatingActionButton: FlatButton(onPressed: () async{
+          await flatService.getUsersFlat();
         await Navigator.pushNamed(context,'/regevent');
       //we put in a dynamic variable because when are doing a big async task
       //first we go to the event page and then after adding a new one we pop with a refresh
