@@ -42,7 +42,13 @@ class _EventState extends State<Event> {
           itemBuilder: (context,index){ //This function will make a widget tree of the one we choose
             return Card(
                 child: ListTile(
-                  onTap: (){
+                  onTap: () async {
+                    print(events.elementAt(index).getName().toString());
+                    sharedData.setEventDetails(events.elementAt(index));
+                    await Navigator.pushNamed(context,'/eventDetails');
+                    //we put in a dynamic variable because when are doing a big async task
+                    //first we go to the event page and then after adding a new one we pop with a refresh
+                    await flatService.getEventFlat();
                   },//Link on press function
                   title: Text(events.elementAt(index).getName().toString()+' ('+events.elementAt(index).getOrganizer().toString()+')'),
                   subtitle: Text(events.elementAt(index).getDescription().toString()+'\n'+events.elementAt(index).getDate().toString()),
