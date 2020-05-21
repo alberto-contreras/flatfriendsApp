@@ -146,6 +146,7 @@ class _RegisterTaskState extends State<RegisterTask> {
       taskToAdd.setTittle(tittleController.text);
       taskToAdd.setDescription(descriptionController.text);
       taskToAdd.setIdUser(dropdownValue);
+      taskToAdd.setDone(false);
       int res = await flatService.addTaskFlat(this.taskToAdd);
       print(res);
       if( res == 0){

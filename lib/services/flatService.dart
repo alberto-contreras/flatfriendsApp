@@ -2,6 +2,7 @@ import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/Task.dart';
+import 'package:flatfriendsapp/pages/task_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
@@ -149,6 +150,7 @@ class FlatService {
         'tittle': taskToAdd.getTittle(),
         'description': taskToAdd.getDescription(),
         'idUser': taskToAdd.getIdUser(),
+        'done': taskToAdd.getDone()
       },
       ),
           headers: {"accept": "application/json", "content-type": "application/json"});
@@ -190,10 +192,12 @@ class FlatService {
         sharedData.tasksFlat.clear();
         for(int i = 0;i<tasks.length;i++){
           TaskModel addTask = new TaskModel();
+          addTask.setId(tasks[i]['_id']);
           addTask.setTittle(tasks[i]['tittle']);
           addTask.setIdPiso(tasks[i]['idPiso']);
           addTask.setDescription(tasks[i]['description']);
           addTask.setIdUser(tasks[i]['idUser']);
+          addTask.setDone(tasks[i]['done']);
           sharedData.setTask(addTask);
           print(addTask.getTittle());
         }
@@ -213,7 +217,7 @@ class FlatService {
   Future<int> rotateTasks() async {
     print('Rotating the tasks');
     try {
-      final response = await http.put(this.url + '/task/rotateTask/'+sharedData.getUser().getIdPiso(),
+      final response = await http.put(this.url + '/task/rotateTask/' + sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
 
       print(response.body);
@@ -230,10 +234,12 @@ class FlatService {
         sharedData.tasksFlat.clear();
         for(int i = 0;i<tasks.length;i++){
           TaskModel addTask = new TaskModel();
+          addTask.setId(tasks[i]['_id']);
           addTask.setTittle(tasks[i]['tittle']);
           addTask.setIdPiso(tasks[i]['idPiso']);
           addTask.setDescription(tasks[i]['description']);
           addTask.setIdUser(tasks[i]['idUser']);
+          addTask.setDone(tasks[i]['done']);
           sharedData.setTask(addTask);
           print(addTask.getTittle());
         }
@@ -276,6 +282,37 @@ class FlatService {
       }
       else {
         print('General Error adding User');
+        return 1;
+      }
+    }
+    catch (error) {
+      print(error);
+      return 1;
+    }
+  }
+
+  Future<int> updateTask(TaskModel task) async {
+    try {
+      print('Updating Task');
+      var response = await http.put(this.url + '/task/updateTask', body: json.encode({
+        '_id': task.getId(),
+        'idPiso': task.getIdPiso(),
+        'tittle': task.getTittle(),
+        'description': task.getDescription(),
+        'idUser': task.getIdUser(),
+        'done': task.getDone()
+      },
+      ),
+          headers: {"accept": "application/json", "content-type": "application/json"});
+      if (response.statusCode == 500) {
+        return 1;
+      }
+      else if (response.statusCode == 201) {
+        print('Succesfully updated');
+        return 0;
+      }
+      else {
+        print('General Error adding Task');
         return 1;
       }
     }
