@@ -2,6 +2,7 @@
 import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
 
 class EventModel{
+   String _id;
    String _idPiso;
    String _name;
    String _organizer;
@@ -9,6 +10,8 @@ class EventModel{
    String _date;
    List<UsersInFlatModel> _usersInFlatStatus = new List<UsersInFlatModel>();
    EventModel();
+
+  String getId() => this._id;
 
   String getIdPiso()=> this._idPiso;
 
@@ -22,6 +25,9 @@ class EventModel{
 
   List<UsersInFlatModel> getUsers() => this._usersInFlatStatus;
 
+  void setId(String value){
+    this._id = value;
+  }
   void setIdPiso(String value){
     this._idPiso = value;
   }

@@ -45,7 +45,7 @@ class _EventDetailsState extends State<EventDetails> {
                       print("Tap Event");
                     },
                     text: [
-                      ""+event.getName(),
+                      "" + event.getName(),
                     ],
                     textStyle: TextStyle(
                         fontSize: 30.0,
@@ -58,7 +58,8 @@ class _EventDetailsState extends State<EventDetails> {
                       Colors.red,
                     ],
                     textAlign: TextAlign.center,
-                    alignment: AlignmentDirectional.topCenter // or Alignment.topLeft
+                    alignment: AlignmentDirectional
+                        .topCenter // or Alignment.topLeft
                 ),
               ),
             ),
@@ -67,15 +68,15 @@ class _EventDetailsState extends State<EventDetails> {
               color: Colors.black,
             ),
             Text(
-              'Organizador: ' ,
-               style: TextStyle(
+              'Organizador: ',
+              style: TextStyle(
                 color: Colors.black,
-                 fontSize: 20,
+                fontSize: 20,
               ),
             ),
             SizedBox(height: 10.0), //Space between two widgets
             Text(
-              ''+event.getOrganizer(),
+              '' + event.getOrganizer(),
               style: TextStyle(
                 color: Colors.blue[800],
                 fontWeight: FontWeight.bold,
@@ -92,7 +93,7 @@ class _EventDetailsState extends State<EventDetails> {
             ),
             SizedBox(height: 10.0), //Space between two widgets
             Text(
-              ''+event.getDescription(),
+              '' + event.getDescription(),
               style: TextStyle(
                 color: Colors.blue[800],
                 fontWeight: FontWeight.bold,
@@ -109,7 +110,7 @@ class _EventDetailsState extends State<EventDetails> {
             ),
             SizedBox(height: 10.0), //Space between two widgets
             Text(
-              ''+event.getDate(),
+              '' + event.getDate(),
               style: TextStyle(
                 color: Colors.blue[800],
                 fontWeight: FontWeight.bold,
@@ -125,14 +126,7 @@ class _EventDetailsState extends State<EventDetails> {
               ),
             ),
             SizedBox(height: 10.0), //Space between two widgets
-            Text(
-              'Han aceptado este evento num de  '+event.getUsers().length.toString(),
-              style: TextStyle(
-                color: Colors.blue[800],
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
+            _showNumberOfAccept(),
             SizedBox(height: 20,),
             _showAcceptDecline(),
           ],
@@ -144,26 +138,33 @@ class _EventDetailsState extends State<EventDetails> {
 
   Widget _showAcceptDecline() {
     bool encontrado = false;
-    for(int i=0; i<event.getUsers().length;i++) {
+    for (int i = 0; i < event
+        .getUsers()
+        .length; i++) {
       //Comprobamos que el usuario no tenga el estado a 1 o a 2, es decir ya haya aceptado o rechazado el evento
-      if ((event.getUsers().elementAt(i).getId() == sharedData.getUser().getIdUser() ) && (event.getUsers().elementAt(i).getStatus() != '0')) {
+      if ((event.getUsers().elementAt(i).getId() ==
+          sharedData.getUser().getIdUser()) &&
+          (event.getUsers().elementAt(i).getStatus() != '0')) {
         encontrado = true;
       }
     }
-    if(encontrado != true){
+    if (encontrado != true) {
       return Row(
 
         children: <Widget>[
           //Hemos de actualizar la lista con el estado que ha decidio el usuario y enviarla (estado = 1) --> ACEPTADO
           FlatButton.icon(onPressed: () async {
-            for(int i=0; i<event.getUsers().length;i++) {
-              if (event.getUsers().elementAt(i).getId() == sharedData.getUser().getIdUser()) {
+            for (int i = 0; i < event
+                .getUsers()
+                .length; i++) {
+              if (event.getUsers().elementAt(i).getId() ==
+                  sharedData.getUser().getIdUser()) {
                 event.getUsers().elementAt(i).setStatus('1');
                 int res = await flatService.updateEventFlat(event);
-                if( res == 0){
+                if (res == 0) {
                   Navigator.pop(context);
                 }
-                else{
+                else {
                   print('Error');
                 }
               }
@@ -173,18 +174,21 @@ class _EventDetailsState extends State<EventDetails> {
             label: Text('Aceptar Evento'),
             shape: StadiumBorder(),
             color: Colors.green,
-            textColor: Colors.white ,),
+            textColor: Colors.white,),
           SizedBox(width: 20),
           //Hemos de actualizar la lista con el estado que ha decidio el usuario y enviarla (estado = 2) --> RECHAZADO
           FlatButton.icon(onPressed: () async {
-            for(int i=0; i<event.getUsers().length;i++) {
-              if (event.getUsers().elementAt(i).getId() == sharedData.getUser().getIdUser()) {
+            for (int i = 0; i < event
+                .getUsers()
+                .length; i++) {
+              if (event.getUsers().elementAt(i).getId() ==
+                  sharedData.getUser().getIdUser()) {
                 event.getUsers().elementAt(i).setStatus('2');
                 int res = await flatService.updateEventFlat(event);
-                if( res == 0){
+                if (res == 0) {
                   Navigator.pop(context);
                 }
-                else{
+                else {
                   print('Error');
                 }
               }
@@ -200,8 +204,31 @@ class _EventDetailsState extends State<EventDetails> {
         ],
       );
     }
-    else{
-      return Text('');
+    else {
+      return Row(
+
+        children: <Widget>[
+
+        ],
+      );
     }
+  }
+
+
+  Widget _showNumberOfAccept() {
+    int accept = 0;
+    for(int i = 0; i<event.getUsers().length;i++){
+      if(event.getUsers().elementAt(i).getStatus() == '1'){
+        accept = accept +1;
+      }
+
     }
+    return Text(
+      accept.toString()+'/'+event.getUsers().length.toString(),
+      style: TextStyle(
+        color: Colors.blue[800],
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+      ),);
+  }
 }

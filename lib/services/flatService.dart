@@ -109,6 +109,7 @@ class FlatService {
     try {
       print('Sending new Event');
       var response = await http.put(this.url + '/event/updateEvent', body: json.encode({
+        '_id' : eventToAdd.getId(),
         'idPiso': eventToAdd.getIdPiso(),
         'name': eventToAdd.getName(),
         'organizer': eventToAdd.getOrganizer(),
@@ -159,6 +160,7 @@ class FlatService {
         sharedData.eventsFlat.clear();
         for(int i = 0;i<events.length;i++){
           EventModel addEvent = new EventModel();
+          addEvent.setId(events[i]['_id']);
           addEvent.setName(events[i]['name']);
           addEvent.setIdPiso(events[i]['idPiso']);
           addEvent.setDescription(events[i]['description']);
@@ -173,7 +175,6 @@ class FlatService {
           }
           sharedData.setEvent(addEvent);
           print(addEvent.getUsers());
-
         }
         return 0;
       }
@@ -205,6 +206,7 @@ class FlatService {
         var extractusers = jsonDecode(response.body);
         List users;
         users = extractusers;
+        sharedData.usersInFlatToCreateEvent.clear(); //In case there is a new user in the flat and we update the list
         for(int i = 0;i<users.length;i++){
           UsersInFlatModel addUserInFlat = new UsersInFlatModel();
           addUserInFlat.setId(users[i]['_id']);
