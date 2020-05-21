@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               _chatButton(),
               _eventButton(),
+              _taskButton(),
             ],
           )
       ),
@@ -103,7 +104,7 @@ class _HomeState extends State<Home> {
     },
         child: Text('Task'),
         shape: StadiumBorder(),
-        color: Colors.purple,
+        color: Colors.red,
         textColor: Colors.white);
   }
 }

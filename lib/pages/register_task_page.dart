@@ -16,13 +16,33 @@ class _RegisterTaskState extends State<RegisterTask> {
   TextEditingController idUserController = new TextEditingController();
   FlatService flatService = new FlatService();
   TaskModel taskToAdd = new TaskModel();
+  List<DropdownMenuItem<String>> listDrop = [];
+  String dropdownValue;
+
+
+  void loadFlatUsers() {
+    listDrop = [];
+    for (num i=0; i<sharedData.getUsersInFlat().length; i++) {
+      print('Name: ' + sharedData.getUsersInFlat()[i][1]);
+      print('id: ' + sharedData.getUsersInFlat()[i][0]);
+      listDrop.add(new DropdownMenuItem(
+        child: new Text(sharedData.getUsersInFlat()[i][1]),
+        value: sharedData.getUsersInFlat()[i][0],
+      ));
+    }
+  }
 
   void updateTime() async
   {
     Navigator.pop(context);
   }
 
-
+  void initState() {
+    super.initState();
+    loadFlatUsers();
+    dropdownValue = listDrop[0].value;
+    print(dropdownValue);
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +65,29 @@ class _RegisterTaskState extends State<RegisterTask> {
             Divider(),
             _textDescription(),
             Divider(),
-            _textIdUser(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Encargado: '),
+                DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: Icon(Icons.arrow_downward),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      dropdownValue = newValue;
+                    });
+                  },
+                  items: listDrop,
+                ),
+              ],
+            ),
             Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +105,7 @@ class _RegisterTaskState extends State<RegisterTask> {
 
   Widget _textTittle(){
     return TextField(
-      controller: nameController,
+      controller: tittleController,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
@@ -87,7 +129,7 @@ class _RegisterTaskState extends State<RegisterTask> {
 
   Widget _textIdUser() {
     return TextField(
-      controller: dateController,
+      controller: idUserController,
       obscureText: false,
       decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
@@ -101,9 +143,9 @@ class _RegisterTaskState extends State<RegisterTask> {
     return FlatButton(onPressed: () async  {
       print('Dentro Registro Tarea');
       taskToAdd.setIdPiso(sharedData.getUser().getIdPiso());
-      taskToAdd.setTittle(TittleController.text);
+      taskToAdd.setTittle(tittleController.text);
       taskToAdd.setDescription(descriptionController.text);
-      taskToAdd.setIdUser(idUserController.text);
+      taskToAdd.setIdUser(dropdownValue);
       int res = await flatService.addTaskFlat(this.taskToAdd);
       print(res);
       if( res == 0){
@@ -158,7 +200,6 @@ class _RegisterTaskState extends State<RegisterTask> {
       ],
     );
   }
-
 }
 
 

@@ -4,6 +4,7 @@ import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/Task.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
+import 'package:flutter/cupertino.dart';
 
 class SharedData {
 
@@ -12,8 +13,8 @@ class SharedData {
   UserModel infoUser;
   FlatModel infoFlat;
   String token;
-  String apiUrl = 'http://147.83.7.155:3702';
-//  String apiUrl = 'http://10.0.2.2:3702';
+//  String apiUrl = 'http://147.83.7.155:3702';
+  String apiUrl = 'http://10.0.2.2:3702';
   String urlUser;
   String urlFlat;
   bool chatRunning = false;
@@ -21,6 +22,7 @@ class SharedData {
   List<EventModel> eventsFlat = new List<EventModel>();
   List<TaskModel> tasksFlat = new List<TaskModel>();
   ChatService chatService = new ChatService();
+  List<List<String>> usersInFlat = new List<List<String>>();
 
 
   SharedData() {
@@ -61,6 +63,14 @@ class SharedData {
     this.tasksFlat.add(task);
   }
 
+  setUsersInFlat(List<List<String>> usersInFlat) {
+    this.usersInFlat = usersInFlat;
+  }
+
+  setUserInUsersInFlat(List<String> userInFlat) {
+    this.usersInFlat.add(userInFlat);
+  }
+
   List<ChatMessageModel> getMessages() => this.messages;
 
   List<EventModel> getEvents() => this.eventsFlat;
@@ -74,5 +84,7 @@ class SharedData {
   String getUrlUser() => this.urlUser;
 
   String getUrlFlat() => this.urlFlat;
+
+  List<List<String>> getUsersInFlat() => this.usersInFlat;
 
 }

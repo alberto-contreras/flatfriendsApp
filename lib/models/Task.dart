@@ -4,7 +4,7 @@ class TaskModel{
   String _tittle;
   String _description;
   String _idUser;
-  EventModel();
+  TaskModel();
 
   String getIdPiso()=> this._idPiso;
 

@@ -27,6 +27,7 @@ class _TaskState extends State<Task> {
         elevation: 0,
       ),
       floatingActionButton: FlatButton(onPressed: () async{
+        await flatService.getUsersFlat();
         await Navigator.pushNamed(context,'/regtask');
         //we put in a dynamic variable because when are doing a big async task
         //first we go to the task page and then after adding a new one we pop with a refresh
@@ -44,12 +45,13 @@ class _TaskState extends State<Task> {
             child: ListTile(
               onTap: (){
               },//Link on press function
-              title: Text(tasks.elementAt(index).getTittle().toString()+' ('+tasks.elementAt(index).getIdUser.toString()+')'),
+              title: Text(tasks.elementAt(index).getTittle().toString()+' ('+tasks.elementAt(index).getIdUser().toString()+')'),
               subtitle: Text(tasks.elementAt(index).getDescription().toString()+'\n'),
 
             ),
           );
-        },),
+        },
+      ),
     );
   }
 }
