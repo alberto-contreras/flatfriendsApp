@@ -2,6 +2,7 @@ import 'package:flatfriendsapp/models/ChatMessage.dart';
 import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/User.dart';
+import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
 
 class SharedData {
@@ -11,14 +12,16 @@ class SharedData {
   UserModel infoUser;
   FlatModel infoFlat;
   String token;
-  String apiUrl = 'http://147.83.7.155:3702';
-//  String apiUrl = 'http://10.0.2.2:3702';
+ // String apiUrl = 'http://147.83.7.155:3702';
+  String apiUrl = 'http://localhost:3702';
   String urlUser;
   String urlFlat;
   bool chatRunning = false;
   List<ChatMessageModel> messages = new List<ChatMessageModel>();
   List<EventModel> eventsFlat = new List<EventModel>();
   ChatService chatService = new ChatService();
+  EventModel eventDetails = new EventModel();
+  List<UsersInFlatModel> usersInFlatToCreateEvent = new List<UsersInFlatModel>();
 
 
   SharedData() {
@@ -55,9 +58,19 @@ class SharedData {
     this.eventsFlat.add(event);
   }
 
+  setUserInFlat(UsersInFlatModel user){
+    this.usersInFlatToCreateEvent.add(user);
+  }
+
+  setEventDetails(EventModel event){
+    this.eventDetails = event;
+  }
+
   List<ChatMessageModel> getMessages() => this.messages;
 
   List<EventModel> getEvents() => this.eventsFlat;
+
+  List<UsersInFlatModel> getUsersInFlat() => this.usersInFlatToCreateEvent;
 
   UserModel getUser() => this.infoUser;
 
@@ -66,5 +79,7 @@ class SharedData {
   String getUrlUser() => this.urlUser;
 
   String getUrlFlat() => this.urlFlat;
+
+  EventModel getEventDetails() => this.eventDetails;
 
 }
