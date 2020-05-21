@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
 import 'package:flutter/foundation.dart';
@@ -19,7 +18,7 @@ class _EventState extends State<Event> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.blue[900],
           title: Text('Flat Events'),
@@ -49,7 +48,10 @@ class _EventState extends State<Event> {
                   left: 24.0,
                   right: 24.0,
                 ),
-                color: Colors.grey,
+                color: Colors.blue[900],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(11.0),
+              ),
 
                 child: ListTile(
                   onTap: () async {
@@ -76,7 +78,7 @@ class _EventState extends State<Event> {
                           child: Container(
                             // tag: 'hero',
                             child: LinearProgressIndicator(
-                                backgroundColor: Color.fromRGBO(209, 224, 224, 0.2),
+                                backgroundColor: Colors.white,
                                 value: getAccept(index),
                                 valueColor: AlwaysStoppedAnimation(Colors.green)),
                           )),

@@ -23,7 +23,7 @@ class _EventDetailsState extends State<EventDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text('Event Details'),
         centerTitle: true,
@@ -48,8 +48,9 @@ class _EventDetailsState extends State<EventDetails> {
                       "" + event.getName(),
                     ],
                     textStyle: TextStyle(
-                        fontSize: 30.0,
-                        fontFamily: "Horizon"
+                        fontSize: 40.0,
+                        fontFamily: "Horizon",
+                        fontWeight: FontWeight.bold,
                     ),
                     colors: [
                       Colors.purple,
@@ -119,7 +120,7 @@ class _EventDetailsState extends State<EventDetails> {
             ),
             SizedBox(height: 20.0),
             Text(
-              'Aceptación: ',
+              'Estado: ',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 20,
@@ -127,6 +128,8 @@ class _EventDetailsState extends State<EventDetails> {
             ),
             SizedBox(height: 10.0), //Space between two widgets
             _showNumberOfAccept(),
+            SizedBox(height: 20,),
+            _showNumberOfDecline(),
             SizedBox(height: 20,),
             _showAcceptDecline(),
           ],
@@ -205,16 +208,36 @@ class _EventDetailsState extends State<EventDetails> {
       );
     }
     else {
-      return Row(
+      return Card(
+        margin: const EdgeInsets.only(
+          top: 16.0,
+          bottom: 1.0,
+          left: 10.0,
+          right: 10.0,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(11.0),
+        ),
+        color:Colors.deepPurple,
+        child: Row(
+          children: <Widget>[
+            Padding(padding: EdgeInsets.only(left: 5.0)),
+            Icon(Icons.all_inclusive,color: Colors.white70,),
+            Padding(padding: EdgeInsets.only(left: 10.0)),
+            Text('Gracias por dar tu opinión sobre el evento',
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: 14,
+              fontWeight: FontWeight.bold
 
-        children: <Widget>[
-
-        ],
+            ),)
+          ],
+        ),
       );
     }
   }
 
-
+  //Here we show de stadistics about how many people have accept this event
   Widget _showNumberOfAccept() {
     int accept = 0;
     for(int i = 0; i<event.getUsers().length;i++){
@@ -223,12 +246,89 @@ class _EventDetailsState extends State<EventDetails> {
       }
 
     }
-    return Text(
-      accept.toString()+'/'+event.getUsers().length.toString(),
-      style: TextStyle(
-        color: Colors.blue[800],
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-      ),);
+    return Row(
+      children: <Widget>[
+        Icon(Icons.thumb_up,size:20 ,color: Colors.green,),
+        SizedBox(width: 20),
+        Expanded(
+            flex: 1,
+            child: Container(
+              height: 10,
+              width: 20,
+              // tag: 'hero',
+              child: LinearProgressIndicator(
+
+                  backgroundColor: Colors.grey[100],
+                  value: getAccept(),
+                  valueColor: AlwaysStoppedAnimation(Colors.green)),
+            )),
+        Expanded(
+          flex: 4,
+          child: Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: Text('Aceptan el evento '+accept.toString()+'/'+event.getUsers().length.toString()+' personas',
+                  style: TextStyle(color: Colors.blue[800],fontWeight: FontWeight.bold, fontSize: 14))),
+        ),
+      ],
+    );
+
+  }
+
+  //Here we show de stadistics about how many people have decline this event
+  Widget _showNumberOfDecline() {
+    int decline = 0;
+    for(int i = 0; i<event.getUsers().length;i++){
+      if(event.getUsers().elementAt(i).getStatus() == '2'){
+        decline = decline +1;
+      }
+
+    }
+    return Row(
+      children: <Widget>[
+        Icon(Icons.thumb_down,size:20 ,color: Colors.red,),
+        SizedBox(width: 20),
+        Expanded(
+            flex: 1,
+            child: Container(
+              height: 10,
+              width: 20,
+              // tag: 'hero',
+              child: LinearProgressIndicator(
+                  backgroundColor: Colors.grey[100],
+                  value: getDecline(),
+                  valueColor: AlwaysStoppedAnimation(Colors.red)),
+            )),
+        Expanded(
+          flex: 4,
+          child: Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: Text('No aceptan el evento '+decline.toString()+'/'+event.getUsers().length.toString()+' personas',
+                  style: TextStyle(color: Colors.blue[800],fontWeight: FontWeight.bold, fontSize: 14))),
+        ),
+      ],
+    );
+
+  }
+  //We get the percent of accept
+  double getAccept(){
+    double accept = 0;
+    for(int i = 0; i<event.getUsers().length;i++){
+      if(event.getUsers().elementAt(i).getStatus() == '1'){
+        accept = accept +1;
+      }
+    }
+    double percent = accept/event.getUsers().length;
+    return percent;
+  }
+  //We get the percent of decline
+  double getDecline(){
+    double decline = 0;
+    for(int i = 0; i<event.getUsers().length;i++){
+      if(event.getUsers().elementAt(i).getStatus() == '2'){
+        decline = decline +1;
+      }
+    }
+    double percent = decline/event.getUsers().length;
+    return percent;
   }
 }

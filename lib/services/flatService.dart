@@ -146,7 +146,7 @@ class FlatService {
       final response = await http.get(this.url + '/event/'+sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
 
-          print(response.body);
+          //print(response.body);
 
 
       if (response.statusCode == 404) {
@@ -174,7 +174,7 @@ class FlatService {
             addEvent.setSpecificUser(addUser);
           }
           sharedData.setEvent(addEvent);
-          print(addEvent.getUsers());
+          //print(addEvent.getUsers());
         }
         return 0;
       }
@@ -212,7 +212,7 @@ class FlatService {
           addUserInFlat.setId(users[i]['_id']);
           addUserInFlat.setStatus('0');
           sharedData.setUserInFlat(addUserInFlat);
-          print(addUserInFlat.getId());
+          //print(addUserInFlat.getId());
         }
         return 0;
       }
