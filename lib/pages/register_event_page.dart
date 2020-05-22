@@ -106,11 +106,11 @@ class _RegisterEventState extends State<RegisterEvent> {
         eventToAdd.setDescription(descriptionController.text);
         eventToAdd.setOrganizer(sharedData.getUser().getFirstname());
         eventToAdd.setDate(dateController.text);
-        for(int i =0;i<sharedData.getUsersInFlat().length;i++) { //We Set the State of the user that creates the event to 1 (accepted)
-          if(sharedData.getUsersInFlat().elementAt(i).getId() == sharedData.getUser().getIdUser()){
-            sharedData.getUsersInFlat().elementAt(i).setStatus('1');
+        for(int i =0;i<sharedData.getUsersInFlatForEvent().length;i++) { //We Set the State of the user that creates the event to 1 (accepted)
+          if(sharedData.getUsersInFlatForEvent().elementAt(i).getId() == sharedData.getUser().getIdUser()){
+            sharedData.getUsersInFlatForEvent().elementAt(i).setStatus('1');
           }
-          eventToAdd.setUsers(sharedData.getUsersInFlat());
+          eventToAdd.setUsers(sharedData.getUsersInFlatForEvent());
           print('evento antes de enviar');
         }
         int res = await flatService.addEventFlat(this.eventToAdd);

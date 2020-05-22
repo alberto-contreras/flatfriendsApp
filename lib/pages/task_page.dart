@@ -35,7 +35,7 @@ class _TaskState extends State<Task> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           FlatButton(onPressed: () async{
-            await flatService.getUsersFlat();
+            await flatService.getUsersFlatForTask();
             await Navigator.pushNamed(context,'/regtask');
             //we put in a dynamic variable because when are doing a big async task
             //first we go to the task page and then after adding a new one we pop with a refresh

@@ -194,7 +194,7 @@ class FlatService {
     }
   }
 
-  Future<int> getUsersFlat() async {
+  Future<int> getUsersFlatForEvent() async {
     print('Searching all the users of a Flat');
     try {
       final response = await http.get(this.url + '/usersFlat/'+sharedData.getUser().getIdPiso(),
@@ -347,7 +347,7 @@ class FlatService {
       return 1;
     }
   }
-  Future<int> getUsersFlat() async {
+  Future<int> getUsersFlatForTask() async {
     print('Searching all the users of a Flat');
     try {
       final response = await http.get(this.url + '/usersFlat/'+sharedData.getUser().getIdPiso(),
@@ -368,7 +368,7 @@ class FlatService {
         for(int i = 0;i<users.length;i++){
           List<String> userInFlat = [users[i]['_id'],users[i]['firstname']];
           sharedData.setUserInUsersInFlat(userInFlat);
-          print(sharedData.getUsersInFlat());
+          print(sharedData.getUsersInFlatForTask());
         }
         return 0;
       }

@@ -15,9 +15,9 @@ class SharedData {
   FlatModel infoFlat;
   String token;
 
- // String apiUrl = 'http://10.0.2.2:3702';
+  String apiUrl = 'http://10.0.2.2:3702';
  // String apiUrl = 'http://147.83.7.155:3702';
-  String apiUrl = 'http://localhost:3702';
+//  String apiUrl = 'http://localhost:3702';
 
   String urlUser;
   String urlFlat;
@@ -92,7 +92,7 @@ class SharedData {
 
   List<TaskModel> getTasks() => this.tasksFlat;
 
-  List<UsersInFlatModel> getUsersInFlat() => this.usersInFlatToCreateEvent;
+  List<UsersInFlatModel> getUsersInFlatForEvent() => this.usersInFlatToCreateEvent;
 
 
   UserModel getUser() => this.infoUser;
@@ -104,7 +104,7 @@ class SharedData {
   String getUrlFlat() => this.urlFlat;
 
 
-  Map getUsersInFlat() => this.usersInFlat;
+  Map getUsersInFlatForTask() => this.usersInFlat;
 
   EventModel getEventDetails() => this.eventDetails;
 
