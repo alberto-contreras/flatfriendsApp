@@ -270,7 +270,9 @@ class FlatService {
       final response = await http.get(this.url + '/task/getFlatTask/'+sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
 
+      print('----');
       print(response.body);
+      print('----');
 
 
       if (response.statusCode == 404) {
@@ -291,7 +293,7 @@ class FlatService {
           addTask.setIdUser(tasks[i]['idUser']);
           addTask.setDone(tasks[i]['done']);
           sharedData.setTask(addTask);
-          print(addTask.getTittle());
+          print(sharedData.getTasks().elementAt(0).getTittle());
         }
         return 0;
       }

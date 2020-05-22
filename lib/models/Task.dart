@@ -5,7 +5,7 @@ class TaskModel{
   String _tittle;
   String _description;
   String _idUser;
-  bool done;
+  bool _done;
   TaskModel();
 
   String getId() => this._id;
@@ -18,7 +18,7 @@ class TaskModel{
 
   String getIdUser()=> this._idUser;
 
-  bool getDone() => this.done;
+  bool getDone() => this._done;
 
   void setIdPiso(String value){
     this._idPiso = value;
@@ -38,12 +38,12 @@ class TaskModel{
 
   void setDone(bool state) {
     print("Value: $state");
-    this.done = state;
-    print("Done: " + this.done.toString());
+    this._done = state;
+    print("Done: " + this._done.toString());
   }
 
   void switchDone() {
-    this.done = !this.done;
+    this._done = !this._done;
   }
 
   void setId(String _id) {

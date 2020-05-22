@@ -96,7 +96,6 @@ class _HomeState extends State<Home> {
 
   Widget _taskButton() {
     return FlatButton(onPressed: () async {
-
        await flatService.getTaskFlat();
         //print(sharedData.eventsFlat);
         Navigator.pushNamed(context, '/task');
