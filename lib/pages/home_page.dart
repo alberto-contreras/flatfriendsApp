@@ -23,7 +23,12 @@ class _HomeState extends State<Home> {
         title: Text('Flat & Friends'),
       ),
       body: Center(
-          child: Column(
+          child:GridView.count(
+            primary: false,
+            padding: const EdgeInsets.all(20),
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            crossAxisCount: 2,
             children: <Widget>[
               _chatButton(),
               _eventButton(),
@@ -69,40 +74,89 @@ class _HomeState extends State<Home> {
   }
 
   Widget _chatButton() {
-    return FlatButton(onPressed: () {
-      if (sharedData.chatRunning == true){
-        Navigator.pushNamed(context, '/chat');
-      }
-    },
-        child: Text('Chat'),
-        shape: StadiumBorder(),
+    return FlatButton(
+        onPressed: () {
+          if (sharedData.chatRunning == true){
+            Navigator.pushNamed(context, '/chat');
+          }
+        },
+        child: Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                Icons.chat,
+                color: Colors.white,
+                size: 96.00,
+                semanticLabel: 'Text to announce in accessibility modes',
+              ),
+              Text('Chat')
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
+        ),
         color: Colors.green,
-        textColor: Colors.white);
+        textColor: Colors.white
+    );
   }
 
   Widget _eventButton() {
     return FlatButton(onPressed: () async {
 
-       await flatService.getEventFlat();
-        //print(sharedData.eventsFlat);
-        Navigator.pushNamed(context, '/event');
+      await flatService.getEventFlat();
+      //print(sharedData.eventsFlat);
+      Navigator.pushNamed(context, '/event');
 
     },
-        child: Text('Event'),
-        shape: StadiumBorder(),
+        child: Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                Icons.local_bar,
+                color: Colors.white,
+                size: 96.00,
+                semanticLabel: 'Text to announce in accessibility modes',
+              ),
+              Text('Events')
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
+        ),
         color: Colors.purple,
         textColor: Colors.white);
   }
 
   Widget _taskButton() {
     return FlatButton(onPressed: () async {
-       await flatService.getTaskFlat();
-        //print(sharedData.eventsFlat);
-        Navigator.pushNamed(context, '/task');
+
+      await flatService.getTaskFlat();
+      await flatService.getUsersFlatForTask();
+      //print(sharedData.eventsFlat);
+      Navigator.pushNamed(context, '/task');
 
     },
-        child: Text('Task'),
-        shape: StadiumBorder(),
+        child: Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                Icons.today,
+                color: Colors.white,
+                size: 96.00,
+                semanticLabel: 'Text to announce in accessibility modes',
+              ),
+              Text('Tasks')
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
+        ),
         color: Colors.red,
         textColor: Colors.white);
   }

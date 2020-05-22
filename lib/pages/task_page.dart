@@ -35,7 +35,6 @@ class _TaskState extends State<Task> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           FlatButton(onPressed: () async{
-            await flatService.getUsersFlatForTask();
             await Navigator.pushNamed(context,'/regtask');
             //we put in a dynamic variable because when are doing a big async task
             //first we go to the task page and then after adding a new one we pop with a refresh
@@ -59,6 +58,7 @@ class _TaskState extends State<Task> {
         itemCount: tasks.length,
         itemBuilder: (context,index){ //This function will make a widget tree of the one we choose
           return Card(
+            color: Colors.amberAccent,
             child: Container(
                 width: MediaQuery
                     .of(context)
