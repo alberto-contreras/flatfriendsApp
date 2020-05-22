@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               _chatButton(),
               _eventButton(),
+              _taskButton(),
             ],
           )
       ),
@@ -90,6 +91,20 @@ class _HomeState extends State<Home> {
         child: Text('Event'),
         shape: StadiumBorder(),
         color: Colors.purple,
+        textColor: Colors.white);
+  }
+
+  Widget _taskButton() {
+    return FlatButton(onPressed: () async {
+
+       await flatService.getTaskFlat();
+        //print(sharedData.eventsFlat);
+        Navigator.pushNamed(context, '/task');
+
+    },
+        child: Text('Task'),
+        shape: StadiumBorder(),
+        color: Colors.red,
         textColor: Colors.white);
   }
 }

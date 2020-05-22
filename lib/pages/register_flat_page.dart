@@ -1,13 +1,25 @@
+import 'dart:async';
+
 import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class RegisterFlat extends StatefulWidget {
   _RegisterFlat createState() => _RegisterFlat();
 }
 
 class _RegisterFlat extends State<RegisterFlat> {
+  Completer<GoogleMapController> _controller = Completer();
+  List<Marker> _markers = [];
+
+  static final CameraPosition _kBarcelona = CameraPosition(
+    target: LatLng(41.3887901, 2.1589899),
+    zoom: 14.4746,
+  );
+  String latitude = _kBarcelona.target.longitude.toString();
+  String longitude = _kBarcelona.target.latitude.toString();
   TextEditingController flatNameController = new TextEditingController();
   TextEditingController flatDescriptionController = new TextEditingController();
   TextEditingController maxPersonsController = new TextEditingController();
@@ -20,20 +32,31 @@ class _RegisterFlat extends State<RegisterFlat> {
   static const TextStyle labelStyle = TextStyle(
       fontSize: 20, fontWeight: FontWeight.bold);
 
+  @override
+  void initState() {
+    super.initState();
+
+    _markers.add(Marker(
+      markerId: MarkerId('0'),
+      draggable: true,
+      position: LatLng(41.3887901, 2.1589899),
+    ));
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Flat & Friends'),
-          centerTitle: true,
-          backgroundColor: Colors.red,
-          elevation: 0.0,
-        ),
-        body: ListView(
-          children: <Widget>[
-            Container(
-              child: Text('Registrar un nuevo piso:', style: optionStyle),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            ),
+      appBar: AppBar(
+        title: Text('Flat & Friends'),
+        centerTitle: true,
+        backgroundColor: Colors.red,
+        elevation: 0.0,
+      ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            child: Text('Registrar un nuevo piso:', style: optionStyle),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: Column(
@@ -41,7 +64,7 @@ class _RegisterFlat extends State<RegisterFlat> {
               children: <Widget>[
                 Text('Datos del piso:', style: labelStyle),
                 SizedBox(height: 10,),
-                _textFlatname(),
+                _textFlatName(),
                 Divider(),
                 _textFlatDescription(),
                 Divider(),
@@ -49,10 +72,20 @@ class _RegisterFlat extends State<RegisterFlat> {
                 SizedBox(height: 30,),
                 Text('Localización del piso:', style: labelStyle),
                 SizedBox(height: 10,),
-                _textLatitude(),
-                Divider(),
-                _textLongitude(),
-                Divider(),
+                Container(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
+                  child: GoogleMap(
+                    mapType: MapType.normal,
+                    initialCameraPosition: _kBarcelona,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                    markers: Set.from(_markers),
+                    onTap: (position) => moveMarker(position),
+                  ),
+                ),
+                SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -64,12 +97,12 @@ class _RegisterFlat extends State<RegisterFlat> {
               ],
             ),
           ),
-          ],
-        ),
+        ],
+      ),
     );
   }
 
-  Widget _textFlatname(){
+  Widget _textFlatName(){
     return TextField(
       controller: flatNameController,
       keyboardType: TextInputType.text,
@@ -111,44 +144,15 @@ class _RegisterFlat extends State<RegisterFlat> {
     );
   }
 
-  Widget _textLatitude(){
-    return TextField(
-      controller: latitudeController,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          labelText: 'Longitud',
-          hintText: 'Escribe la longitud',
-          suffixIcon: Icon(Icons.assignment, color: Colors.blue),
-          icon: Icon(Icons.assignment)
-      ),
-    );
-  }
-
-  Widget _textLongitude(){
-    return TextField(
-      controller: longitudeController,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          labelText: 'Latitud',
-          hintText: 'Escribe la latitud',
-          suffixIcon: Icon(Icons.assignment, color: Colors.blue),
-          icon: Icon(Icons.assignment)
-      ),
-    );
-  }
-
   Widget _registerButton() {
     return FlatButton(onPressed: () async {
       print('Dentro Registro de piso');
-      if (flatNameController.text != '' && maxPersonsController.text != '' &&
-      latitudeController.text != '' && longitudeController.text != '') {
+      if (flatNameController.text != '' && maxPersonsController.text != '') {
         flat.setName(flatNameController.text);
         flat.setDescription(flatDescriptionController.text);
         flat.setFull(false);
         flat.setMaxPersons(int.parse(maxPersonsController.text));
-        flat.setLocation(latitudeController.text, longitudeController.text);
+        flat.setLocation(latitude, longitude);
         print("latitude: " + flat.getLocation().getLatitude() + ", longitude: " + flat.getLocation().getLongitude());
         int res = await flatService.registerFlat(flat);
         print(res);
@@ -217,25 +221,38 @@ class _RegisterFlat extends State<RegisterFlat> {
     );
   }
 
-    Widget _alertEmptyFields() {
-      return PlatformAlertDialog(
-        title: Text('Hey!'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('Error en el registro vuelve a intentarlo.'),
-              Text('Ayuda: Revisa los datos del piso.'),
-            ],
-          ),
+  Widget _alertEmptyFields() {
+    return PlatformAlertDialog(
+      title: Text('Hey!'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text('Error en el registro vuelve a intentarlo.'),
+            Text('Ayuda: Revisa los datos del piso.'),
+          ],
         ),
-        actions: <Widget>[
-          PlatformDialogAction(
-            child: Text('Aceptar'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
+      ),
+      actions: <Widget>[
+        PlatformDialogAction(
+          child: Text('Aceptar'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
+
+  moveMarker(position) {
+    setState(() {
+      print(position);
+      _markers[0] = Marker(
+        markerId: MarkerId('🏠'),
+        draggable: true,
+        position: position,
       );
-    }
+      longitude = _markers[0].position.longitude.toString();
+      latitude = _markers[0].position.latitude.toString();
+    });
+  }
 }
