@@ -107,6 +107,16 @@ class _UserState extends State<User> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              if (sharedData.getUrlUserAvatar() != null) Column(
+                children: <Widget>[
+                  CircleAvatar(
+                    radius: 45,
+                    backgroundImage: NetworkImage(sharedData.getUrlUserAvatar()),
+                  ),
+                  SizedBox(height: 16,)
+                ],
+              ),
+
               Text('Nombre de usuario:', style: inMainCardStyle,),
               SizedBox(height: 5),
               Row(children: <Widget>[

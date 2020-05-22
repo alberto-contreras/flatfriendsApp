@@ -14,9 +14,10 @@ class SharedData {
   FlatModel infoFlat;
   String token;
 //  String apiUrl = 'http://147.83.7.155:3702';
-  String apiUrl = 'http://10.0.2.2:3702';
+  String apiUrl = 'http://10.0.2.2:3703';
   String urlUser;
   String urlFlat;
+  String urlUserAvatar; // Provisional! Lo suyo sería meterlo como atributo no requerido de user (No lo implemento para no dificultar más aún en el merge)
   bool chatRunning = false;
   List<ChatMessageModel> messages = new List<ChatMessageModel>();
   List<EventModel> eventsFlat = new List<EventModel>();
@@ -63,6 +64,10 @@ class SharedData {
     this.tenantsFlat.add(value);
   }
 
+  setUserUrlAvatar(String value) {
+    this.urlUserAvatar = value;
+  }
+
 //  setTask(TaskModel task){
 //    this.tasksFlat.add(task);
 //  }
@@ -82,5 +87,7 @@ class SharedData {
   String getUrlUser() => this.urlUser;
 
   String getUrlFlat() => this.urlFlat;
+
+  String getUrlUserAvatar() => this.urlUserAvatar;
 
 }

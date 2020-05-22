@@ -141,6 +141,7 @@ class _FlatState extends State<Flat> {
   Widget _tenantsInfo() {
     if (sharedData.getTenants() != null && sharedData.getTenants().length != 0) {
       return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
         itemCount: tenants.length,
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
