@@ -25,7 +25,7 @@ class _EventDetailsState extends State<EventDetails> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: Text('Event Details'),
+        title: Text('Detalles del evento'),
         centerTitle: true,
         backgroundColor: Colors.blue[900],
         elevation: 0.0,

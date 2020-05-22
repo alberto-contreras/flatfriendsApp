@@ -21,7 +21,7 @@ class _EventState extends State<Event> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.blue[900],
-          title: Text('Flat Events'),
+          title: Text('Eventos del Piso'),
           centerTitle: true,
           elevation: 0,
         ),
@@ -32,7 +32,7 @@ class _EventState extends State<Event> {
       //first we go to the event page and then after adding a new one we pop with a refresh
         await flatService.getEventFlat();
         setState(() { });
-        }, child: Text('Add Event'),
+        }, child: Text('Añadir Evento'),
         shape: StadiumBorder(),
         color: Colors.purple,
         textColor: Colors.white),

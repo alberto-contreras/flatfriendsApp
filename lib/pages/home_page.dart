@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
         Navigator.pushNamed(context, '/event');
 
     },
-        child: Text('Event'),
+        child: Text('Eventos'),
         shape: StadiumBorder(),
         color: Colors.purple,
         textColor: Colors.white);
