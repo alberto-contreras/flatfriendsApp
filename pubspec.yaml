@@ -14,7 +14,7 @@ description: Flat & Friends App.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.5.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -26,6 +26,7 @@ dependencies:
   flutter_auth_buttons: ^0.8.0
   socket_io_client: ^0.9.10
   bubble: ^1.1.9+1
+  share: ^0.6.3+1
 
 
 

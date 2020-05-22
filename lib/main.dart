@@ -34,8 +34,8 @@ class MyApp extends StatelessWidget {
         '/chat': (context) => Chat(),
         '/event': (context) => Event(),
         '/regevent': (context) => RegisterEvent(),
-        '/task': (context) => Task(),
-        '/regtask': (context) => RegisterTask(),
+//        '/task': (context) => Task(),
+//        '/regtask': (context) => RegisterTask(),
 
       },
     );
