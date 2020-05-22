@@ -22,7 +22,7 @@ class SharedData {
   List<EventModel> eventsFlat = new List<EventModel>();
   List<TaskModel> tasksFlat = new List<TaskModel>();
   ChatService chatService = new ChatService();
-  List<List<String>> usersInFlat = new List<List<String>>();
+  Map usersInFlat = new Map();
 
 
   SharedData() {
@@ -63,12 +63,15 @@ class SharedData {
     this.tasksFlat.add(task);
   }
 
-  setUsersInFlat(List<List<String>> usersInFlat) {
-    this.usersInFlat = usersInFlat;
-  }
+//  setUsersInFlat(List<List<String>> usersInFlat) {
+//    this.usersInFlat.forEach(
+//
+//    )
+//  }
 
   setUserInUsersInFlat(List<String> userInFlat) {
-    this.usersInFlat.add(userInFlat);
+    this.usersInFlat[userInFlat[0]]= userInFlat[1];
+    print(this.usersInFlat);
   }
 
   List<ChatMessageModel> getMessages() => this.messages;
@@ -85,6 +88,6 @@ class SharedData {
 
   String getUrlFlat() => this.urlFlat;
 
-  List<List<String>> getUsersInFlat() => this.usersInFlat;
+  Map getUsersInFlat() => this.usersInFlat;
 
 }

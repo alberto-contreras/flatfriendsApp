@@ -22,12 +22,13 @@ class _RegisterTaskState extends State<RegisterTask> {
 
   void loadFlatUsers() {
     listDrop = [];
-    for (num i=0; i<sharedData.getUsersInFlat().length; i++) {
-      print('Name: ' + sharedData.getUsersInFlat()[i][1]);
-      print('id: ' + sharedData.getUsersInFlat()[i][0]);
+    Iterable<dynamic> keys = sharedData.getUsersInFlat().keys;
+    for (num i=0; i < keys.length; i++) {
+      print('Name: ' + sharedData.getUsersInFlat()[keys.elementAt(i)]);
+      print('id: ' + keys.elementAt(i).toString());
       listDrop.add(new DropdownMenuItem(
-        child: new Text(sharedData.getUsersInFlat()[i][1]),
-        value: sharedData.getUsersInFlat()[i][0],
+        child: new Text(sharedData.getUsersInFlat()[keys.elementAt(i)]),
+        value: keys.elementAt(i).toString(),
       ));
     }
   }

@@ -70,7 +70,7 @@ class _TaskState extends State<Task> {
                         child: ListTile(
                           onTap: (){
                           },//Link on press function
-                          title: Text(tasks.elementAt(index).getTittle().toString()+' ('+tasks.elementAt(index).getIdUser().toString()+')'),
+                          title: Text(tasks.elementAt(index).getTittle().toString()+' (' + sharedData.usersInFlat[tasks.elementAt(index).getIdUser().toString()] + ')'),
                           subtitle: Text(tasks.elementAt(index).getDescription().toString()+'\n'),
                         )
                     ),

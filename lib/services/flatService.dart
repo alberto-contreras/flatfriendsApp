@@ -307,7 +307,7 @@ class FlatService {
       if (response.statusCode == 500) {
         return 1;
       }
-      else if (response.statusCode == 201) {
+      else if (response.statusCode == 200) {
         print('Succesfully updated');
         return 0;
       }
