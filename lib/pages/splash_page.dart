@@ -12,35 +12,35 @@ class Splash extends StatelessWidget {
     return Scaffold(
       body: Container(
         color: Color.fromRGBO(100, 100, 100, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              //Image(image: AssetImage('graphics/splashlogo.png'))
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            //Image(image: AssetImage('graphics/splashlogo.png'))
             SizedBox(
-            width: 400.0,
-            child: ColorizeAnimatedTextKit(
-                onTap: () {
-                  print("Tap Event");
-                },
-                text: [
-                  "Flat&Friends"
-                ],
-                textStyle: TextStyle(
-                    fontSize: 70.0,
-                    fontFamily: "Horizon"
-                ),
-                colors: [
-                  Colors.purple,
-                  Colors.blue,
-                  Colors.yellow,
-                  Colors.red,
-                ],
-                textAlign: TextAlign.center,
-                alignment: AlignmentDirectional.center // or Alignment.topLeft
-            ),
-          )
-            ],
-          ),
+              width: 400.0,
+              child: ColorizeAnimatedTextKit(
+                  onTap: () {
+                    print("Tap Event");
+                  },
+                  text: [
+                    "Flat&Friends"
+                  ],
+                  textStyle: TextStyle(
+                      fontSize: 70.0,
+                      fontFamily: "Horizon"
+                  ),
+                  colors: [
+                    Colors.purple,
+                    Colors.blue,
+                    Colors.yellow,
+                    Colors.red,
+                  ],
+                  textAlign: TextAlign.center,
+                  alignment: AlignmentDirectional.center // or Alignment.topLeft
+              ),
+            )
+          ],
+        ),
       ),
 
     );

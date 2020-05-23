@@ -263,7 +263,7 @@ class _ChatState extends State<Chat> {
         }
 
       },
-          child: Text('Send Message'),
+          child: Text('Enviar'),
           shape: StadiumBorder(),
           color: Colors.green,
           textColor: Colors.white);

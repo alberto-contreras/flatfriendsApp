@@ -106,7 +106,7 @@ class _LoginState extends State<Login> {
               });
         }
     },
-        child: Text('Login'),
+        child: Text('Iniciar Sesión'),
         shape: StadiumBorder(),
         color: Colors.green,
         textColor: Colors.white);
@@ -116,14 +116,13 @@ class _LoginState extends State<Login> {
     return FlatButton(onPressed: () {
       Navigator.pushNamed(context, '/register');
     },
-        child: Text('Register'),
+        child: Text('Registrarse'),
         shape: StadiumBorder(),
         color: Colors.blue,
         textColor: Colors.white);
   }
 
   Widget _registerGoogleButton() {
-
     return GoogleSignInButton(onPressed: () async {
       int answer = await googleAuth.fetchFiles();
       if (answer == 0) {

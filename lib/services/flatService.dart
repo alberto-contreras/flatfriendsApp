@@ -415,4 +415,27 @@ class FlatService {
       return 1;
     }
   }
+
+  Future<int> deleteTask(TaskModel task) async {
+    try {
+      print('Del Task');
+      var response = await http.delete(this.url + '/task/delete/' + task.getId(),
+          headers: {"accept": "application/json", "content-type": "application/json"});
+      if (response.statusCode == 500) {
+        return 1;
+      }
+      else if (response.statusCode == 200) {
+        print('Succesfully updated');
+        return 0;
+      }
+      else {
+        print('General Error adding Task');
+        return 1;
+      }
+    }
+    catch (error) {
+      print(error);
+      return 1;
+    }
+  }
 }

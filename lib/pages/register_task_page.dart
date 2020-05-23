@@ -173,7 +173,7 @@ class _RegisterTaskState extends State<RegisterTask> {
     return FlatButton(onPressed: () {
       Navigator.pop(context);
     },
-        child: Text('Cancel'),
+        child: Text('Cancelar'),
         shape: StadiumBorder(),
         color: Colors.red,
         textColor: Colors.white);

@@ -40,15 +40,15 @@ class _HomeState extends State<Home> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            title: Text('User'),
+            title: Text('Usuario'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            title: Text('Inicio'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
-            title: Text('Flat'),
+            title: Text('Piso'),
           ),
         ],
         currentIndex: _selectedIndex,
@@ -120,7 +120,7 @@ class _HomeState extends State<Home> {
                 size: 96.00,
                 semanticLabel: 'Text to announce in accessibility modes',
               ),
-              Text('Events')
+              Text('Eventos')
             ],
           ),
         ),
@@ -133,12 +133,10 @@ class _HomeState extends State<Home> {
 
   Widget _taskButton() {
     return FlatButton(onPressed: () async {
-
       await flatService.getTaskFlat();
       await flatService.getUsersFlatForTask();
       //print(sharedData.eventsFlat);
       Navigator.pushNamed(context, '/task');
-
     },
         child: Container(
           margin: const EdgeInsets.only(top: 20.0),
@@ -147,10 +145,10 @@ class _HomeState extends State<Home> {
               Icon(
                 Icons.today,
                 color: Colors.white,
-                size: 96.00,
+                size: 94.00,
                 semanticLabel: 'Text to announce in accessibility modes',
               ),
-              Text('Tasks')
+              Text('Tareas')
             ],
           ),
         ),
