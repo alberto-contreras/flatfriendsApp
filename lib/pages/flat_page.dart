@@ -12,6 +12,7 @@ class Flat extends StatefulWidget {
 SharedData sharedData = SharedData.getInstance();
 
 class _FlatState extends State<Flat> {
+  bool _visible = false;
   String text = '';
   String subject = '';
   List<Color> colorList = new List<Color>();
@@ -222,7 +223,7 @@ class _FlatState extends State<Flat> {
         elevation: 2,
         margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Container(
-          padding: EdgeInsets.only(right: 55, left: 15, top: 16, bottom: 16),
+          padding: EdgeInsets.only(right:15, left: 15, top: 16, bottom: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -238,11 +239,29 @@ class _FlatState extends State<Flat> {
               SizedBox(height: 5),
               Text('  ' + sharedData.getFlat().getMaxPersons().toString(), style: inMainCardInfoStyle,),
               SizedBox(height: 10),
-              Text('Identificador:', style: inMainCardStyle ),
+              Text('Identificador:', style: inMainCardStyle),
               Row(
 //                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('  ' + sharedData.getFlat().getID(), style: inMainCardInfoStyle,),
+                  if (!_visible)Text('   ••••••••••••••••••••••••', style: inMainCardInfoStyle,),
+                  if (_visible)Text('  ' + sharedData.getFlat().getID(), style: inMainCardInfoStyle,),
+                  Stack(
+                    children: <Widget>[
+                      Positioned(
+                        left: 14.0,
+                        top: 14.0,
+                        child: Icon(Icons.remove_red_eye, color: Colors.black26,),
+                      ),
+                      IconButton(
+                          icon: new Icon(Icons.remove_red_eye, color: Colors.lightBlue,),
+                          onPressed: () {
+                           setState(() {
+                             _visible = !_visible;
+                           });
+                          }
+                      ),
+                    ],
+                  ),
                   Stack(
                     children: <Widget>[
                       Positioned(
@@ -251,10 +270,10 @@ class _FlatState extends State<Flat> {
                         child: Icon(Icons.share, color: Colors.black26,),
                       ),
                       IconButton(
-                        icon: new Icon(Icons.share, color: Colors.lightBlue,),
-                        onPressed: () {
-                          Share.share('¡Únete a mi piso en Flat&Friends! ' + sharedData.getUser().getIdPiso());
-                        }
+                          icon: new Icon(Icons.share, color: Colors.lightBlue,),
+                          onPressed: () {
+                            Share.share('¡Únete a mi piso en Flat&Friends! ' + sharedData.getUser().getIdPiso());
+                          }
                       )
                     ],
                   ),

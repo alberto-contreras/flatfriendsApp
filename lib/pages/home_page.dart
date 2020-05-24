@@ -209,6 +209,7 @@ class _HomeState extends State<Home> {
             title: Text(s),
             actions: <Widget>[
               if (res == 0) Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Text('¡Gracias por usar Flat&Friends!'),
                   FlatButton(
@@ -223,6 +224,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
               if (res != 0) Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Text('Vaya... Parece que ha habido algún problema.' + '\n' +
                       'Por favor, revisa el identificador e inténtalo de nuevo.'),
