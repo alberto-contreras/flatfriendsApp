@@ -140,7 +140,9 @@ class _FlatState extends State<Flat> {
   }
 
   Widget _tenantsInfo() {
-    if (sharedData.getTenants() != null && sharedData.getTenants().length != 0) {
+    if (sharedData.getTenants() != null && sharedData
+        .getTenants()
+        .length != 0) {
       return ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         itemCount: tenants.length,
@@ -154,64 +156,69 @@ class _FlatState extends State<Flat> {
               elevation: 2,
               color: colorList[index],
               margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: ExpansionTile(
-                title: Text(tenants.elementAt(index).getFirstname() + ' ' +
-                    tenants.elementAt(index).getLastname(), style: cardHeader,),
-                backgroundColor: colorList[index],
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      children: <Widget>[
-                        Stack(
-                          children: <Widget>[
-                            Positioned(
-                              left: 1.0,
-                              top: 2.0,
-                              child: Icon(Icons.email, color: Colors.black12),
+              child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                child: Theme(
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile( //  Inside a theme in order to delete the divider color of expansion tile
+                    title: Text(tenants.elementAt(index).getFirstname() + ' ' +
+                        tenants.elementAt(index).getLastname(), style: cardHeader,),
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 1),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: <Widget>[
+                                Stack(
+                                  children: <Widget>[
+                                    Positioned(
+                                      left: 1.0,
+                                      top: 2.0,
+                                      child: Icon(
+                                          Icons.email, color: Colors.black12),
+                                    ),
+                                    Icon(Icons.email, color: Colors.white,),
+                                  ],
+                                ),
+                                SizedBox(width: 10,),
+                                Text(
+                                  tenants.elementAt(index).getEmail(),
+                                  style: inCard,),
+                              ],
                             ),
-                            Icon(Icons.email, color: Colors.white,),
+                            if (tenants.elementAt(index).getPhoneNumber() !=
+                                null) Row(
+                              children: <Widget>[
+                                Stack(
+                                  children: <Widget>[
+                                    Positioned(
+                                      left: 1.0,
+                                      top: 2.0,
+                                      child: Icon(
+                                          Icons.phone, color: Colors.black12),
+                                    ),
+                                    Icon(Icons.phone, color: Colors.white,),
+                                  ],
+                                ),
+                                SizedBox(width: 10,),
+                                Text(tenants.elementAt(index).getPhoneNumber(),
+                                  style: inCard,),
+                              ],
+                            ),
                           ],
                         ),
-                        SizedBox(width: 10,),
-                        Text(
-                          tenants.elementAt(index).getEmail(), style: inCard,),
-
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  if (tenants.elementAt(index).getPhoneNumber() !=
-                      null) Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      children: <Widget>[
-                        Stack(
-                          children: <Widget>[
-                            Positioned(
-                              left: 1.0,
-                              top: 2.0,
-                              child: Icon(Icons.phone, color: Colors.black12),
-                            ),
-                            Icon(Icons.phone, color: Colors.white,),
-                          ],
-                        ),
-                        SizedBox(width: 10,),
-                        Text(tenants.elementAt(index).getPhoneNumber(),
-                          style: inCard,),
-                      ],
-                    ),
-                  ),
-                ],)
+                )
+              )
           );
         },
       );
     }
-    else{
-      return Text('   No tienes compañeros de piso.',style: inMainCardStyle);
+    else {
+      return Text('   No tienes compañeros de piso.', style: inMainCardStyle);
     }
   }
 
@@ -243,7 +250,7 @@ class _FlatState extends State<Flat> {
               Row(
 //                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  if (!_visible)Text('   ••••••••••••••••••••••••', style: inMainCardInfoStyle,),
+                  if (!_visible)Text('   ••••••••••••••••••••••••                  ', style: inMainCardInfoStyle,),
                   if (_visible)Text('  ' + sharedData.getFlat().getID(), style: inMainCardInfoStyle,),
                   Stack(
                     children: <Widget>[
