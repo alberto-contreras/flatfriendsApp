@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -77,6 +79,9 @@ class _RegisterFlat extends State<RegisterFlat> {
                   width: MediaQuery.of(context).size.width,
                   child: GoogleMap(
                     mapType: MapType.normal,
+                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+                      new Factory<OneSequenceGestureRecognizer>(() => new EagerGestureRecognizer(),),
+                    ].toSet(),
                     initialCameraPosition: _kBarcelona,
                     onMapCreated: (GoogleMapController controller) {
                       _controller.complete(controller);
