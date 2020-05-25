@@ -121,7 +121,7 @@ class _HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       FlatButton(
-                            child: Text('Registrar uno nuevo'),
+                            child: Text('Registrar nuevo'),
                             shape: StadiumBorder(),
                             color: Colors.green,
                             textColor: Colors.white,

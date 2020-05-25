@@ -248,42 +248,46 @@ class _FlatState extends State<Flat> {
               SizedBox(height: 10),
               Text('Identificador:', style: inMainCardStyle),
               Row(
-//                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  if (!_visible)Text('   ••••••••••••••••••••••••                  ', style: inMainCardInfoStyle,),
+                  if (!_visible)Text('   ••••••••••••••••••••••••', style: inMainCardInfoStyle,),
                   if (_visible)Text('  ' + sharedData.getFlat().getID(), style: inMainCardInfoStyle,),
-                  Stack(
-                    children: <Widget>[
-                      Positioned(
-                        left: 14.0,
-                        top: 14.0,
-                        child: Icon(Icons.remove_red_eye, color: Colors.black26,),
+                  Row(
+                    children: [
+                      Stack(
+                        children: <Widget>[
+                          Positioned(
+                            left: 14.0,
+                            top: 14.0,
+                            child: Icon(Icons.remove_red_eye, color: Colors.black26,),
+                          ),
+                          IconButton(
+                              icon: new Icon(Icons.remove_red_eye, color: Colors.lightBlue,),
+                              onPressed: () {
+                                setState(() {
+                                  _visible = !_visible;
+                                });
+                              }
+                          ),
+                        ],
                       ),
-                      IconButton(
-                          icon: new Icon(Icons.remove_red_eye, color: Colors.lightBlue,),
-                          onPressed: () {
-                           setState(() {
-                             _visible = !_visible;
-                           });
-                          }
+                      Stack(
+                        children: <Widget>[
+                          Positioned(
+                            left: 14.0,
+                            top: 14.0,
+                            child: Icon(Icons.share, color: Colors.black26,),
+                          ),
+                          IconButton(
+                              icon: new Icon(Icons.share, color: Colors.lightBlue,),
+                              onPressed: () {
+                                Share.share('¡Únete a mi piso en Flat&Friends! ' + sharedData.getUser().getIdPiso());
+                              }
+                          )
+                        ],
                       ),
                     ],
-                  ),
-                  Stack(
-                    children: <Widget>[
-                      Positioned(
-                        left: 14.0,
-                        top: 14.0,
-                        child: Icon(Icons.share, color: Colors.black26,),
-                      ),
-                      IconButton(
-                          icon: new Icon(Icons.share, color: Colors.lightBlue,),
-                          onPressed: () {
-                            Share.share('¡Únete a mi piso en Flat&Friends! ' + sharedData.getUser().getIdPiso());
-                          }
-                      )
-                    ],
-                  ),
+                  )
                 ],
               ),
             ],
@@ -292,7 +296,7 @@ class _FlatState extends State<Flat> {
      );
     }
     else {
-      return Text('No estás registrado en un piso.',style: inMainCardStyle);
+      return Text('   No estás registrado en un piso.',style: inMainCardStyle);
     }
   }
 
