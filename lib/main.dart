@@ -1,4 +1,5 @@
 import 'package:flatfriendsapp/pages/chat_page.dart';
+import 'package:flatfriendsapp/pages/eventDetails_page.dart';
 import 'package:flatfriendsapp/pages/event_page.dart';
 import 'package:flatfriendsapp/pages/task_page.dart';
 import 'package:flatfriendsapp/pages/flat_page.dart';
@@ -34,9 +35,9 @@ class MyApp extends StatelessWidget {
         '/chat': (context) => Chat(),
         '/event': (context) => Event(),
         '/regevent': (context) => RegisterEvent(),
-//        '/task': (context) => Task(),
-//        '/regtask': (context) => RegisterTask(),
-
+        '/task': (context) => Task(),
+        '/regtask': (context) => RegisterTask(),
+        '/eventDetails': (context) => EventDetails(),
       },
     );
   }

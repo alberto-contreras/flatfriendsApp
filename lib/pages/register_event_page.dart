@@ -3,6 +3,9 @@ import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 SharedData sharedData = SharedData.getInstance();
 class RegisterEvent extends StatefulWidget {
@@ -14,9 +17,11 @@ class _RegisterEventState extends State<RegisterEvent> {
   TextEditingController nameController = new TextEditingController();
   TextEditingController organizerController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
-  TextEditingController dateController = new TextEditingController();
   FlatService flatService = new FlatService();
   EventModel eventToAdd = new EventModel();
+  var date;
+  var time;
+  var dateEvent;
 
   void updateTime() async
   {
@@ -77,7 +82,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   Widget _textDescription(){
     return TextField(
       controller: descriptionController,
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.text,
       decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
           hintText: 'Describelo',
@@ -87,31 +92,69 @@ class _RegisterEventState extends State<RegisterEvent> {
   }
 
   Widget _textDate() {
-    return TextField(
-      controller: dateController,
-      obscureText: false,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          hintText: 'Escrbir una fecha.',
-          icon: Icon(Icons.date_range)
+    final format = DateFormat("yyyy-MM-dd HH:mm");
+    return Column(children: <Widget>[
+      DateTimeField(
+        format: format,
+        decoration: InputDecoration(
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+            hintText: 'Introduce una fecha.',
+            icon: Icon(Icons.date_range)
+        ),
+        onShowPicker: (context, currentValue) async {
+          date = await showDatePicker(
+              context: context,
+              firstDate: DateTime(1900),
+              initialDate: currentValue ?? DateTime.now(),
+              lastDate: DateTime(2100));
+          if (date != null) {
+            time = await showTimePicker(
+              context: context,
+              initialTime:
+              TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+            );
+            return dateEvent = DateTimeField.combine(date, time);
+          } else {
+            return currentValue;
+
+          }
+        },
       ),
-    );
+    ]);
   }
 
   Widget _registerEventButton() {
     return FlatButton(onPressed: () async  {
       print('Dentro Registro Evento');
+      if(descriptionController.text == null || nameController.text == null || dateEvent == null){
+        showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return _alertRegisterEvent();
+            });
+      }
+      else {
         eventToAdd.setIdPiso(sharedData.getUser().getIdPiso());
         eventToAdd.setName(nameController.text);
         eventToAdd.setDescription(descriptionController.text);
         eventToAdd.setOrganizer(sharedData.getUser().getFirstname());
-        eventToAdd.setDate(dateController.text);
+        eventToAdd.setDate(dateEvent.toString());
+        for (int i = 0; i < sharedData
+            .getUsersInFlatForEvent()
+            .length; i++) { //We Set the State of the user that creates the event to 1 (accepted)
+          if (sharedData.getUsersInFlatForEvent().elementAt(i).getId() ==
+              sharedData.getUser().getIdUser()) {
+            sharedData.getUsersInFlatForEvent().elementAt(i).setStatus('1');
+          }
+          eventToAdd.setUsers(sharedData.getUsersInFlatForEvent());
+          print('evento antes de enviar');
+        }
         int res = await flatService.addEventFlat(this.eventToAdd);
         print(res);
-        if( res == 0){
+        if (res == 0) {
           Navigator.pop(context);
         }
-        else{
+        else {
           //Alert error adding the user
           showDialog<void>(
               context: context,
@@ -119,6 +162,7 @@ class _RegisterEventState extends State<RegisterEvent> {
                 return _alertRegisterEvent();
               });
         }
+      }
 
     },
         child: Text('Añadir Evento'),
@@ -131,7 +175,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     return FlatButton(onPressed: () {
       Navigator.pop(context);
     },
-        child: Text('Cancel'),
+        child: Text('Cancelar'),
         shape: StadiumBorder(),
         color: Colors.red,
         textColor: Colors.white);

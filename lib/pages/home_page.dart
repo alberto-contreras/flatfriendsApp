@@ -32,10 +32,16 @@ class _HomeState extends State<Home> {
         title: Text('Flat & Friends'),
       ),
       body: Center(
-          child: Column(
+          child:GridView.count(
+            primary: false,
+            padding: const EdgeInsets.all(20),
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            crossAxisCount: 2,
             children: <Widget>[
               _chatButton(),
               _eventButton(),
+              _taskButton(),
             ],
           )
       ),
@@ -43,15 +49,15 @@ class _HomeState extends State<Home> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            title: Text('User'),
+            title: Text('Usuario'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            title: Text('Inicio'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
-            title: Text('Flat'),
+            title: Text('Piso'),
           ),
         ],
         currentIndex: _selectedIndex,
@@ -248,15 +254,32 @@ class _HomeState extends State<Home> {
 
   // Button to access to the chat
   Widget _chatButton() {
-    return FlatButton(onPressed: () {
-      if (sharedData.chatRunning == true){
-        Navigator.pushNamed(context, '/chat');
-      }
-    },
-        child: Text('Chat'),
-        shape: StadiumBorder(),
+    return FlatButton(
+        onPressed: () {
+          if (sharedData.chatRunning == true){
+            Navigator.pushNamed(context, '/chat');
+          }
+        },
+        child: Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                Icons.chat,
+                color: Colors.white,
+                size: 96.00,
+                semanticLabel: 'Text to announce in accessibility modes',
+              ),
+              Text('Chat')
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
+        ),
         color: Colors.green,
-        textColor: Colors.white);
+        textColor: Colors.white
+    );
   }
 
   Widget _eventButton() {
@@ -265,8 +288,23 @@ class _HomeState extends State<Home> {
         //print(sharedData.eventsFlat);
         Navigator.pushNamed(context, '/event');
     },
-        child: Text('Event'),
-        shape: StadiumBorder(),
+        child: Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                Icons.local_bar,
+                color: Colors.white,
+                size: 96.00,
+                semanticLabel: 'Text to announce in accessibility modes',
+              ),
+              Text('Eventos')
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
+        ),
         color: Colors.purple,
         textColor: Colors.white);
   }
@@ -289,15 +327,29 @@ class _HomeState extends State<Home> {
 
   Widget _taskButton() {
     return FlatButton(onPressed: () async {
-
-//       await flatService.getTaskFlat();
-        //print(sharedData.eventsFlat);
-        Navigator.pushNamed(context, '/task');
-
+      await flatService.getTaskFlat();
+      await flatService.getUsersFlatForTask();
+      //print(sharedData.eventsFlat);
+      Navigator.pushNamed(context, '/task');
     },
-        child: Text('Task'),
-        shape: StadiumBorder(),
-        color: Colors.purple,
+        child: Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                Icons.today,
+                color: Colors.white,
+                size: 94.00,
+                semanticLabel: 'Text to announce in accessibility modes',
+              ),
+              Text('Tareas')
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
+        ),
+        color: Colors.red,
         textColor: Colors.white);
   }
 }

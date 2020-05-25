@@ -137,7 +137,7 @@ class _UpdateUser extends State<UserSettings> {
     return FlatButton(onPressed: () {
       Navigator.pop(context);
     },
-        child: Text('Cancel'),
+        child: Text('Cancelar'),
         shape: StadiumBorder(),
         color: Colors.red,
         textColor: Colors.white);

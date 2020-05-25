@@ -13,10 +13,10 @@ class Splash extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Container(
         color: Color.fromRGBO(100, 100, 100, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              //Image(image: AssetImage('graphics/splashlogo.png'))
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            //Image(image: AssetImage('graphics/splashlogo.png'))
             SizedBox(
             width: 400.0,
             child: ColorizeAnimatedTextKit(
