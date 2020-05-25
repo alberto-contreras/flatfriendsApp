@@ -228,9 +228,9 @@ class _FlatState extends State<Flat> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15.0))),
         elevation: 2,
-        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: EdgeInsets.fromLTRB(15, 10, 15, 10),
         child: Container(
-          padding: EdgeInsets.only(right:15, left: 15, top: 16, bottom: 16),
+          padding: EdgeInsets.only(right:0, left: 15, top: 16, bottom: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
