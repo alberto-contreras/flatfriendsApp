@@ -415,6 +415,43 @@ class FlatService {
       return 1;
     }
   }
+  
+  // Function to get a more detailed data from a flat
+  Future<int> getTenantsFlat() async {
+    print('Searching all the Tenants of a Flat');
+    try {
+      final response = await http.get(this.url + '/allUsersDataFlat/'+sharedData.getUser().getIdPiso(),
+          headers: {"accept": "application/json", "content-type": "application/json"});
+
+      if (response.statusCode == 404) {
+        print('Not tenants found');
+        return 1;
+      }
+      else if (response.statusCode == 200) {
+        List extractTenants = jsonDecode(response.body);
+        sharedData.getTenants().clear();
+        extractTenants.forEach((tenant) {
+          if (sharedData.getUser().getEmail() != tenant['email']) {
+            UserModel tenantToAdd = new UserModel();
+            tenantToAdd.setFirstname(tenant['firstname']);
+            tenantToAdd.setLastname(tenant['lastname']);
+            tenantToAdd.setPhoneNumber(tenant['phoneNumber']);
+            tenantToAdd.setEmail(tenant['email']);
+            sharedData.setTenant(tenantToAdd);
+          }
+        });
+        return 0;
+      }
+      else {
+        print('General Error adding User');
+        return 1;
+      }
+    }
+    catch (error) {
+      print(error);
+      return 1;
+    }
+  }
 
   Future<int> deleteTask(TaskModel task) async {
     try {

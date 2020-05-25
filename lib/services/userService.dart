@@ -115,6 +115,7 @@ class UserService {
         'email' : u.getEmail(),
         'phoneNumber':u.getPhoneNumber(),
         'password' : u.getPassword(),
+        'idPiso' : u.getIdPiso(),
       }),
           headers: {"accept": "application/json", "content-type": "application/json" });
       if(response.statusCode == 400)

@@ -41,7 +41,6 @@ class _ChatState extends State<Chat> {
                     .size
                     .height * 0.80,
                 child: ListView(
-
                   reverse: true,
                   scrollDirection: Axis.vertical,
                   children: <Widget>[
@@ -190,9 +189,12 @@ class _ChatState extends State<Chat> {
 //      }
 //    });
 //
-  while (_numMessages < sharedData.getMessages().length) {
+    while (_numMessages < sharedData
+        .getMessages()
+        .length) {
       setState(() {
-        if (sharedData.getUser().getFirstname() == sharedData.getMessages()[_numMessages].getUserName()) {
+        if (sharedData.getUser().getFirstname() ==
+            sharedData.getMessages()[_numMessages].getUserName()) {
           this.messagesList.add(Bubble(
               margin: BubbleEdges.only(
                   top: 10),
@@ -202,8 +204,11 @@ class _ChatState extends State<Chat> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(sharedData.getMessages()[_numMessages].getUserName() + ':', style: nameStyle,),
-                  Text(sharedData.getMessages()[_numMessages].getMessage(), style: messageStyle)
+                  Text(
+                    sharedData.getMessages()[_numMessages].getUserName() + ':',
+                    style: nameStyle,),
+                  Text(sharedData.getMessages()[_numMessages].getMessage(),
+                      style: messageStyle)
                 ],
               )
           ));
@@ -231,11 +236,12 @@ class _ChatState extends State<Chat> {
         }
       });
       _numMessages++;
-  }
-    print('He cargado la lista de mensajes');
-    return Column(
-        children: messagesList
-    );
+    }
+
+      print('He cargado la lista de mensajes');
+            return Column(
+                children: messagesList
+            );
   }
 
   Widget _textMessage() {

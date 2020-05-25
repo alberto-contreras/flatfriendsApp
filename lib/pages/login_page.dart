@@ -88,12 +88,17 @@ class _LoginState extends State<Login> {
         int res = await userService.logUser(this.userLogin);
         print(res);
         if( res == 0){
-          if (sharedData.getUser().getIdPiso() != null) {
+          if (sharedData.getUser().getIdPiso() != null && sharedData.getUser().getIdPiso().length == 24) {
             print('antes de llamar initChatService');
             await sharedData.chatService.initChatService(
                 sharedData.getUser().getIdPiso());
             sharedData.chatService.onMessage();
             sharedData.chatRunning = true;
+              int getFlat = await flatService.getFlat();
+              int getTenants = await flatService.getTenantsFlat();
+              if (getFlat == 0 && getFlat == getTenants ) {
+                print('Success getting Flat Data and Tenants Data through Flat&Friends Logging In.');
+              }
           }
           Navigator.pushReplacementNamed(context, '/home');
         }

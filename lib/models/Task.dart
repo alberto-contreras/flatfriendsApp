@@ -1,4 +1,3 @@
-
 class TaskModel{
   String _id;
   String _idPiso;
@@ -50,7 +49,3 @@ class TaskModel{
     this._id = _id;
   }
 }
-
-
-
-

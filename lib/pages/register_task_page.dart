@@ -203,5 +203,3 @@ class _RegisterTaskState extends State<RegisterTask> {
     );
   }
 }
-
-

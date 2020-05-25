@@ -1,6 +1,8 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/User.dart';
+import 'package:flatfriendsapp/services/flatService.dart';
 import 'package:flatfriendsapp/services/userService.dart';
+import 'package:flutter/material.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 import 'package:oauth2_client/google_oauth2_client.dart';
 import 'dart:convert';
@@ -8,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 SharedData sharedData = SharedData.getInstance();
 UserService userService = new UserService();
+FlatService flatService = new FlatService();
 class Oauth2ClientExample {
   Oauth2ClientExample();
 
@@ -35,6 +38,7 @@ class Oauth2ClientExample {
     print(resp.statusCode);
     if(resp.statusCode == 200){
       Map userData = jsonDecode(resp.body);
+      sharedData.setUserUrlAvatar(userData['picture']);
       UserModel userGoogle = new UserModel();
       userGoogle.setGoogleAuth(true);
       userGoogle.setFirstname(userData['given_name']);
@@ -59,6 +63,13 @@ class Oauth2ClientExample {
          */
         sharedData.setUser(userGoogle);
         int answerToGet = await userService.getUserByEmail(sharedData.getUser().getEmail());
+        if (sharedData.getUser().getIdPiso() != null && sharedData.getUser().getIdPiso().length == 24){
+          int getFlat = await flatService.getFlat();
+          int getTenants = await flatService.getTenantsFlat();
+          if (answerToGet == getFlat && getFlat == getTenants ){
+            print('Success getting User Data, Flat Data and Tenants Data through Google Logging In.');
+          }
+        }
 
         /**
          * If the user already has a flat, then, we put the chat available
