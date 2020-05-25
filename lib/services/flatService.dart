@@ -2,6 +2,7 @@ import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/Task.dart';
+import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/pages/task_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
@@ -143,7 +144,46 @@ class FlatService {
     }
   }
 
+// Function to get the flat data
+  Future<int> getFlat() async {
+    print('Getting the data of a given Flat');
+    try {
+      final response = await http.get(
+          this.url + '/getFlat/' + sharedData.getUser().getIdPiso(),
+          headers: {
+            "accept": "application/json",
+            "content-type": "application/json"
+          });
+      if (response.statusCode == 404) {
+        print('No Flat Found');
+        return 1;
+      }
+      else if (response.statusCode == 200) {
+        Map extractFlat = jsonDecode(response.body);
+        Map extractLocation = extractFlat['location'];
+        print('flatservice: ' + response.body);
 
+        FlatModel flatToAdd = new FlatModel();
+        flatToAdd.setID(sharedData.getUser().getIdPiso());
+        flatToAdd.setName(extractFlat['name']);
+        flatToAdd.setDescription(extractFlat['description']);
+        flatToAdd.setMaxPersons(extractFlat['maxPersons']);
+        flatToAdd.setFull(extractFlat['full']);
+        flatToAdd.setLocation(
+            extractLocation['longitude'], extractLocation['latitude']);
+        sharedData.setFlat(flatToAdd);
+        return 0;
+      }
+      else {
+        print('General Error adding User');
+        return 1;
+      }
+    }
+    catch (error) {
+      print(error);
+      return 1;
+    }
+  }
 
   Future<int> getEventFlat() async {
     print('Searching all the Events of a Flat');
