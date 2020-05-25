@@ -4,22 +4,22 @@ import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
-//import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class RegisterFlat extends StatefulWidget {
   _RegisterFlat createState() => _RegisterFlat();
 }
 
 class _RegisterFlat extends State<RegisterFlat> {
-//  Completer<GoogleMapController> _controller = Completer();
-//  List<Marker> _markers = [];
-//
-//  static final CameraPosition _kBarcelona = CameraPosition(
-//    target: LatLng(41.3887901, 2.1589899),
-//    zoom: 14.4746,
-//  );
-//  String latitude = _kBarcelona.target.longitude.toString();
-//  String longitude = _kBarcelona.target.latitude.toString();
+  Completer<GoogleMapController> _controller = Completer();
+  List<Marker> _markers = [];
+
+  static final CameraPosition _kBarcelona = CameraPosition(
+    target: LatLng(41.3887901, 2.1589899),
+    zoom: 14.4746,
+  );
+  String latitude = _kBarcelona.target.longitude.toString();
+  String longitude = _kBarcelona.target.latitude.toString();
   TextEditingController flatNameController = new TextEditingController();
   TextEditingController flatDescriptionController = new TextEditingController();
   TextEditingController maxPersonsController = new TextEditingController();
@@ -32,16 +32,16 @@ class _RegisterFlat extends State<RegisterFlat> {
   static const TextStyle labelStyle = TextStyle(
       fontSize: 20, fontWeight: FontWeight.bold);
 
-//  @override
-//  void initState() {
-//    super.initState();
-//
-//    _markers.add(Marker(
-//      markerId: MarkerId('0'),
-//      draggable: true,
-//      position: LatLng(41.3887901, 2.1589899),
-//    ));
-//  }
+  @override
+  void initState() {
+    super.initState();
+
+    _markers.add(Marker(
+      markerId: MarkerId('0'),
+      draggable: true,
+      position: LatLng(41.3887901, 2.1589899),
+    ));
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,19 +72,19 @@ class _RegisterFlat extends State<RegisterFlat> {
                 SizedBox(height: 30,),
                 Text('Localización del piso:', style: labelStyle),
                 SizedBox(height: 10,),
-//                Container(
-//                  height: 300,
-//                  width: MediaQuery.of(context).size.width,
-//                  child: GoogleMap(
-//                    mapType: MapType.normal,
-//                    initialCameraPosition: _kBarcelona,
-//                    onMapCreated: (GoogleMapController controller) {
-//                      _controller.complete(controller);
-//                    },
-//                    markers: Set.from(_markers),
-//                    onTap: (position) => moveMarker(position),
-//                  ),
-//                ),
+                Container(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
+                  child: GoogleMap(
+                    mapType: MapType.normal,
+                    initialCameraPosition: _kBarcelona,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                    markers: Set.from(_markers),
+                    onTap: (position) => moveMarker(position),
+                  ),
+                ),
                 SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -152,7 +152,7 @@ class _RegisterFlat extends State<RegisterFlat> {
         flat.setDescription(flatDescriptionController.text);
         flat.setFull(false);
         flat.setMaxPersons(int.parse(maxPersonsController.text));
-        //flat.setLocation(latitude, longitude);
+        flat.setLocation(latitude, longitude);
         print("latitude: " + flat.getLocation().getLatitude() + ", longitude: " + flat.getLocation().getLongitude());
         int res = await flatService.registerFlat(flat);
         print(res);
@@ -243,16 +243,16 @@ class _RegisterFlat extends State<RegisterFlat> {
     );
   }
 
-//  moveMarker(position) {
-//    setState(() {
-//      print(position);
-//      _markers[0] = Marker(
-//        markerId: MarkerId('🏠'),
-//        draggable: true,
-//        position: position,
-//      );
-//      longitude = _markers[0].position.longitude.toString();
-//      latitude = _markers[0].position.latitude.toString();
-//    });
-//  }
+  moveMarker(position) {
+    setState(() {
+      print(position);
+      _markers[0] = Marker(
+        markerId: MarkerId('🏠'),
+        draggable: true,
+        position: position,
+      );
+      longitude = _markers[0].position.longitude.toString();
+      latitude = _markers[0].position.latitude.toString();
+    });
+  }
 }
