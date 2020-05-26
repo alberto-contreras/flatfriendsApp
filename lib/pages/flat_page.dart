@@ -4,11 +4,15 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/models/User.dart';
+import 'package:flatfriendsapp/pages/user_page.dart';
+import 'package:flatfriendsapp/transitions/horizontal_transition_right_to_left.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:share/share.dart';
 import 'package:latlong/latlong.dart';
+
+import 'home_page.dart';
 
 class Flat extends StatefulWidget {
   _FlatState createState() => _FlatState();
@@ -134,10 +138,14 @@ class _FlatState extends State<Flat> {
       _selectedIndex = index;
       switch (_selectedIndex) {
         case 0:
-          Navigator.pushReplacementNamed(context, '/user');
+          Navigator.of(context).pop();
+          Navigator.push(context,
+              EnterLeftExitRightRoute(exitPage: Flat(), enterPage: User()));
           break;
         case 1:
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.of(context).pop();
+          Navigator.push(context,
+              EnterLeftExitRightRoute(exitPage: Flat(), enterPage: Home()));
           break;
       }
     });

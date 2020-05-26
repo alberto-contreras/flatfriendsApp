@@ -1,7 +1,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flatfriendsapp/globalData/sharedData.dart';
+import 'package:flatfriendsapp/transitions/horizontal_transition_left_to_right.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'flat_page.dart';
+import 'home_page.dart';
 
 class User extends StatefulWidget {
   _UserState createState() => _UserState();
@@ -86,10 +90,14 @@ class _UserState extends State<User> {
       _selectedIndex = index;
       switch (_selectedIndex) {
         case 1:
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.of(context).pop();
+          Navigator.push(context,
+              EnterRightExitLeftRoute(exitPage: User(), enterPage: Home()));
           break;
         case 2:
-          Navigator.pushReplacementNamed(context, '/flat');
+          Navigator.of(context).pop();
+          Navigator.push(context,
+              EnterRightExitLeftRoute(exitPage: User(), enterPage: Flat()));
           break;
       }
     });

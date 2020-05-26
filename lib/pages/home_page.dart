@@ -1,10 +1,15 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
+import 'package:flatfriendsapp/pages/user_page.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
 import 'package:flatfriendsapp/services/userService.dart';
+import 'package:flatfriendsapp/transitions/horizontal_transition_left_to_right.dart';
+import 'package:flatfriendsapp/transitions/horizontal_transition_right_to_left.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
+
+import 'flat_page.dart';
 
 SharedData sharedData = SharedData.getInstance();
 
@@ -79,10 +84,14 @@ class _HomeState extends State<Home> {
       _selectedIndex = index;
       switch (_selectedIndex) {
         case 0:
-          Navigator.pushReplacementNamed(context, '/user');
+          Navigator.of(context).pop();
+          Navigator.push(context,
+              EnterLeftExitRightRoute(exitPage: Home(), enterPage: User()));
           break;
         case 2:
-          Navigator.pushReplacementNamed(context, '/flat');
+          Navigator.of(context).pop();
+          Navigator.push(context,
+              EnterRightExitLeftRoute(exitPage: Home(), enterPage: Flat()));
           break;
       }
     });
