@@ -48,7 +48,7 @@ class _EventState extends State<Event> {
                   left: 24.0,
                   right: 24.0,
                 ),
-                color: Colors.blue[900],
+                color: getColorEvent(index),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(11.0),
               ),
@@ -112,5 +112,33 @@ class _EventState extends State<Event> {
     }
     double percent = accept/events.elementAt(position).getUsers().length;
     return percent;
+  }
+  Color getColorEvent(int element){
+    //Change the color of the events card depending on
+    // the number of people that have accepted, declined or not decided
+    EventModel event = events.elementAt(element);
+    int accepted = 0;
+    int declined =0;
+    int notdecide =0;
+    for(int i=0;i<event.getUsers().length;i++){
+      if(event.getUsers().elementAt(i).getStatus() == '1'){
+        accepted = accepted +1;
+      }
+      else if(event.getUsers().elementAt(i).getStatus() == '2'){
+        declined = declined +1;
+      }
+      else{
+        notdecide = notdecide +1;
+      }
+    }
+    if(accepted/event.getUsers().length > 0.5){
+      return Colors.green[200];
+    }
+    else if(declined/event.getUsers().length >0.5){
+      return Colors.red[200];
+    }
+    else{
+      return Colors.blue[900];
+    }
   }
 }
