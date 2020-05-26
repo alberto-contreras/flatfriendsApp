@@ -170,7 +170,7 @@ class FlatService {
         flatToAdd.setMaxPersons(extractFlat['maxPersons']);
         flatToAdd.setFull(extractFlat['full']);
         flatToAdd.setLocation(
-            extractLocation['longitude'], extractLocation['latitude']);
+            extractLocation['latitude'], extractLocation['longitude']);
         sharedData.setFlat(flatToAdd);
         return 0;
       }

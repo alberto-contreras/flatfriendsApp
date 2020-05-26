@@ -20,7 +20,7 @@ class _EventState extends State<Event> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.blue[900],
+          backgroundColor: Colors.yellow[800],
           title: Text('Eventos'),
           centerTitle: true,
           elevation: 0,
@@ -34,7 +34,7 @@ class _EventState extends State<Event> {
         setState(() { });
         }, child: Text('Añadir Evento'),
         shape: StadiumBorder(),
-        color: Colors.purple,
+        color: Colors.yellow[800],
         textColor: Colors.white),
         body: ListView.builder(
           padding: const EdgeInsets.symmetric(vertical:1.0, horizontal: 4.0),

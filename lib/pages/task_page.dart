@@ -25,7 +25,7 @@ class _TaskState extends State<Task> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Colors.red,
         title: Text('Tareas'),
         centerTitle: true,
         elevation: 0,
@@ -41,14 +41,14 @@ class _TaskState extends State<Task> {
             setState(() { });
           }, child: Text('Añadir Tarea'),
               shape: StadiumBorder(),
-              color: Colors.purple,
+              color: Colors.red,
               textColor: Colors.white),
           FlatButton(onPressed: () async{
             await flatService.rotateTasks();
             setState(() { });
           }, child: Text('Rotar Tareas'),
               shape: StadiumBorder(),
-              color: Colors.purple,
+              color: Colors.red,
               textColor: Colors.white),
         ],
       ),

@@ -256,20 +256,28 @@ class _HomeState extends State<Home> {
   Widget _chatButton() {
     return FlatButton(
         onPressed: () {
-          if (sharedData.chatRunning == true){
+          if (sharedData.chatRunning == true && sharedData.getUser().getIdPiso() != null){
             Navigator.pushNamed(context, '/chat');
+          }
+          else{
+            showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return _alertNotInAFlat();
+                });
           }
         },
         child: Container(
           margin: const EdgeInsets.only(top: 20.0),
           child: Column(
             children: <Widget>[
-              Icon(
-                Icons.chat,
-                color: Colors.white,
-                size: 96.00,
-                semanticLabel: 'Text to announce in accessibility modes',
-              ),
+              Image.asset('graphics/chat icon.png',scale: 4.5,),
+//              Icon(
+//                Icons.chat,
+//                color: Colors.white,
+//                size: 96.00,
+//                semanticLabel: 'Text to announce in accessibility modes',
+//              ),
               Text('Chat')
             ],
           ),
@@ -284,28 +292,38 @@ class _HomeState extends State<Home> {
 
   Widget _eventButton() {
     return FlatButton(onPressed: () async {
-       await flatService.getEventFlat();
+      if(sharedData.getUser().getIdPiso() != null) {
+        await flatService.getEventFlat();
         //print(sharedData.eventsFlat);
         Navigator.pushNamed(context, '/event');
+      }
+      else{
+        showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return _alertNotInAFlat();
+            });
+      }
     },
         child: Container(
           margin: const EdgeInsets.only(top: 20.0),
           child: Column(
             children: <Widget>[
-              Icon(
-                Icons.local_bar,
-                color: Colors.white,
-                size: 96.00,
-                semanticLabel: 'Text to announce in accessibility modes',
-              ),
-              Text('Eventos')
+              Image.asset('graphics/copas icon.png',scale: 4.5,),
+//              Icon(
+//                Icons.local_bar,
+//                color: Colors.white,
+//                size: 96.00,
+//                semanticLabel: 'Text to announce in accessibility modes',
+//              ),
+              Text('Eventos',)
             ],
           ),
         ),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
         ),
-        color: Colors.purple,
+        color: Colors.yellow[800],
         textColor: Colors.white);
   }
 
@@ -327,21 +345,31 @@ class _HomeState extends State<Home> {
 
   Widget _taskButton() {
     return FlatButton(onPressed: () async {
-      await flatService.getTaskFlat();
-      await flatService.getUsersFlatForTask();
-      //print(sharedData.eventsFlat);
-      Navigator.pushNamed(context, '/task');
+      if(sharedData.getUser().getIdPiso() != null) {
+        await flatService.getTaskFlat();
+        await flatService.getUsersFlatForTask();
+        //print(sharedData.eventsFlat);
+        Navigator.pushNamed(context, '/task');
+      }
+      else{
+        showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return _alertNotInAFlat();
+            });
+      }
     },
         child: Container(
           margin: const EdgeInsets.only(top: 20.0),
           child: Column(
             children: <Widget>[
-              Icon(
-                Icons.today,
-                color: Colors.white,
-                size: 94.00,
-                semanticLabel: 'Text to announce in accessibility modes',
-              ),
+              Image.asset('graphics/tasks icon.png',scale: 2,),
+//              Icon(
+//                Icons.today,
+//                color: Colors.white,
+//                size: 94.00,
+//                semanticLabel: 'Text to announce in accessibility modes',
+//              ),
               Text('Tareas')
             ],
           ),
@@ -352,4 +380,18 @@ class _HomeState extends State<Home> {
         color: Colors.red,
         textColor: Colors.white);
   }
+}
+Widget _alertNotInAFlat() {
+  return PlatformAlertDialog(
+    title: Text('Hey!'),
+    content: SingleChildScrollView(
+      child: ListBody(
+        children: <Widget>[
+          Text('No perteneces a un piso.'),
+        ],
+      ),
+    ),
+    actions: <Widget>[
+    ],
+  );
 }

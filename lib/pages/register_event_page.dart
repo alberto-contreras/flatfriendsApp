@@ -35,7 +35,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       appBar: AppBar(
         title: Text('Events of your Flat'),
         centerTitle: true,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.yellow[800],
         elevation: 0.0,
       ),
       body: Container(
