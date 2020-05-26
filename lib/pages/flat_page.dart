@@ -159,7 +159,7 @@ class _FlatState extends State<Flat> {
                   borderRadius: BorderRadius.all(Radius.circular(15.0))),
               elevation: 2,
               color: colorList[index],
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              margin: EdgeInsets.fromLTRB(0, 10, 15, 10),
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Theme(
@@ -232,107 +232,153 @@ class _FlatState extends State<Flat> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
           elevation: 2,
-          margin: EdgeInsets.fromLTRB(15, 10, 15, 10),
+          margin: EdgeInsets.fromLTRB(0, 10, 15, 10),
           child: Container(
-            padding: EdgeInsets.only(right:0, left: 15, top: 16, bottom: 16),
+            padding: EdgeInsets.only(right: 10, left: 3, top: 16, bottom: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Nombre:', style: inMainCardStyle ),
-                SizedBox(height: 5),
-                Text('  ' + sharedData.getFlat().getName(), style: inMainCardInfoStyle,),
-                SizedBox(height: 10),
-                Text('Descripción:', style: inMainCardStyle ),
-                SizedBox(height: 5),
-                Text('  ' + sharedData.getFlat().getDescription(), style: inMainCardInfoStyle,),
-                SizedBox(height: 10),
-                Text('Número máximo de inquilinos:', style: inMainCardStyle ),
-                SizedBox(height: 5),
-                Text('  ' + sharedData.getFlat().getMaxPersons().toString(), style: inMainCardInfoStyle,),
-                SizedBox(height: 10),
-                Text('Identificador:', style: inMainCardStyle),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    if (!_visible)Text('   ••••••••••••••••••••••••', style: inMainCardInfoStyle,),
-                    if (_visible)Text('  ' + sharedData.getFlat().getID(), style: inMainCardInfoStyle,),
-                    Row(
-                      children: [
-                        Stack(
-                          children: <Widget>[
-                            Positioned(
-                              left: 14.0,
-                              top: 14.0,
-                              child: Icon(Icons.remove_red_eye, color: Colors.black26,),
-                            ),
-                            IconButton(
-                                icon: new Icon(Icons.remove_red_eye, color: Colors.lightBlue,),
-                                onPressed: () {
-                                  setState(() {
-                                    _visible = !_visible;
-                                  });
-                                }
-                            ),
-                          ],
-                        ),
-                        Stack(
-                          children: <Widget>[
-                            Positioned(
-                              left: 14.0,
-                              top: 14.0,
-                              child: Icon(Icons.share, color: Colors.black26,),
-                            ),
-                            IconButton(
-                                icon: new Icon(Icons.share, color: Colors.lightBlue,),
-                                onPressed: () {
-                                  Share.share('¡Únete a mi piso en Flat&Friends! ' + sharedData.getUser().getIdPiso());
-                                }
-                            )
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                Text('Localización:', style: inMainCardStyle),
                 Container(
-                    height: 300,
-                    width: MediaQuery.of(context).size.width - 75.0,
-                    child: FlutterMap(
-                      options: new MapOptions(
-                          center: new LatLng(double.parse(sharedData.getFlat().getLocation().getLatitude()), double.parse(sharedData.getFlat().getLocation().getLongitude())),
-                          zoom: 14.4746,
-                        interactive: false
+                  padding: EdgeInsets.only(left: 15,),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Nombre:', style: inMainCardStyle),
+                      SizedBox(height: 5),
+                      Text('   ' + sharedData.getFlat().getName(),
+                        style: inMainCardInfoStyle,),
+                      SizedBox(height: 10),
+                      Text('Descripción:', style: inMainCardStyle),
+                      SizedBox(height: 5),
+                      Text('   ' + sharedData.getFlat().getDescription(),
+                        style: inMainCardInfoStyle,),
+                      SizedBox(height: 10),
+                      Text('Número máximo de inquilinos:', style: inMainCardStyle),
+                      SizedBox(height: 5),
+                      Text('   ' + sharedData.getFlat().getMaxPersons().toString(),
+                        style: inMainCardInfoStyle,),
+                      SizedBox(height: 10),
+                      Text('Identificador:', style: inMainCardStyle),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          if (!_visible)Text('   ••••••••••••••••••••••••',
+                            style: inMainCardInfoStyle,),
+                          if (_visible)Text('   ' + sharedData.getFlat().getID(),
+                            style: inMainCardInfoStyle,),
+                          Row(
+                            children: [
+                              Stack(
+                                children: <Widget>[
+                                  Positioned(
+                                    left: 14.0,
+                                    top: 14.0,
+                                    child: Icon(Icons.remove_red_eye, color: Colors
+                                        .black26,),
+                                  ),
+                                  IconButton(
+                                      icon: new Icon(Icons.remove_red_eye,
+                                        color: Colors.lightBlue,),
+                                      onPressed: () {
+                                        setState(() {
+                                          _visible = !_visible;
+                                        });
+                                      }
+                                  ),
+                                ],
+                              ),
+                              Stack(
+                                children: <Widget>[
+                                  Positioned(
+                                    left: 14.0,
+                                    top: 14.0,
+                                    child: Icon(Icons.share, color: Colors.black26,),
+                                  ),
+                                  IconButton(
+                                      icon: new Icon(Icons.share, color: Colors
+                                          .lightBlue,),
+                                      onPressed: () {
+                                        Share.share(
+                                            '¡Únete a mi piso en Flat&Friends! ' +
+                                                sharedData.getUser().getIdPiso());
+                                      }
+                                  )
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      layers: [
-                        new TileLayerOptions(
-                          urlTemplate: "https://api.mapbox.com/styles/v1/grupo1ea/ckamlz1jw4x661ilkwv5djupf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZ3J1cG8xZWEiLCJhIjoiY2thbWR1aWYyMGo4YTJ5cXdzMnM1ZHV1cCJ9.hFVy8x411MXAGB9AAVZUqQ",
-                          additionalOptions: {
-                            'accessToken': 'pk.eyJ1IjoiZ3J1cG8xZWEiLCJhIjoiY2thbWR1aWYyMGo4YTJ5cXdzMnM1ZHV1cCJ9.hFVy8x411MXAGB9AAVZUqQ',
-                            'id': 'mapbox.streets',
-                          },
-                        ),
-                        new MarkerLayerOptions(
-                          markers: [Marker(
-                            width: 80.0,
-                            height: 80.0,
-                            point: new LatLng(double.parse(sharedData.getFlat().getLocation().getLatitude()), double.parse(sharedData.getFlat().getLocation().getLongitude())),
-                            builder: (ctx) =>
-                            new Container(
-                              child: new Icon(Icons.location_on, color: Colors.red, size: 45.0,)
-                            ),
-                          )],
-                        ),
-                      ],
-                    )
+                    ],
+                  ),
                 ),
-              ],
+
+            Theme(
+                  data: Theme.of(context).copyWith(
+                      dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    title: Text('Localización:', style: inMainCardStyle),
+                    children: [
+                      Container(
+                          height: 300,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width - 75.0,
+                          child: FlutterMap(
+                            options: new MapOptions(
+                                center: new LatLng(double.parse(
+                                    sharedData.getFlat()
+                                        .getLocation()
+                                        .getLatitude()), double.parse(
+                                    sharedData.getFlat()
+                                        .getLocation()
+                                        .getLongitude())),
+                                zoom: 14.4746,
+                                interactive: false
+                            ),
+                            layers: [
+                              new TileLayerOptions(
+                                urlTemplate: "https://api.mapbox.com/styles/v1/grupo1ea/ckamlz1jw4x661ilkwv5djupf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZ3J1cG8xZWEiLCJhIjoiY2thbWR1aWYyMGo4YTJ5cXdzMnM1ZHV1cCJ9.hFVy8x411MXAGB9AAVZUqQ",
+                                additionalOptions: {
+                                  'accessToken': 'pk.eyJ1IjoiZ3J1cG8xZWEiLCJhIjoiY2thbWR1aWYyMGo4YTJ5cXdzMnM1ZHV1cCJ9.hFVy8x411MXAGB9AAVZUqQ',
+                                  'id': 'mapbox.streets',
+                                },
+                              ),
+                              new MarkerLayerOptions(
+                                markers: [Marker(
+                                  width: 80.0,
+                                  height: 80.0,
+                                  point: new LatLng(double.parse(
+                                      sharedData.getFlat()
+                                          .getLocation()
+                                          .getLatitude()), double.parse(
+                                      sharedData.getFlat()
+                                          .getLocation()
+                                          .getLongitude())),
+                                  builder: (ctx) =>
+                                  new Container(
+                                      child: new Icon(
+                                        Icons.location_on, color: Colors.red,
+                                        size: 45.0,)
+                                  ),
+                                )
+                                ],
+                              ),
+                            ],
+                          )
+                      ),
+                    ],
+                  )
+              ),
+
+                  ],
             ),
           )
       );
     }
     else {
-      return Text('   No estás registrado en un piso.',style: inMainCardStyle);
+      return Text('   No estás registrado en un piso.', style: inMainCardStyle);
     }
   }
 

@@ -3,10 +3,8 @@ import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/Task.dart';
 import 'package:flatfriendsapp/models/User.dart';
-import 'package:flatfriendsapp/pages/user_page.dart';
 import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
-import 'package:flutter/cupertino.dart';
 
 class SharedData {
 

@@ -55,64 +55,66 @@ class _RegisterFlat extends State<RegisterFlat> {
         backgroundColor: Colors.red,
         elevation: 0.0,
       ),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            child: Text('Registrar un nuevo piso:', style: optionStyle),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('Datos del piso:', style: labelStyle),
-                SizedBox(height: 10,),
-                _textFlatName(),
-                Divider(),
-                _textFlatDescription(),
-                Divider(),
-                _textMaxPersons(),
-                SizedBox(height: 30,),
-                Text('Localización del piso:', style: labelStyle),
-                SizedBox(height: 10,),
-                Container(
-                  height: 300,
-                  width: MediaQuery.of(context).size.width,
-                  child: FlutterMap(
-                    options: new MapOptions(
-                      center: new LatLng(41.3887901, 2.1589899),
-                        zoom: 14.4746,
-                      onTap: (position) => moveMarker(position)
-                    ),
-                    layers: [
-                      new TileLayerOptions(
-                        urlTemplate: "https://api.mapbox.com/styles/v1/grupo1ea/ckamlz1jw4x661ilkwv5djupf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZ3J1cG8xZWEiLCJhIjoiY2thbWR1aWYyMGo4YTJ5cXdzMnM1ZHV1cCJ9.hFVy8x411MXAGB9AAVZUqQ",
-                        additionalOptions: {
-                          'accessToken': 'pk.eyJ1IjoiZ3J1cG8xZWEiLCJhIjoiY2thbWR1aWYyMGo4YTJ5cXdzMnM1ZHV1cCJ9.hFVy8x411MXAGB9AAVZUqQ',
-                          'id': 'mapbox.streets',
-                        },
-                      ),
-                      new MarkerLayerOptions(
-                        markers: _markers,
-                      ),
-                    ],
-                  )
-                ),
-                SizedBox(height: 10,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    _registerButton(), // Creating a button widget for Login
-                    SizedBox(width: 60,),
-                    _cancelButton()
-                  ],
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: Text('Registrar un nuevo piso:', style: optionStyle),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             ),
-          ),
-        ],
-      ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('Datos del piso:', style: labelStyle),
+                  SizedBox(height: 10,),
+                  _textFlatName(),
+                  SizedBox(height: 10,),
+                  _textFlatDescription(),
+                  SizedBox(height: 10,),
+                  _textMaxPersons(),
+                  SizedBox(height: 30,),
+                  Text('Localización del piso:', style: labelStyle),
+                  SizedBox(height: 10,),
+                  Container(
+                      height: 300,
+                      width: MediaQuery.of(context).size.width,
+                      child: FlutterMap(
+                        options: new MapOptions(
+                            center: new LatLng(41.3887901, 2.1589899),
+                            zoom: 14.4746,
+                            onTap: (position) => moveMarker(position)
+                        ),
+                        layers: [
+                          new TileLayerOptions(
+                            urlTemplate: "https://api.mapbox.com/styles/v1/grupo1ea/ckamlz1jw4x661ilkwv5djupf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZ3J1cG8xZWEiLCJhIjoiY2thbWR1aWYyMGo4YTJ5cXdzMnM1ZHV1cCJ9.hFVy8x411MXAGB9AAVZUqQ",
+                            additionalOptions: {
+                              'accessToken': 'pk.eyJ1IjoiZ3J1cG8xZWEiLCJhIjoiY2thbWR1aWYyMGo4YTJ5cXdzMnM1ZHV1cCJ9.hFVy8x411MXAGB9AAVZUqQ',
+                              'id': 'mapbox.streets',
+                            },
+                          ),
+                          new MarkerLayerOptions(
+                            markers: _markers,
+                          ),
+                        ],
+                      )
+                  ),
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _registerButton(), // Creating a button widget for Login
+                      SizedBox(width: 60,),
+                      _cancelButton()
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      )
     );
   }
 

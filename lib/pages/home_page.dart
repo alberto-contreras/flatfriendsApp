@@ -1,11 +1,8 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
-import 'package:flatfriendsapp/models/User.dart';
-import 'package:flatfriendsapp/pages/user_page.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
 import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 
@@ -116,7 +113,6 @@ class _HomeState extends State<Home> {
                     ],
                   ),
 
-
                  if (!visible) Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -215,9 +211,10 @@ class _HomeState extends State<Home> {
             title: Text(s),
             actions: <Widget>[
               if (res == 0) Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text('¡Gracias por usar Flat&Friends!'),
+                  SizedBox(height: 10,),
                   FlatButton(
                       child: Text('Aceptar'),
                       shape: StadiumBorder(),
@@ -230,10 +227,11 @@ class _HomeState extends State<Home> {
                 ],
               ),
               if (res != 0) Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text('Vaya... Parece que ha habido algún problema.' + '\n' +
                       'Por favor, revisa el identificador e inténtalo de nuevo.'),
+                  SizedBox(height: 10,),
                   FlatButton(
                       child: Text('Volver a intentar'),
                       shape: StadiumBorder(),
@@ -260,11 +258,7 @@ class _HomeState extends State<Home> {
             Navigator.pushNamed(context, '/chat');
           }
           else{
-            showDialog<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return _alertNotInAFlat();
-                });
+            _alertNotInAFlat();
           }
         },
         child: Container(
@@ -298,11 +292,7 @@ class _HomeState extends State<Home> {
         Navigator.pushNamed(context, '/event');
       }
       else{
-        showDialog<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return _alertNotInAFlat();
-            });
+        _alertNotInAFlat();
       }
     },
         child: Container(
@@ -352,11 +342,7 @@ class _HomeState extends State<Home> {
         Navigator.pushNamed(context, '/task');
       }
       else{
-        showDialog<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return _alertNotInAFlat();
-            });
+        _alertNotInAFlat();
       }
     },
         child: Container(
@@ -364,12 +350,6 @@ class _HomeState extends State<Home> {
           child: Column(
             children: <Widget>[
               Image.asset('graphics/tasks icon.png',scale: 2,),
-//              Icon(
-//                Icons.today,
-//                color: Colors.white,
-//                size: 94.00,
-//                semanticLabel: 'Text to announce in accessibility modes',
-//              ),
               Text('Tareas')
             ],
           ),
@@ -380,18 +360,35 @@ class _HomeState extends State<Home> {
         color: Colors.red,
         textColor: Colors.white);
   }
-}
-Widget _alertNotInAFlat() {
-  return PlatformAlertDialog(
-    title: Text('Hey!'),
-    content: SingleChildScrollView(
-      child: ListBody(
-        children: <Widget>[
-          Text('No perteneces a un piso.'),
-        ],
-      ),
-    ),
-    actions: <Widget>[
-    ],
-  );
+
+  Widget _alertNotInAFlat() {
+    showDialog(context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15)),
+            title: Text('¡Hey!'),
+            actions: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('Para acceder debes pertenecer a un piso.'),
+                  SizedBox(height: 10,),
+                  FlatButton(
+                    child: Text('Aceptar'),
+                    shape: StadiumBorder(),
+                    color: Colors.blue[900],
+                    textColor: Colors.white,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ],
+          );
+        }
+    );
+  }
 }
