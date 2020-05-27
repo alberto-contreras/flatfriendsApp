@@ -166,8 +166,11 @@ class _HomeState extends State<Home> {
                                   sharedData.getUser().setIdPiso(idFlatController.text);
                                   int res = await userService.updateUser(sharedData.getUser());
                                   if (res == 0) {
-                                    int res = await flatService.getFlat();
-                                    res = await flatService.getTenantsFlat();
+                                    await flatService.getFlat();
+                                    await flatService.getTenantsFlat();
+                                    await sharedData.chatService.initChatService(sharedData.getUser().getIdPiso());
+                                    sharedData.chatService.onMessage();
+                                    sharedData.chatRunning = true;
                                     Navigator.of(context).pop();
                                     _warningOnTryRegFlat(
                                         '¡Te has unido al piso!', res);
