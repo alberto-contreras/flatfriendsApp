@@ -101,7 +101,7 @@ class _ChatState extends State<Chat> {
                   Container(
                     margin: const EdgeInsets.all(8.0),
                     child: _textMessage(),
-                    width: 260.0,
+                    width: MediaQuery.of(context).size.width - 115,
                     height: 40.0,
                   ),
                   // _textMessage(),

@@ -31,10 +31,8 @@ class _EventDetailsState extends State<EventDetails> {
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: <Widget>[
-            SizedBox(height: 20),
             Center(
               child: SizedBox(
 
@@ -131,6 +129,7 @@ class _EventDetailsState extends State<EventDetails> {
             _showNumberOfDecline(),
             SizedBox(height: 20,),
             _showAcceptDecline(),
+            SizedBox(height: 20,),
           ],
         ),
       ),
@@ -237,13 +236,17 @@ class _EventDetailsState extends State<EventDetails> {
             Padding(padding: EdgeInsets.only(left: 5.0)),
             Icon(Icons.all_inclusive,color: Colors.white70,),
             Padding(padding: EdgeInsets.only(left: 10.0)),
-            Text('Gracias por dar tu opinión sobre el evento',
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 14,
-              fontWeight: FontWeight.bold
-
-            ),)
+            Container(
+              width: MediaQuery.of(context).size.width - 100,
+              child: Text('Gracias por dar tu opinión sobre el evento',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold
+                ),
+              )
+            )
           ],
         ),
       );

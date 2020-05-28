@@ -312,12 +312,6 @@ class _HomeState extends State<Home> {
           child: Column(
             children: <Widget>[
               Image.asset('graphics/copas icon.png',scale: 4.5,),
-//              Icon(
-//                Icons.local_bar,
-//                color: Colors.white,
-//                size: 96.00,
-//                semanticLabel: 'Text to announce in accessibility modes',
-//              ),
               Text('Eventos',)
             ],
           ),
@@ -358,7 +352,7 @@ class _HomeState extends State<Home> {
       }
     },
         child: Container(
-          margin: const EdgeInsets.only(top: 20.0),
+          margin: const EdgeInsets.only(top: 10.0),
           child: Column(
             children: <Widget>[
               Image.asset('graphics/tasks icon.png',scale: 2,),
