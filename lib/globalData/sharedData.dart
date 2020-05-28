@@ -11,13 +11,13 @@ import 'package:flutter/cupertino.dart';
 
 class SharedData {
 
-  static  SharedData instance;
+  static SharedData instance;
 
   UserModel infoUser;
   FlatModel infoFlat;
   String token;
-//  String apiUrl = 'http://10.0.2.2:3703';
-  String apiUrl = 'http://147.83.7.155:3702';
+  String apiUrl = 'http://10.0.2.2:3702';
+//  String apiUrl = 'http://147.83.7.155:3702';
 //  String apiUrl = 'http://localhost:3702';
 
   String urlUser;
@@ -34,33 +34,28 @@ class SharedData {
   Map usersInFlat = new Map();
 
   EventModel eventDetails = new EventModel();
-  List<UsersInFlatModel> usersInFlatToCreateEvent = new List<UsersInFlatModel>();
-
+  List<UsersInFlatModel> usersInFlatToCreateEvent = new List<
+      UsersInFlatModel>();
 
 
   SharedData() {
     this.urlUser = this.apiUrl + '/user';
     this.urlFlat = this.apiUrl + '/flat';
-
   }
 
-  static SharedData getInstance()
-  {
-    if(instance == null)
-    {
+  static SharedData getInstance() {
+    if (instance == null) {
       instance = SharedData();
     }
     return instance;
   }
 
-  setUser(UserModel a)
-  {
+  setUser(UserModel a) {
     this.infoUser = a;
     print(infoUser.getIdUser());
   }
 
-  setFlat(FlatModel a)
-  {
+  setFlat(FlatModel a) {
     this.infoFlat = a;
   }
 
@@ -69,7 +64,7 @@ class SharedData {
     await this.chatStream.sink.add(messages);
   }
 
-  setEvent(EventModel event){
+  setEvent(EventModel event) {
     this.eventsFlat.add(event);
   }
 
@@ -81,19 +76,20 @@ class SharedData {
     this.urlUserAvatar = value;
   }
 
-  setTask(TaskModel task){
+  setTask(TaskModel task) {
     this.tasksFlat.add(task);
   }
+
   setUserInUsersInFlat(List<String> userInFlat) {
-    this.usersInFlat[userInFlat[0]]= userInFlat[1];
+    this.usersInFlat[userInFlat[0]] = userInFlat[1];
     print(this.usersInFlat);
   }
-  
-  setUserInFlat(UsersInFlatModel user){
+
+  setUserInFlat(UsersInFlatModel user) {
     this.usersInFlatToCreateEvent.add(user);
   }
 
-  setEventDetails(EventModel event){
+  setEventDetails(EventModel event) {
     this.eventDetails = event;
   }
 
@@ -105,7 +101,8 @@ class SharedData {
 
   List<TaskModel> getTasks() => this.tasksFlat;
 
-  List<UsersInFlatModel> getUsersInFlatForEvent() => this.usersInFlatToCreateEvent;
+  List<UsersInFlatModel> getUsersInFlatForEvent() =>
+      this.usersInFlatToCreateEvent;
 
   UserModel getUser() => this.infoUser;
 

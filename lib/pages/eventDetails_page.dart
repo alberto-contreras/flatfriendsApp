@@ -19,7 +19,6 @@ class _EventDetailsState extends State<EventDetails> {
   EventModel event = sharedData.getEventDetails();
   FlatService flatService = new FlatService();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,7 +110,7 @@ class _EventDetailsState extends State<EventDetails> {
             ),
             SizedBox(height: 10.0), //Space between two widgets
             Text(
-              '' + event.getDate(),
+              '' + event.getDate().substring(0,16),
               style: TextStyle(
                 color: Colors.blue[800],
                 fontWeight: FontWeight.bold,
@@ -140,20 +139,34 @@ class _EventDetailsState extends State<EventDetails> {
 
 
   Widget _showAcceptDecline() {
-    bool encontrado = false;
-    for (int i = 0; i < event
-        .getUsers()
-        .length; i++) {
+    bool found = false;
+    bool exist = false;
+    for (int i = 0; i < event.getUsers().length; i++) {
       //Comprobamos que el usuario no tenga el estado a 1 o a 2, es decir ya haya aceptado o rechazado el evento
-      if ((event.getUsers().elementAt(i).getId() ==
-          sharedData.getUser().getIdUser()) &&
-          (event.getUsers().elementAt(i).getStatus() != '0')) {
-        encontrado = true;
+      if ((event.getUsers().elementAt(i).getId() == sharedData.getUser().getIdUser()) && (event.getUsers().elementAt(i).getStatus() != '0')) {
+        found = true;
+        print('YA HE VOTADO');
       }
     }
-    if (encontrado != true) {
-      return Row(
+    int i=0;
+    while(!exist){
+      //Comprobamos que el usuario se encuentre o no en la lista del evento y en caso de que no se encuentre
+      //mostrale el mensaje de "No pertenecias al piso cuando se creo el evento"
+      if(event.getUsers().elementAt(i).getId() == sharedData.getUser().getIdUser()) {
+        exist = true;
+        break;
+      }
+      else{
+        i++;
+      }
+      if(i >= event.getUsers().length){
+         break;
+      }
 
+    }
+
+    if (found != true && exist == true) {
+      return Row(
         children: <Widget>[
           //Hemos de actualizar la lista con el estado que ha decidio el usuario y enviarla (estado = 1) --> ACEPTADO
           FlatButton.icon(onPressed: () async {
@@ -207,7 +220,7 @@ class _EventDetailsState extends State<EventDetails> {
         ],
       );
     }
-    else {
+    else if(found == true && exist == true){
       return Card(
         margin: const EdgeInsets.only(
           top: 16.0,
@@ -235,80 +248,164 @@ class _EventDetailsState extends State<EventDetails> {
         ),
       );
     }
+    else if(exist == false){
+      return Card(
+        margin: const EdgeInsets.only(
+          top: 16.0,
+          bottom: 1.0,
+          left: 10.0,
+          right: 10.0,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(11.0),
+        ),
+        color:Colors.deepPurple,
+        child: Row(
+          children: <Widget>[
+            Padding(padding: EdgeInsets.only(left: 5.0)),
+            Icon(Icons.all_inclusive,color: Colors.white70,),
+            Padding(padding: EdgeInsets.only(left: 10.0)),
+            Text('No estabas en el piso durante el evento',
+              style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold
+
+              ),)
+          ],
+        ),
+      );
+    }
   }
 
   //Here we show de stadistics about how many people have accept this event
   Widget _showNumberOfAccept() {
+    List <String> usernameAccepted = new List <String>();
     int accept = 0;
     for(int i = 0; i<event.getUsers().length;i++){
       if(event.getUsers().elementAt(i).getStatus() == '1'){
         accept = accept +1;
+        print(event.getUsers().elementAt(i).getFirstname());
+        usernameAccepted.add(event.getUsers().elementAt(i).getFirstname());
       }
-
     }
-    return Row(
-      children: <Widget>[
-        Icon(Icons.thumb_up,size:20 ,color: Colors.green,),
-        SizedBox(width: 20),
-        Expanded(
-            flex: 1,
-            child: Container(
-              height: 10,
-              width: 20,
-              // tag: 'hero',
-              child: LinearProgressIndicator(
+    return Column(
+      children:<Widget>[
+        ExpansionTile(
+          backgroundColor: Colors.green[100],
+          title: Row(
+          children: <Widget>[
+            Icon(Icons.thumb_up,size:20 ,color: Colors.green,),
+            SizedBox(width: 20),
+            Expanded(
+                flex: 1,
+                child: Container(
+                  height: 10,
+                  width: 20,
+                  // tag: 'hero',
+                  child: LinearProgressIndicator(
 
-                  backgroundColor: Colors.grey[100],
-                  value: getAccept(),
-                  valueColor: AlwaysStoppedAnimation(Colors.green)),
-            )),
-        Expanded(
-          flex: 4,
-          child: Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Text('Aceptan el evento '+accept.toString()+'/'+event.getUsers().length.toString()+' personas',
-                  style: TextStyle(color: Colors.blue[800],fontWeight: FontWeight.bold, fontSize: 14))),
+                      backgroundColor: Colors.grey[100],
+                      value: getAccept(),
+                      valueColor: AlwaysStoppedAnimation(Colors.green)),
+                )),
+            Expanded(
+              flex: 4,
+              child: Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Text('Aceptan el evento '+accept.toString()+'/'+event.getUsers().length.toString()+' personas',
+                      style: TextStyle(color: Colors.blue[800],fontWeight: FontWeight.bold, fontSize: 14))),
+            ),
+          ],
         ),
-      ],
+        children: <Widget>[
+            ListView.builder(
+             itemCount:usernameAccepted.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+               return Text('   ' + usernameAccepted.elementAt(index).toString(),
+                     style: TextStyle(color: Colors.blue[800],fontWeight: FontWeight.bold, fontSize: 18),);
+               },),
+          SizedBox(height: 20,)
+        ],)],
     );
 
   }
 
   //Here we show de stadistics about how many people have decline this event
   Widget _showNumberOfDecline() {
+    List <String> usernameDecline = new List <String>();
     int decline = 0;
-    for(int i = 0; i<event.getUsers().length;i++){
-      if(event.getUsers().elementAt(i).getStatus() == '2'){
-        decline = decline +1;
+    for (int i = 0; i < event
+        .getUsers()
+        .length; i++) {
+      if (event.getUsers().elementAt(i).getStatus() == '2') {
+        decline = decline + 1;
+        usernameDecline.add(event.getUsers().elementAt(i).getFirstname());
       }
-
     }
-    return Row(
+    return Column(
       children: <Widget>[
-        Icon(Icons.thumb_down,size:20 ,color: Colors.red,),
-        SizedBox(width: 20),
-        Expanded(
-            flex: 1,
-            child: Container(
-              height: 10,
-              width: 20,
-              // tag: 'hero',
-              child: LinearProgressIndicator(
-                  backgroundColor: Colors.grey[100],
-                  value: getDecline(),
-                  valueColor: AlwaysStoppedAnimation(Colors.red)),
-            )),
-        Expanded(
-          flex: 4,
-          child: Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Text('No aceptan el evento '+decline.toString()+'/'+event.getUsers().length.toString()+' personas',
-                  style: TextStyle(color: Colors.blue[800],fontWeight: FontWeight.bold, fontSize: 14))),
-        ),
+        ExpansionTile(
+          backgroundColor: Colors.red[100],
+          title: Row(
+            children: <Widget>[
+              Icon(Icons.thumb_down, size: 20, color: Colors.red,),
+              SizedBox(width: 20),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                    height: 10,
+                    width: 20,
+                    // tag: 'hero',
+                    child: LinearProgressIndicator(
+                        backgroundColor: Colors.grey[100],
+                        value: getDecline(),
+                        valueColor: AlwaysStoppedAnimation(Colors.red)),
+                  )),
+              Expanded(
+                flex: 4,
+                child: Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Text(
+                        'No aceptan el evento ' + decline.toString() + '/' +
+                            event
+                                .getUsers()
+                                .length
+                                .toString() + ' personas',
+                        style: TextStyle(color: Colors.blue[800],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14))),
+              ),
+            ],
+          ),
+          children: <Widget>[
+            if (usernameDecline.length == 0) Column(
+              children: [
+                SizedBox(height: 10,),
+                Text('   No hay votos negativos.',
+                    style: TextStyle(color: Colors.blue[800],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18)),
+              ],
+            ),
+            if (usernameDecline.length > 0) ListView.builder(
+              itemCount: usernameDecline.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                print(index);
+                return Text(' ' + usernameDecline.elementAt(index).toString(),
+                    style: TextStyle(color: Colors.blue[800],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18));
+              },),
+            SizedBox(height: 20,)
+          ],
+        )
       ],
     );
-
   }
+
   //We get the percent of accept
   double getAccept(){
     double accept = 0;
