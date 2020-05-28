@@ -19,7 +19,6 @@ class _EventDetailsState extends State<EventDetails> {
   EventModel event = sharedData.getEventDetails();
   FlatService flatService = new FlatService();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,7 +167,6 @@ class _EventDetailsState extends State<EventDetails> {
 
     if (found != true && exist == true) {
       return Row(
-
         children: <Widget>[
           //Hemos de actualizar la lista con el estado que ha decidio el usuario y enviarla (estado = 1) --> ACEPTADO
           FlatButton.icon(onPressed: () async {
@@ -321,14 +319,14 @@ class _EventDetailsState extends State<EventDetails> {
           ],
         ),
         children: <Widget>[
-            SizedBox(
-            height: 100.0,
-             child: new ListView.builder(
+            ListView.builder(
              itemCount:usernameAccepted.length,
+              shrinkWrap: true,
               itemBuilder: (context, index) {
-               return Text(' ' + usernameAccepted.elementAt(index).toString(),
-                style: TextStyle(color: Colors.blue[800],fontWeight: FontWeight.bold, fontSize: 20),);
-               },),),
+               return Text('   ' + usernameAccepted.elementAt(index).toString(),
+                     style: TextStyle(color: Colors.blue[800],fontWeight: FontWeight.bold, fontSize: 18),);
+               },),
+          SizedBox(height: 20,)
         ],)],
     );
 
@@ -338,12 +336,13 @@ class _EventDetailsState extends State<EventDetails> {
   Widget _showNumberOfDecline() {
     List <String> usernameDecline = new List <String>();
     int decline = 0;
-    for(int i = 0; i<event.getUsers().length;i++){
-      if(event.getUsers().elementAt(i).getStatus() == '2'){
-        decline = decline +1;
+    for (int i = 0; i < event
+        .getUsers()
+        .length; i++) {
+      if (event.getUsers().elementAt(i).getStatus() == '2') {
+        decline = decline + 1;
         usernameDecline.add(event.getUsers().elementAt(i).getFirstname());
       }
-
     }
     return Column(
       children: <Widget>[
@@ -351,7 +350,7 @@ class _EventDetailsState extends State<EventDetails> {
           backgroundColor: Colors.red[100],
           title: Row(
             children: <Widget>[
-              Icon(Icons.thumb_down,size:20 ,color: Colors.red,),
+              Icon(Icons.thumb_down, size: 20, color: Colors.red,),
               SizedBox(width: 20),
               Expanded(
                   flex: 1,
@@ -368,27 +367,45 @@ class _EventDetailsState extends State<EventDetails> {
                 flex: 4,
                 child: Padding(
                     padding: EdgeInsets.only(left: 10.0),
-                    child: Text('No aceptan el evento '+decline.toString()+'/'+event.getUsers().length.toString()+' personas',
-                        style: TextStyle(color: Colors.blue[800],fontWeight: FontWeight.bold, fontSize: 14))),
+                    child: Text(
+                        'No aceptan el evento ' + decline.toString() + '/' +
+                            event
+                                .getUsers()
+                                .length
+                                .toString() + ' personas',
+                        style: TextStyle(color: Colors.blue[800],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14))),
               ),
             ],
           ),
           children: <Widget>[
-            SizedBox(
-              height: 100.0,
-              child: new ListView.builder(
-                itemCount:usernameDecline.length,
-                itemBuilder: (context, index) {
-                  return Text(' ' + usernameDecline.elementAt(index).toString(),
-                    style: TextStyle(color: Colors.blue[800],fontWeight: FontWeight.bold, fontSize: 20),);
-                },),),
-
+            if (usernameDecline.length == 0) Column(
+              children: [
+                SizedBox(height: 10,),
+                Text('   No hay votos negativos.',
+                    style: TextStyle(color: Colors.blue[800],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18)),
+              ],
+            ),
+            if (usernameDecline.length > 0) ListView.builder(
+              itemCount: usernameDecline.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                print(index);
+                return Text(' ' + usernameDecline.elementAt(index).toString(),
+                    style: TextStyle(color: Colors.blue[800],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18));
+              },),
+            SizedBox(height: 20,)
           ],
         )
       ],
     );
-
   }
+
   //We get the percent of accept
   double getAccept(){
     double accept = 0;
