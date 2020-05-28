@@ -216,11 +216,12 @@ class FlatService {
             UsersInFlatModel addUser = new UsersInFlatModel();
             addUser.setId(users[j]['id']);
             addUser.setStatus(users[j]['status']);
+            addUser.setFirstname(users[j]['firstname']);
             addEvent.setSpecificUser(addUser);
           }
           sharedData.setEvent(addEvent);
-          //print(addEvent.getUsers());
         }
+        print(''+sharedData.getEvents().elementAt(0).getUsers().length.toString());
         return 0;
       }
       else {
@@ -256,8 +257,8 @@ class FlatService {
           UsersInFlatModel addUserInFlat = new UsersInFlatModel();
           addUserInFlat.setId(users[i]['_id']);
           addUserInFlat.setStatus('0');
+          addUserInFlat.setFirstname(users[i]['firstname']);
           sharedData.setUserInFlat(addUserInFlat);
-          //print(addUserInFlat.getId());
         }
         return 0;
       }
