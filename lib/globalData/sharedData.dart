@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flatfriendsapp/models/ChatMessage.dart';
 import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
@@ -5,6 +7,7 @@ import 'package:flatfriendsapp/models/Task.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
+import 'package:flutter/cupertino.dart';
 
 class SharedData {
 
@@ -26,6 +29,7 @@ class SharedData {
   List<UserModel> tenantsFlat = new List<UserModel>();
   List<TaskModel> tasksFlat = new List<TaskModel>();
   ChatService chatService = new ChatService();
+  final chatStream = new StreamController<List<ChatMessageModel>>.broadcast();
 
   Map usersInFlat = new Map();
 
@@ -55,8 +59,9 @@ class SharedData {
     this.infoFlat = a;
   }
 
-  setMessage(ChatMessageModel message) {
-    this.messages.add(message);
+  setMessage(ChatMessageModel message) async {
+    this.messages.insert(0, message);
+    await this.chatStream.sink.add(messages);
   }
 
   setEvent(EventModel event) {

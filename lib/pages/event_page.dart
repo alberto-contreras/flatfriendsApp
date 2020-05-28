@@ -18,89 +18,90 @@ class _EventState extends State<Event> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.yellow[800],
-          title: Text('Eventos'),
-          centerTitle: true,
-          elevation: 0,
-        ),
-        floatingActionButton: FlatButton(onPressed: () async{
-          await flatService.getUsersFlatForEvent();
-        await Navigator.pushNamed(context,'/regevent');
-      //we put in a dynamic variable because when are doing a big async task
-      //first we go to the event page and then after adding a new one we pop with a refresh
-        await flatService.getEventFlat();
-        setState(() { });
-        }, child: Text('Añadir Evento'),
-        shape: StadiumBorder(),
-        color: Colors.yellow[800],
-        textColor: Colors.white),
-        body: ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical:1.0, horizontal: 4.0),
-          itemCount: events.length,
-          itemBuilder: (context,index){ //This function will make a widget tree of the one we choose
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.yellow[800],
+        title: Text('Eventos'),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      floatingActionButton: FlatButton(
+          onPressed: () async{
+            await flatService.getUsersFlatForEvent();
+            await Navigator.pushNamed(context,'/regevent');
+            //we put in a dynamic variable because when are doing a big async task
+            //first we go to the event page and then after adding a new one we pop with a refresh
+            await flatService.getEventFlat();
+            setState(() { });
+          },
+          child: Text('Añadir Evento'),
+          shape: StadiumBorder(),
+          color: Colors.yellow[800],
+          textColor: Colors.white),
+      body: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical:1.0, horizontal: 4.0),
+        itemCount: events.length,
+        itemBuilder: (context,index){ //This function will make a widget tree of the one we choose
 
-            return Card(
-                margin: const EdgeInsets.only(
-                  top: 16.0,
-                  bottom: 1.0,
-                  left: 24.0,
-                  right: 24.0,
-                ),
-                color: getColorEvent(index),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(11.0),
+          return Card(
+            margin: const EdgeInsets.only(
+              top: 16.0,
+              bottom: 1.0,
+              left: 24.0,
+              right: 24.0,
+            ),
+            color: getColorEvent(index),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(11.0),
+            ),
+
+            child: ListTile(
+              onTap: () async {
+                print(events.elementAt(index).getName().toString());
+                sharedData.setEventDetails(events.elementAt(index));
+                await Navigator.pushNamed(context,'/eventDetails');
+                //we put in a dynamic variable because when are doing a big async task
+                //first we go to the event page and then after adding a new one we pop with a refresh
+                await flatService.getEventFlat();
+              },//Link on press function
+              leading: Container(
+                padding: EdgeInsets.only(right: 12.0),
+                decoration: new BoxDecoration(
+                    border: new Border(
+                        right: new BorderSide(width: 1.0, color: Colors.white24))),
+                child: Icon(Icons.local_bar, color: Colors.white, size: 30,),
               ),
-
-                child: ListTile(
-                  onTap: () async {
-                    print(events.elementAt(index).getName().toString());
-                    sharedData.setEventDetails(events.elementAt(index));
-                    await Navigator.pushNamed(context,'/eventDetails');
-                    //we put in a dynamic variable because when are doing a big async task
-                    //first we go to the event page and then after adding a new one we pop with a refresh
-                    await flatService.getEventFlat();
-                  },//Link on press function
-                  leading: Container(
-                    padding: EdgeInsets.only(right: 12.0),
-                    decoration: new BoxDecoration(
-                        border: new Border(
-                            right: new BorderSide(width: 1.0, color: Colors.white24))),
-                    child: Icon(Icons.local_bar, color: Colors.white, size: 30,),
-                  ),
-                  title: Text(events.elementAt(index).getName().toString()+' ('+events.elementAt(index).getOrganizer().toString()+')',
-                    style:TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                  subtitle: Row(
-                    children: <Widget>[
-                      Expanded(
-                          flex: 1,
-                          child: Container(
-                            // tag: 'hero',
-                            child: LinearProgressIndicator(
-                                backgroundColor: Colors.white,
-                                value: getAccept(index),
-                                valueColor: AlwaysStoppedAnimation(Colors.green)),
-                          )),
-                      Expanded(
-                        flex: 4,
-                        child: Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: Text('Aceptación',
-                                style: TextStyle(color: Colors.white))),
-                      )
-                    ],
-                  ),
-                  trailing: Column(
-                    children: <Widget>[
-                      Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
-                      Text('Info', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                    ],
-                  ),
-
-                ),
-            );
-          },),
+              title: Text(events.elementAt(index).getName().toString()+' ('+events.elementAt(index).getOrganizer().toString()+')',
+                style:TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+              subtitle: Row(
+                children: <Widget>[
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                        // tag: 'hero',
+                        child: LinearProgressIndicator(
+                            backgroundColor: Colors.white,
+                            value: getAccept(index),
+                            valueColor: AlwaysStoppedAnimation(Colors.green)),
+                      )),
+                  Expanded(
+                    flex: 4,
+                    child: Padding(
+                        padding: EdgeInsets.only(left: 10.0),
+                        child: Text('Aceptación',
+                            style: TextStyle(color: Colors.white))),
+                  )
+                ],
+              ),
+              trailing: Column(
+                children: <Widget>[
+                  Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
+                  Text('Info', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                ],
+              ),
+            ),
+          );
+        },),
     );
   }
   double getAccept(int position){
