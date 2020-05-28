@@ -45,7 +45,6 @@ class _ChatState extends State<Chat> {
                       stream: sharedData.chatStream.stream,
                       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                         if (snapshot.data != null) {
-                          print("Dentro builder");
                           messagesList = [];
                           snapshot.data.forEach( (message) {
                             messagesList.add(
@@ -113,13 +112,6 @@ class _ChatState extends State<Chat> {
           ),
         )
     );
-  }
-
-  void initState() {
-    super.initState();
-
-    print('en el initState los mensajes:' + sharedData.getMessages().toString());
-
   }
 
   Widget sendMessageTab () {
