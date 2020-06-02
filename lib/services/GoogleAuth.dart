@@ -38,7 +38,6 @@ class Oauth2ClientExample {
     print(resp.statusCode);
     if(resp.statusCode == 200){
       Map userData = jsonDecode(resp.body);
-      sharedData.setUserUrlAvatar(userData['picture']);
       UserModel userGoogle = new UserModel();
       userGoogle.setGoogleAuth(true);
       userGoogle.setFirstname(userData['given_name']);

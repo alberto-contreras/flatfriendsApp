@@ -32,6 +32,7 @@ class _EventState extends State<Event> {
             //we put in a dynamic variable because when are doing a big async task
             //first we go to the event page and then after adding a new one we pop with a refresh
             await flatService.getEventFlat();
+            print('Hola');
             setState(() { });
           },
           child: Text('Añadir Evento'),

@@ -27,18 +27,6 @@ class _UserState extends State<User> {
         title: Text('Flat & Friends'),
         actions: <Widget>[
           _settingsPopUpMenu(),
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/userSettings');
-                },
-                child: Icon(
-                  Icons.settings,
-                  size: 26.0,
-                ),
-              )
-          ),
         ],
       ),
       body: Padding(padding: const EdgeInsets.only(left: 16, top: 16),
@@ -59,6 +47,7 @@ class _UserState extends State<User> {
                 textAlign: TextAlign.start,
                 alignment: AlignmentDirectional.topStart // or Alignment.topLeft
             ),
+            SizedBox(height: 16,),
             _showUserData(),
           ],
         ),
@@ -104,6 +93,21 @@ class _UserState extends State<User> {
     });
   }
 
+  Widget _userAvatar() {
+    if (sharedData.getUser().getUrlAvatar() == null) {
+      return CircleAvatar(
+        radius: 45,
+        child: Text(sharedData.getUser().getFirstname()[0] + sharedData.getUser().getLastname()[0], style: TextStyle(fontSize: 40),),
+      );
+    }
+    else{
+      return CircleAvatar(
+          radius: 45,
+          backgroundImage: NetworkImage(sharedData.getUser().getUrlAvatar())
+      );
+    }
+  }
+
   Widget _settingsPopUpMenu() => PopupMenuButton(
     itemBuilder: (context) => [
       PopupMenuItem(child: Text('Ajustes'),
@@ -113,20 +117,25 @@ class _UserState extends State<User> {
       ],
     icon: Icon(Icons.settings),
     onSelected: (value) {
-      switch (value){
-        case 0: {
-          print('Aquí iríamos a los ajustes de usuario.');
-        }
-        break;
-      case 1: {
-      print('Cerraríamos la sesión.');
+      switch (value) {
+        case 0:
+          {
+            Navigator.pushNamed(context, '/userSettings').whenComplete(() => _setState());
+          }
+          break;
+        case 1:
+          {
+            print('Cerraríamos la sesión.');
+          }
+          break;
       }
-      break;
-    }
-
     },
-
   );
+
+  void _setState(){
+    setState(() {
+    });
+  }
 
   Widget _showUserData() {
     print('Showing user data.');
@@ -140,16 +149,8 @@ class _UserState extends State<User> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (sharedData.getUrlUserAvatar() != null) Column(
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 45,
-                    backgroundImage: NetworkImage(sharedData.getUrlUserAvatar()),
-                  ),
-                  SizedBox(height: 16,)
-                ],
-              ),
-
+             _userAvatar(),
+              SizedBox(height: 16,),
               Text('Nombre de usuario:', style: inMainCardStyle,),
               SizedBox(height: 5),
               Row(children: <Widget>[
@@ -206,6 +207,7 @@ class _UserState extends State<User> {
                          Icon(Icons.phone, color: Colors.white,),
                        ],
                      ),
+                     SizedBox(width: 10,),
                      Text(sharedData.getUser().getPhoneNumber(), style: inMainCardInfoStyle,),
                    ],
                  ),

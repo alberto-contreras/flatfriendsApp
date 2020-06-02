@@ -1,186 +1,56 @@
-import 'package:flatfriendsapp/globalData/sharedData.dart';
-import 'package:flatfriendsapp/models/User.dart';
-import 'package:flatfriendsapp/services/userService.dart';
+
+import 'package:flatfriendsapp/pages/user_attributes_update.dart';
+import 'package:flatfriendsapp/pages/user_pass_update_page.dart';
+import 'package:flatfriendsapp/transitions/horizontal_transition_left_to_right.dart';
 import 'package:flutter/material.dart';
-import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 
 class UserSettings extends StatefulWidget {
-  _UpdateUser createState() => _UpdateUser();
+  _UserSettings createState() => _UserSettings();
 }
 
-class _UpdateUser extends State<UserSettings> {
-  SharedData sharedData = SharedData.getInstance();
-  TextEditingController actualPasswordController = new TextEditingController();
-  TextEditingController newPasswordController = new TextEditingController();
-  TextEditingController repiteNewPasswordController = new TextEditingController();
-  UserService userService = new UserService();
-  UserModel userToUpdate = new UserModel();
+class _UserSettings extends State<UserSettings> {
+  static const TextStyle titlesStyle = TextStyle(
+    fontSize: 18, fontWeight: FontWeight.bold, );
+  static const TextStyle subTitlesStyle = TextStyle(
+    fontSize: 15, fontStyle: FontStyle.italic, );
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0.0,
+        title: Text('Ajustes de usuario'),
       ),
-      body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: ListView(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('Cambiar contraseña:',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-                Divider(),
-                _textActualPassword(),
-                Divider(),
-                _textNewPassword(),
-                Divider(),
-                _textNewRepitePassword(), // Creating a text field widget to get password
-                Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    _updateButton(), // Creating a button widget for Login
-                    SizedBox(width: 60,),
-                    _cancelButton()
-                  ],
-                ), // Creating a button widget for Register
-              ],
-            ),
-          ),
-
+      body: _options(context),
     );
   }
 
-  Widget _textActualPassword() {
-    return TextField(
-      controller: actualPasswordController,
-      obscureText: true,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          labelText: 'Contraseña actual',
-          hintText: 'Escribe tu contraseña actual',
-          suffixIcon: Icon(Icons.beenhere, color: Colors.blue),
-          icon: Icon(Icons.lock)
+  Widget _options(var context) => ListView(
+    children: [
+      ListTile(
+        title: Text('Actualizar contraseña', style: titlesStyle,),
+        subtitle: Text('Accede para cambiar tu contraseña de usuario.', style: subTitlesStyle,),
+        trailing: Icon(Icons.keyboard_arrow_right, color: Colors.blue),
+        onTap: () {
+          Navigator.push(context, EnterRightExitLeftRoute(exitPage: UserSettings(), enterPage: UserUpdatePassword()));
+        },
       ),
-    );
-  }
-
-  Widget _textNewPassword() {
-    return TextField(
-      controller: newPasswordController,
-      obscureText: true,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          labelText: 'Nueva contraseña',
-          hintText: 'Escrbir tu nueva contraseña.',
-          suffixIcon: Icon(Icons.lock_open, color: Colors.blue),
-          icon: Icon(Icons.lock)
+      ListTile(
+        title: Text('Actualizar datos de usuario', style: titlesStyle,),
+        subtitle: Text('Accede para actualizar tu correo, teléfono o tu foto de perfil.', style: subTitlesStyle),
+        trailing: Icon(Icons.keyboard_arrow_right, color: Colors.blue),
+        onTap: () {
+          Navigator.push(context, EnterRightExitLeftRoute(exitPage: UserSettings(), enterPage: UserUpdateAttributes()));
+        },
       ),
-    );
-  }
-
-  Widget _textNewRepitePassword() {
-    return TextField(
-      controller: repiteNewPasswordController,
-      obscureText: true,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          labelText: 'Repetir la nueva contraseña',
-          hintText: 'Repite tu nueva contraseña',
-          suffixIcon: Icon(Icons.beenhere, color: Colors.blue),
-          icon: Icon(Icons.lock)
+      ListTile(
+        title: Text('Abandonar piso', style: titlesStyle,),
+        subtitle: Text('Accede para salir de tu piso actual.', style: subTitlesStyle),
+        trailing: Icon(Icons.business, color: Colors.blue),
+        onTap: () {
+          // Hacer saltar un dialog
+        },
       ),
-    );
-  }
 
-  Widget _updateButton() {
-    return FlatButton(onPressed: () async  {
-      print('Dentro Update Usuario');
-      if(newPasswordController.text == repiteNewPasswordController.text && actualPasswordController.text == sharedData.getUser().getPassword()) {
-        userToUpdate = this.sharedData.infoUser;
-        userToUpdate.setPassword(newPasswordController.text);
-        int res = await userService.updateUser(this.userToUpdate);
-        if( res == 0){
-          Navigator.pop(context);
-        }
-        else{
-          //Error cambiando la contraseña
-          //Alert password or email incorrect
-          showDialog<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return _alertNotPossibleChangePassword();
-              });
-
-        }
-      }
-      else {
-        //Password not well introduced
-        showDialog<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return _alertWrongFields();
-            });
-
-      }
-    },
-        child: Text('Actualizar'),
-        shape: StadiumBorder(),
-        color: Colors.green,
-        textColor: Colors.white);
-  }
-
-  Widget _cancelButton() {
-    return FlatButton(onPressed: () {
-      Navigator.pop(context);
-    },
-        child: Text('Cancelar'),
-        shape: StadiumBorder(),
-        color: Colors.red,
-        textColor: Colors.white);
-  }
-  Widget _alertNotPossibleChangePassword() {
-    return PlatformAlertDialog(
-      title: Text('Error'),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text('No ha sido posible cambiar la contraseña.'),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        PlatformDialogAction(
-          child: Text('Aceptar'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
-  }
-  Widget _alertWrongFields() {
-    return PlatformAlertDialog(
-      title: Text('Hey!'),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text('Contraseñas introducidas incorrectamente.'),
-            Text('Ayuda: Revisalas con cuidado.'),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        PlatformDialogAction(
-          child: Text('Aceptar'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
-  }
+    ],
+  );
 }

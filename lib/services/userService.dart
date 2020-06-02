@@ -66,6 +66,7 @@ class UserService {
         userToLog.setPhoneNumber(userData['phoneNumber']);
         userToLog.setIdPiso(userData['idPiso']);
         userToLog.setPassword(userData['password']);
+        userToLog.setUrlAvatar(userData['urlAvatar']);
         sharedData.setUser(userToLog);
         //sharedData.setToken(tokensiko);
         return 0;
@@ -116,6 +117,7 @@ class UserService {
         'phoneNumber':u.getPhoneNumber(),
         'password' : u.getPassword(),
         'idPiso' : u.getIdPiso(),
+        'urlAvatar': u.getUrlAvatar()
       }),
           headers: {"accept": "application/json", "content-type": "application/json" });
       if(response.statusCode == 400)
