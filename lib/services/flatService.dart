@@ -474,10 +474,12 @@ class FlatService {
         extractTenants.forEach((tenant) {
           if (sharedData.getUser().getEmail() != tenant['email']) {
             UserModel tenantToAdd = new UserModel();
+            tenantToAdd.setIdUser(tenant['_id']);
             tenantToAdd.setFirstname(tenant['firstname']);
             tenantToAdd.setLastname(tenant['lastname']);
             tenantToAdd.setPhoneNumber(tenant['phoneNumber']);
             tenantToAdd.setEmail(tenant['email']);
+            tenantToAdd.setAllTasks(tenant['allTasks']);
             sharedData.setTenant(tenantToAdd);
           }
         });
