@@ -26,6 +26,7 @@ class _UserState extends State<User> {
       appBar: AppBar(
         title: Text('Flat & Friends'),
         actions: <Widget>[
+          _settingsPopUpMenu(),
           Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
@@ -102,6 +103,30 @@ class _UserState extends State<User> {
       }
     });
   }
+
+  Widget _settingsPopUpMenu() => PopupMenuButton(
+    itemBuilder: (context) => [
+      PopupMenuItem(child: Text('Ajustes'),
+      value: 0,),
+      PopupMenuItem(child: Text('Cerrar sesión'),
+        value: 1,)
+      ],
+    icon: Icon(Icons.settings),
+    onSelected: (value) {
+      switch (value){
+        case 0: {
+          print('Aquí iríamos a los ajustes de usuario.');
+        }
+        break;
+      case 1: {
+      print('Cerraríamos la sesión.');
+      }
+      break;
+    }
+
+    },
+
+  );
 
   Widget _showUserData() {
     print('Showing user data.');
