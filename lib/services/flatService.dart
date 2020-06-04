@@ -47,6 +47,7 @@ class FlatService {
         flatToAdd.setName(flatData['name']);
         flatToAdd.setDescription(flatData['description']);
         flatToAdd.setFull(flatData['full']);
+        flatToAdd..setNumPersons(flatData['numPersons']);
         flatToAdd.setMaxPersons(flatData['maxPersons']);
         flatToAdd.setLocation(location['latitude'], location['longitude']);
         //Global Flat added
@@ -68,6 +69,39 @@ class FlatService {
     }
   }
 
+  // Update the Flat data
+  Future<int> updateFlat(FlatModel f) async {
+    try {
+      print('Updating usuario');
+      var response = await http.put(this.url + '/update', body: json.encode({
+        '_id': sharedData.getFlat().getID(),
+        'name': f.getName(),
+        'description': f.getDescription(),
+        'numPersons': sharedData.getFlat().getNumPersons(),
+        'maxPersons': f.getMaxPersons(),
+      }),
+          headers: {
+            "accept": "application/json",
+            "content-type": "application/json"
+          });
+      if (response.statusCode == 400) {
+        print('Error updating user');
+        return 1;
+      }
+      else if (response.statusCode == 200) {
+        print('Succesfully updated');
+        return 0;
+      }
+      else {
+        print('General Error updating User');
+        return 1;
+      }
+    }
+    catch (error) {
+      print(error);
+      return 1;
+    }
+  }
 
   // Register a new flat and add to the user which registered
   Future<int> addEventFlat(EventModel eventToAdd) async {
@@ -167,6 +201,7 @@ class FlatService {
         flatToAdd.setID(sharedData.getUser().getIdPiso());
         flatToAdd.setName(extractFlat['name']);
         flatToAdd.setDescription(extractFlat['description']);
+        flatToAdd..setNumPersons(extractFlat['numPersons']);
         flatToAdd.setMaxPersons(extractFlat['maxPersons']);
         flatToAdd.setFull(extractFlat['full']);
         flatToAdd.setLocation(
@@ -456,7 +491,67 @@ class FlatService {
       return 1;
     }
   }
-  
+
+  Future<int> addTenant(String tenantId, String flatId) async {
+    try {
+      print('Adding tenant to the flat');
+      var response = await http.put(this.url + '/addTenant/', body: json.encode({
+        ///TAMBIEN EL TOKEN!
+        'tenantId' : tenantId,
+        'flatId': flatId
+      }),
+          headers: {"accept": "application/json", "content-type": "application/json" });
+      if(response.statusCode == 409){
+        print('Error flat is full.');
+        return 2;
+      }
+      if(response.statusCode == 404){
+        print('Error updating user or flat. Not found.');
+        return 1;
+      }
+      else if(response.statusCode == 200){
+        print('Tenant succesfully added.');
+        return 0;
+      }
+      else {
+        print('General Error updating User');
+        return 1;
+      }
+    }
+    catch(error){
+      print(error);
+      return 1;
+    }
+  }
+
+  Future<int> removeTenant(String tenantId, String flatId) async {
+    try {
+      print('Adding tenant to the flat');
+      var response = await http.put(this.url + '/removeTenant/', body: json.encode({
+        ///TAMBIEN EL TOKEN!
+        'tenantId' : tenantId,
+        'flatId': flatId
+      }),
+          headers: {"accept": "application/json", "content-type": "application/json" });
+      if(response.statusCode == 404){
+        print('Error updating user or flat. Not found.');
+        return 1;
+      }
+      else if(response.statusCode == 200){
+        print('Tenant succesfully removed from flat.');
+        return 0;
+      }
+      else {
+        print('General Error updating User');
+        return 1;
+      }
+    }
+    catch(error){
+      print(error);
+      return 1;
+    }
+  }
+
   // Function to get a more detailed data from a flat
   Future<int> getTenantsFlat() async {
     print('Searching all the Tenants of a Flat');
@@ -478,6 +573,7 @@ class FlatService {
             tenantToAdd.setLastname(tenant['lastname']);
             tenantToAdd.setPhoneNumber(tenant['phoneNumber']);
             tenantToAdd.setEmail(tenant['email']);
+            tenantToAdd.setUrlAvatar(tenant['urlAvatar']);
             sharedData.setTenant(tenantToAdd);
           }
         });

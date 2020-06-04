@@ -19,6 +19,10 @@ class ChatService {
     socket.emit('joinToTheRoom', flatId);
   }
 
+  stopChatService(){
+    socket.disconnect();
+  }
+
   // The client receives a message
   onMessage() {
     print('Estamos donde mensaje recibido');

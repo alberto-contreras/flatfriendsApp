@@ -163,9 +163,12 @@ class _HomeState extends State<Home> {
                               textColor: Colors.white,
                               onPressed: () async {
                                 if (idFlatController.text != null && idFlatController.text.length == 24) {
-                                  sharedData.getUser().setIdPiso(idFlatController.text);
-                                  int res = await userService.updateUser(sharedData.getUser());
+//                                  sharedData.getUser().setIdPiso(idFlatController.text);
+//                                  int res = await userService.updateUser(sharedData.getUser());
+                                print('Añadiendo tenant: '+ sharedData.getUser().getIdUser() + ' '+idFlatController.text);
+                                  int res = await flatService.addTenant(sharedData.getUser().getIdUser(), idFlatController.text);
                                   if (res == 0) {
+                                    sharedData.getUser().setIdPiso(idFlatController.text);
                                     await flatService.getFlat();
                                     await flatService.getTenantsFlat();
                                     await sharedData.chatService.initChatService(sharedData.getUser().getIdPiso());
@@ -241,8 +244,9 @@ class _HomeState extends State<Home> {
               if (res != 0) Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('Vaya... Parece que ha habido algún problema.' + '\n' +
+                  if (res != 2)Text('Vaya... Parece que ha habido algún problema.' + '\n' +
                       'Por favor, revisa el identificador e inténtalo de nuevo.'),
+                  if (res == 2)Text('¡Este piso ya está lleno! Contacta con el Flat admin.'),
                   SizedBox(height: 10,),
                   FlatButton(
                       child: Text('Volver a intentar'),

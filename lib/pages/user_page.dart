@@ -3,6 +3,8 @@ import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/transitions/horizontal_transition_left_to_right.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 import 'flat_page.dart';
 import 'home_page.dart';
@@ -125,7 +127,20 @@ class _UserState extends State<User> {
           break;
         case 1:
           {
-            print('Cerraríamos la sesión.');
+            sharedData.clear();
+            showToast('.Se ha cerrado la sesión',
+                context: context,
+                textStyle: TextStyle(fontSize: 16.0, color: Colors.white),
+                backgroundColor: Colors.deepPurple,
+                textPadding:
+                EdgeInsets.symmetric(vertical: 15, horizontal: 30.0),
+                borderRadius: BorderRadius.circular(15),
+                textAlign: TextAlign.justify,
+                textDirection: TextDirection.rtl);
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login', (Route<dynamic> route) => false);
+            });
           }
           break;
       }

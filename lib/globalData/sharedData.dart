@@ -29,9 +29,7 @@ class SharedData {
   List<TaskModel> tasksFlat = new List<TaskModel>();
   ChatService chatService = new ChatService();
   final chatStream = new StreamController<List<ChatMessageModel>>.broadcast();
-
   Map usersInFlat = new Map();
-
   EventModel eventDetails = new EventModel();
   List<UsersInFlatModel> usersInFlatToCreateEvent = new List<
       UsersInFlatModel>();
@@ -111,4 +109,30 @@ class SharedData {
 
   EventModel getEventDetails() => this.eventDetails;
 
+  clearFlat(){
+    this.infoUser.setIdPiso(null);
+    this.infoFlat = null;
+    this.chatRunning = false;
+    this.eventsFlat.clear();
+    this.tenantsFlat.clear();
+    this.tasksFlat.clear();
+    this.chatService.stopChatService();
+    this.usersInFlat.clear();
+    this.usersInFlatToCreateEvent.clear();
+  }
+
+  // Clear the the content of this single tone
+  clear() {
+//    instance = new SharedData();
+    this.infoUser = null;
+    this.infoFlat = null;
+    this.chatRunning = false;
+    this.messages.clear();
+    this.eventsFlat.clear();
+    this.tenantsFlat.clear();
+    this.tasksFlat.clear();
+    this.chatService.stopChatService();
+    this.usersInFlat.clear();
+    this.usersInFlatToCreateEvent.clear();
+  }
 }

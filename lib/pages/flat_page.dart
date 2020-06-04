@@ -120,7 +120,6 @@ class _FlatState extends State<Flat> {
 
   void initState() {
     super.initState();
-
     // Method to load a widget after full loaded page
     colorList.add(Colors.pink[100]);
     colorList.add(Colors.blue[100]);
@@ -171,13 +170,35 @@ class _FlatState extends State<Flat> {
               child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Theme(
-                    data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                    data: Theme.of(context).copyWith(
+                        dividerColor: Colors.transparent),
                     child: ExpansionTile( //  Inside a theme in order to delete the divider color of expansion tile
-                      title: Text(tenants.elementAt(index).getFirstname() + ' ' +
-                          tenants.elementAt(index).getLastname(), style: cardHeader,),
+                      title: Row(
+                        children: [
+                          if (tenants.elementAt(index).getUrlAvatar() ==
+                              null) CircleAvatar(
+                            radius: 20,
+                            child: Text(tenants.elementAt(index)
+                                .getFirstname()[0] +
+                                tenants.elementAt(index).getLastname()[0],
+                              style: TextStyle(fontSize: 20),),
+                          ),
+                          if (tenants.elementAt(index).getUrlAvatar() !=
+                              null) CircleAvatar(
+                              radius: 20,
+                              backgroundImage: NetworkImage(tenants.elementAt(
+                                  index).getUrlAvatar())
+                          ),
+                          SizedBox(width: 16,),
+                          Text(tenants.elementAt(index).getFirstname() + ' ' +
+                              tenants.elementAt(index).getLastname(),
+                            style: cardHeader,),
+                        ],
+                      ),
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 1),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 1),
                           child: Column(
                             children: [
                               Row(
@@ -214,7 +235,8 @@ class _FlatState extends State<Flat> {
                                     ],
                                   ),
                                   SizedBox(width: 10,),
-                                  Text(tenants.elementAt(index).getPhoneNumber(),
+                                  Text(
+                                    tenants.elementAt(index).getPhoneNumber(),
                                     style: inCard,),
                                 ],
                               ),
@@ -236,6 +258,7 @@ class _FlatState extends State<Flat> {
 
   Widget _showFlatData() {
     if (sharedData.getFlat() != null) {
+      int availability = sharedData.getFlat().getMaxPersons() - sharedData.getFlat().getNumPersons();
       return Card(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15.0))),
@@ -251,7 +274,30 @@ class _FlatState extends State<Flat> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Nombre:', style: inMainCardStyle),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Nombre:', style: inMainCardStyle),
+                          Stack(
+                            children: <Widget>[
+                              Positioned(
+                                left: 14.0,
+                                top: 14.0,
+                                child: Icon(Icons.border_color, color: Colors
+                                    .black26,),
+                              ),
+                              IconButton(
+                                  icon: new Icon(Icons.border_color,
+                                    color: Colors.lightBlue,),
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/flatUpdateAttributes').whenComplete(() => _setState());
+                                  }
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
                       SizedBox(height: 5),
                       Text('   ' + sharedData.getFlat().getName(),
                         style: inMainCardInfoStyle,),
@@ -261,10 +307,24 @@ class _FlatState extends State<Flat> {
                       Text('   ' + sharedData.getFlat().getDescription(),
                         style: inMainCardInfoStyle,),
                       SizedBox(height: 10),
-                      Text('Número máximo de inquilinos:', style: inMainCardStyle),
+                      Text('Número de inquilinos:', style: inMainCardStyle),
                       SizedBox(height: 5),
-                      Text('   ' + sharedData.getFlat().getMaxPersons().toString(),
-                        style: inMainCardInfoStyle,),
+                      if (sharedData.getFlat().getFull() || sharedData.getFlat().getNumPersons() == sharedData.getFlat().getMaxPersons()) Row(
+                        children: [
+                          Text('   ' + sharedData.getFlat().getNumPersons().toString() + '/' + sharedData.getFlat().getMaxPersons().toString(),
+                            style: TextStyle(
+                                fontSize: 18, color: Colors.red, fontStyle: FontStyle.italic),),
+                        ],
+                      ),
+                      if (!sharedData.getFlat().getFull() && sharedData.getFlat().getMaxPersons() > sharedData.getFlat().getNumPersons()) Row(
+                        children: [
+                          Text('   ' + sharedData.getFlat().getNumPersons().toString() + '/' + sharedData.getFlat().getMaxPersons().toString(),
+                            style: inMainCardInfoStyle,),
+                          SizedBox(width: 16,),
+                          Text('Hay ' + availability.toString() + ' plazas libres.', style: TextStyle(
+                              fontSize: 14, color: Colors.green, fontStyle: FontStyle.italic), ),
+                        ],
+                      ),
                       SizedBox(height: 10),
                       Text('Identificador:', style: inMainCardStyle),
                       Row(
@@ -388,6 +448,11 @@ class _FlatState extends State<Flat> {
     else {
       return Text('   No estás registrado en un piso.', style: inMainCardStyle);
     }
+  }
+
+  void _setState(){
+    setState(() {
+    });
   }
 
 }

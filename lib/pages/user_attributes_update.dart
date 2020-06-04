@@ -139,7 +139,9 @@ class _UserUpdateAttributesState extends State<UserUpdateAttributes> {
         height: 45,
         width: 160,
         child: FlatButton(onPressed: () async  {
-          userToUpdate = sharedData.getUser();
+          userToUpdate.setEmail(sharedData.getUser().getEmail());
+          userToUpdate.setPhoneNumber(sharedData.getUser().getPhoneNumber());
+          userToUpdate.setUrlAvatar(sharedData.getUser().getUrlAvatar());
           if (newEmailController.text == repeatEmailController.text && newEmailController.text.length > 0){
             userToUpdate.setEmail(newEmailController.text);
             emailGoingUpdate = true;
@@ -156,6 +158,9 @@ class _UserUpdateAttributesState extends State<UserUpdateAttributes> {
           if (emailGoingUpdate || phoneNumberGoingUpdate || avatarGoingUpdate){
             int res = await userService.updateUser(this.userToUpdate);
             if( res == 0){
+              sharedData.getUser().setEmail(userToUpdate.getEmail());
+              sharedData.getUser().setPhoneNumber(userToUpdate.getPhoneNumber());
+              sharedData.getUser().setUrlAvatar(userToUpdate.getUrlAvatar());
               Navigator.pop(context);
               showToast('.Datos actualizados correctamente',
                   context: context,

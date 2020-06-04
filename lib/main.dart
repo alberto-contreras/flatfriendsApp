@@ -1,6 +1,7 @@
 import 'package:flatfriendsapp/pages/chat_page.dart';
 import 'package:flatfriendsapp/pages/eventDetails_page.dart';
 import 'package:flatfriendsapp/pages/event_page.dart';
+import 'package:flatfriendsapp/pages/flat_attriubutes_update.dart';
 import 'package:flatfriendsapp/pages/task_page.dart';
 import 'package:flatfriendsapp/pages/flat_page.dart';
 import 'package:flatfriendsapp/pages/home_page.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         //  Flat pages
         '/flat': (context) => Flat(),
         '/regflat': (context) => RegisterFlat(),
+        '/flatUpdateAttributes': (context) => FlatUpdateAttributes(),
 
         // Miscellanea
         '/chat': (context) => Chat(),
