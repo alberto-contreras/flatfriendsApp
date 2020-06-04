@@ -8,6 +8,7 @@ import 'package:flatfriendsapp/transitions/horizontal_transition_right_to_left.d
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'flat_page.dart';
 
@@ -75,6 +76,20 @@ class _HomeState extends State<Home> {
     if (sharedData.getUser().getIdPiso() == null) {
       // Method to load a widget after full loaded page
       WidgetsBinding.instance.addPostFrameCallback((_) => _warningNoFlat());
+    }
+    _saveSharedPreferences();
+  }
+
+  // Save logging in data to auto logging in the next time
+  void _saveSharedPreferences() async {
+    // obtain shared preferences
+    final prefs = await SharedPreferences.getInstance();
+
+    final credentials = prefs.getString('user') ?? 0;
+    if (credentials == 0){
+      prefs.setString('user', sharedData.getUser().getEmail());
+      prefs.setString('password', sharedData.getUser().getEmail());
+      prefs.setBool('googleAuth', sharedData.getUser().getGoogleAuth());
     }
   }
 

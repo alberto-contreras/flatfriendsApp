@@ -8,6 +8,7 @@ import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedData {
 
@@ -17,6 +18,7 @@ class SharedData {
   FlatModel infoFlat;
   String token;
   String apiUrl = 'http://10.0.2.2:3702';
+
 //  String apiUrl = 'http://147.83.7.155:3702';
 //  String apiUrl = 'http://localhost:3702';
 
@@ -109,7 +111,7 @@ class SharedData {
 
   EventModel getEventDetails() => this.eventDetails;
 
-  clearFlat(){
+  clearFlat() {
     this.infoUser.setIdPiso(null);
     this.infoFlat = null;
     this.chatRunning = false;
@@ -122,8 +124,12 @@ class SharedData {
   }
 
   // Clear the the content of this single tone
-  clear() {
+  clear() async {
 //    instance = new SharedData();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('user');
+    prefs.remove('password');
+    prefs.remove('googleAuth');
     this.infoUser = null;
     this.infoFlat = null;
     this.chatRunning = false;

@@ -304,8 +304,11 @@ class _FlatState extends State<Flat> {
                       SizedBox(height: 10),
                       Text('Descripción:', style: inMainCardStyle),
                       SizedBox(height: 5),
-                      Text('   ' + sharedData.getFlat().getDescription(),
-                        style: inMainCardInfoStyle,),
+                      Container(
+                        padding: EdgeInsets.only(left: 14),
+                        child: Text(sharedData.getFlat().getDescription(),
+                          style: inMainCardInfoStyle,),
+                      ),
                       SizedBox(height: 10),
                       Text('Número de inquilinos:', style: inMainCardStyle),
                       SizedBox(height: 5),

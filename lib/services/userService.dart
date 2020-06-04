@@ -47,6 +47,7 @@ class UserService {
       var response = await http.post(this.url + '/login', body: json.encode({
         'email' : userToLog.getEmail(),
         'password' : userToLog.getPassword(),
+        'googleAuth': userToLog.getGoogleAuth()
       }),
           headers: {"accept": "application/json", "content-type": "application/json" });
       print(response.statusCode);
