@@ -33,34 +33,6 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text('Flat & Friends'),
         actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () async {
-                  if(sharedData.getUser().getIdPiso() != null) {
-                    await flatService.getTaskFlat();
-                    await flatService.getUsersFlatForTask();
-                    //print(sharedData.eventsFlat);
-                    Navigator.pushNamed(context, '/stats');
-                  }
-                  else{
-                    _alertNotInAFlat();
-                  }
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.insert_chart,
-                      size: 26.0,
-                      color: Colors.black,
-                    ),
-                    Text('Estadísticas',style: TextStyle(fontSize: 10),),
-                  ],
-                )
-              )
-          ),
         ],
       ),
       body: Center(
@@ -74,6 +46,7 @@ class _HomeState extends State<Home> {
               _chatButton(),
               _eventButton(),
               _taskButton(),
+              _StatsButton(),
             ],
           )
       ),
@@ -352,7 +325,33 @@ class _HomeState extends State<Home> {
         color: Colors.yellow[800],
         textColor: Colors.white);
   }
-
+  Widget _StatsButton() {
+    return FlatButton(onPressed: () async {
+      if(sharedData.getUser().getIdPiso() != null) {
+        await flatService.getTaskFlat();
+        await flatService.getUsersFlatForTask();
+        //print(sharedData.eventsFlat);
+        Navigator.pushNamed(context, '/stats');
+      }
+      else{
+        _alertNotInAFlat();
+      }
+    },
+        child: Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Icon(Icons.show_chart,size: 120,),
+              Text('Estadísticas',)
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
+        ),
+        color: Colors.black,
+        textColor: Colors.white);
+  }
   Widget _textFielRegFlat() {
     return Container(
       margin: EdgeInsets.all(10),

@@ -30,6 +30,7 @@ dependencies:
   datetime_picker_formfield: ^1.0.0
   flutter_map: any
   fl_chart: ^0.9.4
+  pie_chart: ^3.1.1
 
 
   # The following adds the Cupertino Icons font to your application.

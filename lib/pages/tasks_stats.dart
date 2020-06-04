@@ -79,8 +79,9 @@ class _TaskStatsState extends State<TaskStats> {
                               onTap: () {
                               },
                               text: [
-                                "Tareas del piso acabadas esta semana",
                                 "Buen trabajo!",
+                                "Tareas del piso acabadas esta semana",
+
                               ],
                               textStyle: TextStyle(
                                   fontSize: 15.0,
@@ -122,7 +123,6 @@ class _TaskStatsState extends State<TaskStats> {
                           },
                           text: [
                             "Total de tareas del piso esta semana",
-                            "Buen trabajo!"
                           ],
                           textStyle: TextStyle(
                               fontSize: 15.0,

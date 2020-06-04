@@ -236,12 +236,12 @@ class FlatService {
   }
 
   Future<int> getUsersFlatForEvent() async {
-    print('Searching all the users of a Flat');
+    //print('Searching all the users of a Flat');
     try {
       final response = await http.get(this.url + '/usersFlat/'+sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
 
-      print(response.body);
+      //print(response.body);
 
 
       if (response.statusCode == 404) {
@@ -310,12 +310,6 @@ class FlatService {
     try {
       final response = await http.get(this.url + '/task/getFlatTask/'+sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
-
-      print('----');
-      print(response.body);
-      print('----');
-
-
       if (response.statusCode == 404) {
         print('No tasks found');
         return 1;
@@ -355,7 +349,7 @@ class FlatService {
       final response = await http.put(this.url + '/task/rotateTask/' + sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
 
-      print(response.body);
+      //print(response.body);
 
 
       if (response.statusCode == 404) {
@@ -396,7 +390,7 @@ class FlatService {
       final response = await http.get(this.url + '/usersFlat/'+sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
 
-      print(response.body);
+      //print(response.body);
 
 
       if (response.statusCode == 404) {

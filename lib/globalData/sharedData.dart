@@ -7,8 +7,7 @@ import 'package:flatfriendsapp/models/Task.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
-import 'package:flatfriendsapp/services/userService.dart';
-import 'package:flutter/cupertino.dart';
+
 
 class SharedData {
 

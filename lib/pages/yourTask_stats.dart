@@ -78,7 +78,7 @@ class _YourTaskStatsState extends State<YourTaskStats> {
                 leading: Icon(Icons.pie_chart,color: Colors.white,size: 40,),
                 title: Text('Progreso de tus Tareas esta semana ',style:
                 TextStyle(color: Colors.white,),),
-                subtitle: Text('Pendientes y finalizada',style:
+                subtitle: Text('Pendientes y finalizadas',style:
                 TextStyle(color: Colors.white,),),
               ),
               _generalStats()
@@ -328,94 +328,5 @@ class _YourTaskStatsState extends State<YourTaskStats> {
           return null;
       }
     });
-  }
-  Widget _detailedStats(){
-    if(tasks.length != 0) {
-      return AspectRatio(
-        aspectRatio: 1.8,
-        child: Card(
-          color: Colors.white,
-          elevation: 12,
-          child: Row(
-            children: <Widget>[
-              const SizedBox(
-                height: 18,
-              ),
-              Expanded(
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: PieChart(
-                    PieChartData(
-                        pieTouchData: PieTouchData(
-                            touchCallback: (pieTouchResponse) {
-                              setState(() {
-                                if (pieTouchResponse
-                                    .touchInput is FlLongPressEnd ||
-                                    pieTouchResponse.touchInput is FlPanEnd) {
-                                  touchedIndex = -1;
-                                } else {
-                                  touchedIndex =
-                                      pieTouchResponse.touchedSectionIndex;
-                                }
-                              });
-                            }),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 40,
-                        sections: showingSectionsGeneralStatsTasks()),
-                  ),
-                ),
-              ),
-              Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:  <Widget>[
-                    Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 10.0,
-                            height: 10.0,
-                            child: const DecoratedBox(
-                              decoration: const BoxDecoration(
-                                  color: Colors.green
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 5,),
-                          Text('Hecho'),
-                        ]),
-                    SizedBox(height: 5,),
-                    Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 10.0,
-                            height: 10.0,
-                            child: const DecoratedBox(
-                              decoration: const BoxDecoration(
-                                  color: Colors.grey
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 5,),
-                          Text('No hecho'),
-                        ]),
-                    SizedBox(height: 5,),
-
-                  ]
-              ),
-              const SizedBox(
-                width: 28,
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-    else{
-      return Card(elevation: 12,child:Text('Estadísticas no disponibles'));
-    }
   }
 }
