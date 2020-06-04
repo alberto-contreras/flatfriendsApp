@@ -6,6 +6,9 @@ import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/Task.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
+import 'package:flatfriendsapp/models/UsersInDebtModel.dart';
+import 'package:flatfriendsapp/models/Debt.dart';
+
 import 'package:flatfriendsapp/services/chatService.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -16,26 +19,32 @@ class SharedData {
   UserModel infoUser;
   FlatModel infoFlat;
   String token;
-//  String apiUrl = 'http://10.0.2.2:3702';
-  String apiUrl = 'http://147.83.7.155:3702';
-//  String apiUrl = 'http://localhost:3702';
+
+ String apiUrl = 'http://10.0.2.2:3702';
+ // String apiUrl = 'http://147.83.7.155:3702';
+  //String apiUrl = 'http://localhost:3702';
 
   String urlUser;
   String urlFlat;
   String urlUserAvatar; // Provisional! Lo suyo sería meterlo como atributo no requerido de user (No lo implemento para no dificultar más aún en el merge)
   bool chatRunning = false;
+
   List<ChatMessageModel> messages = new List<ChatMessageModel>();
   List<EventModel> eventsFlat = new List<EventModel>();
   List<UserModel> tenantsFlat = new List<UserModel>();
   List<TaskModel> tasksFlat = new List<TaskModel>();
+  List<DebtModel> debtFlat = new List<DebtModel>();
+
   ChatService chatService = new ChatService();
   final chatStream = new StreamController<List<ChatMessageModel>>.broadcast();
 
   Map usersInFlat = new Map();
 
   EventModel eventDetails = new EventModel();
-  List<UsersInFlatModel> usersInFlatToCreateEvent = new List<
-      UsersInFlatModel>();
+  List<UsersInFlatModel> usersInFlatToCreateEvent = new List<UsersInFlatModel>();
+
+  DebtModel debtDetails = new DebtModel();
+  List<UsersInDebtModel> usersInFlatToShareDebts = new List<UsersInDebtModel>();
 
 
   SharedData() {
@@ -68,6 +77,10 @@ class SharedData {
     this.eventsFlat.add(event);
   }
 
+  setDebt(DebtModel debt){
+    this.debtFlat.add(debt);
+  }
+
   setTenant(UserModel value) {
     this.tenantsFlat.add(value);
   }
@@ -89,13 +102,23 @@ class SharedData {
     this.usersInFlatToCreateEvent.add(user);
   }
 
+  setUserToShareDebt(UsersInDebtModel user){
+    this.usersInFlatToShareDebts.add(user);
+  }
+
   setEventDetails(EventModel event) {
     this.eventDetails = event;
+  }
+
+  setDebtDetails(DebtModel debt) {
+    this.debtDetails = debt;
   }
 
   List<ChatMessageModel> getMessages() => this.messages;
 
   List<EventModel> getEvents() => this.eventsFlat;
+
+  List<DebtModel> getDebts() => this.debtFlat;
 
   List<UserModel> getTenants() => this.tenantsFlat;
 
@@ -103,6 +126,8 @@ class SharedData {
 
   List<UsersInFlatModel> getUsersInFlatForEvent() =>
       this.usersInFlatToCreateEvent;
+
+  List<UsersInDebtModel> getUsersInFlatToShareDebts() => this.usersInFlatToShareDebts;
 
   UserModel getUser() => this.infoUser;
 
@@ -117,5 +142,7 @@ class SharedData {
   Map getUsersInFlatForTask() => this.usersInFlat;
 
   EventModel getEventDetails() => this.eventDetails;
+
+  DebtModel getDebtDetails() => this.debtDetails;
 
 }

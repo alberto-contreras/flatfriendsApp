@@ -12,6 +12,9 @@ import 'package:flatfriendsapp/pages/register_page.dart';
 import 'package:flatfriendsapp/pages/splash_page.dart';
 import 'package:flatfriendsapp/pages/user_settings_page.dart';
 import 'package:flatfriendsapp/pages/user_page.dart';
+import 'package:flatfriendsapp/pages/debt_page.dart';
+import 'package:flatfriendsapp/pages/register_debt_page.dart';
+import 'package:flatfriendsapp/pages/debtDetails_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -38,6 +41,9 @@ class MyApp extends StatelessWidget {
         '/task': (context) => Task(),
         '/regtask': (context) => RegisterTask(),
         '/eventDetails': (context) => EventDetails(),
+        '/debt': (context) => Debt(),
+        '/regdebt': (context) => RegisterDebt(),
+        '/debtDetails': (context) => DebtDetails(),
       },
     );
   }

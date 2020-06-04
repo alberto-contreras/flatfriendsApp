@@ -44,6 +44,7 @@ class _HomeState extends State<Home> {
               _chatButton(),
               _eventButton(),
               _taskButton(),
+              _debtButton(),
             ],
           )
       ),
@@ -364,6 +365,33 @@ class _HomeState extends State<Home> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
         ),
         color: Colors.red,
+        textColor: Colors.white);
+  }
+
+  Widget _debtButton() {
+    return FlatButton(onPressed: () async {
+      if(sharedData.getUser().getIdPiso() != null) {
+        await flatService.getDebtsFlat();
+        //print(sharedData.eventsFlat);
+        Navigator.pushNamed(context, '/debt');
+      }
+      else{
+        _alertNotInAFlat();
+      }
+    },
+        child: Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Image.asset('graphics/piggy bank.png',scale: 4.5,),
+              Text('Gastos',)
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
+        ),
+        color: Colors.purple[800],
         textColor: Colors.white);
   }
 
