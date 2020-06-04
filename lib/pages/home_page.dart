@@ -7,7 +7,7 @@ import 'package:flatfriendsapp/transitions/horizontal_transition_left_to_right.d
 import 'package:flatfriendsapp/transitions/horizontal_transition_right_to_left.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:platform_alert_dialog/platform_alert_dialog.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'flat_page.dart';
 
@@ -18,6 +18,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
   TextEditingController idFlatController = new TextEditingController();
   var ioConnection;
   bool visible = false;
@@ -97,7 +98,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-
   // Pop de warning en caso de que el usuario aún no tenga su piso registrado
   Widget _warningNoFlat() {
     showDialog(context: context,
@@ -122,31 +122,44 @@ class _HomeState extends State<Home> {
                     ],
                   ),
 
-                 if (!visible) Row(
+                  if (!visible) Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       FlatButton(
-                            child: Text('Registrar nuevo'),
-                            shape: StadiumBorder(),
-                            color: Colors.green,
-                            textColor: Colors.white,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              Navigator.pushNamed(context, '/regflat');
-                            }
-                        ),
+                          child: Text('Registrar nuevo'),
+                          shape: StadiumBorder(),
+                          color: Colors.green,
+                          textColor: Colors.white,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.pushNamed(context, '/regflat');
+                          }
+                      ),
                       FlatButton(
-                            child: Text('Añadir el tuyo'),
-                            shape: StadiumBorder(),
-                            color: Colors.blueAccent,
-                            textColor: Colors.white,
-                            onPressed: () {
-                              setState(() {
-                                visible = !visible;
-                              });
-                            }
+                          child: Text('Añadir el tuyo'),
+                          shape: StadiumBorder(),
+                          color: Colors.blueAccent,
+                          textColor: Colors.white,
+                          onPressed: () {
+                            setState(() {
+                              visible = !visible;
+                            });
+                          }
                       ),
                     ],
+                  ),
+                  if (!visible) FlatButton(
+                      child: Text('Ver pisos disponibles'),
+                      shape: StadiumBorder(),
+                      color: Colors.black,
+                      textColor: Colors.white,
+                      onPressed: () async {
+                        Position currentPosition = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                        sharedData.setCurrentPosition(currentPosition);
+                        sharedData.availableFlats = await flatService.getAvalibleFlats();
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, '/availableFlats');
+                      }
                   ),
                   if (!visible) SizedBox(height: 16,),
                   if (visible) Column(
@@ -265,9 +278,12 @@ class _HomeState extends State<Home> {
   // Button to access to the chat
   Widget _chatButton() {
     return FlatButton(
-        onPressed: () {
+        onPressed: () async {
           if (sharedData.chatRunning == true && sharedData.getUser().getIdPiso() != null){
-            Navigator.pushNamed(context, '/chat');
+            await Navigator.pushNamed(context, '/chat');
+            print("antes");
+            sharedData.chatStream.close();
+            print("despues");
           }
           else{
             _alertNotInAFlat();

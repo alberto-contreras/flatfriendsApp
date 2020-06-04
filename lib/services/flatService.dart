@@ -86,7 +86,7 @@ class FlatService {
         'description': eventToAdd.getDescription(),
         'date': eventToAdd.getDate(),
         'users': jsonList,
-        },
+      },
       ),
           headers: {"accept": "application/json", "content-type": "application/json"});
       if (response.statusCode == 500) {
@@ -191,7 +191,7 @@ class FlatService {
       final response = await http.get(this.url + '/event/'+sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
 
-          //print(response.body);
+      //print(response.body);
 
 
       if (response.statusCode == 404) {
@@ -456,7 +456,7 @@ class FlatService {
       return 1;
     }
   }
-  
+
   // Function to get a more detailed data from a flat
   Future<int> getTenantsFlat() async {
     print('Searching all the Tenants of a Flat');
@@ -514,6 +514,38 @@ class FlatService {
     catch (error) {
       print(error);
       return 1;
+    }
+  }
+
+  Future<List<FlatModel>> getAvalibleFlats() async {
+    print('Getting the data of available Flats');
+    List<FlatModel> availableFlats = List<FlatModel>();
+    try {
+      final response = await http.get(
+          this.url + '/available',
+          headers: {
+            "accept": "application/json",
+            "content-type": "application/json"
+          });
+      List extractAvailableFlats = jsonDecode(response.body);
+      sharedData.getTenants().clear();
+      extractAvailableFlats.forEach((flat) {
+        FlatModel flatToAdd = new FlatModel();
+        Map extractLocation = flat['location'];
+        flatToAdd.setID(flat['_id']);
+        flatToAdd.setName(flat['name']);
+        flatToAdd.setDescription(flat['description']);
+        flatToAdd.setMaxPersons(flat['maxPersons']);
+        flatToAdd.setFull(flat['full']);
+        flatToAdd.setLocation(
+            extractLocation['latitude'], extractLocation['longitude']);
+        availableFlats.add(flatToAdd);
+      });
+      return availableFlats;
+    }
+    catch (error) {
+      print(error);
+      return error;
     }
   }
 }

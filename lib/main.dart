@@ -1,3 +1,4 @@
+import 'package:flatfriendsapp/pages/available_flats_page.dart';
 import 'package:flatfriendsapp/pages/chat_page.dart';
 import 'package:flatfriendsapp/pages/eventDetails_page.dart';
 import 'package:flatfriendsapp/pages/event_page.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/task': (context) => Task(),
         '/regtask': (context) => RegisterTask(),
         '/eventDetails': (context) => EventDetails(),
+        '/availableFlats': (context) => AvailableFlats(),
       },
     );
   }

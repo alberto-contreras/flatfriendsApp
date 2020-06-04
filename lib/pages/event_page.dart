@@ -1,10 +1,6 @@
-import 'dart:convert';
 import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:platform_alert_dialog/platform_alert_dialog.dart';
-import 'package:http/http.dart'as http;
 
 class Event extends StatefulWidget {
   @override

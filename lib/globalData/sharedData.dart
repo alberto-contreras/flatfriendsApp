@@ -6,8 +6,10 @@ import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/Task.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
+import 'package:flatfriendsapp/pages/available_flats_page.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 
 class SharedData {
 
@@ -29,13 +31,21 @@ class SharedData {
   List<UserModel> tenantsFlat = new List<UserModel>();
   List<TaskModel> tasksFlat = new List<TaskModel>();
   ChatService chatService = new ChatService();
-  final chatStream = new StreamController<List<ChatMessageModel>>.broadcast();
+  final chatStream = new StreamController<List<ChatMessageModel>>();
 
   Map usersInFlat = new Map();
 
   EventModel eventDetails = new EventModel();
   List<UsersInFlatModel> usersInFlatToCreateEvent = new List<
       UsersInFlatModel>();
+
+  List<FlatModel> availableFlats = new List<FlatModel>();
+
+  Position currentPosition = new Position();
+
+  StreamSubscription<Position> _positionStreamSubscription;
+
+
 
 
   SharedData() {
@@ -92,6 +102,18 @@ class SharedData {
   setEventDetails(EventModel event) {
     this.eventDetails = event;
   }
+
+  setAvailableFlats(List<FlatModel> availableFlats) {
+    this.availableFlats = availableFlats;
+  }
+
+  setCurrentPosition(Position position) {
+    this.currentPosition = position;
+  }
+
+  Position getCurrentPosition() => this.currentPosition;
+
+  List<FlatModel> getAvailableFlats() => this.availableFlats;
 
   List<ChatMessageModel> getMessages() => this.messages;
 

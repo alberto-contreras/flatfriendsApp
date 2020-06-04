@@ -29,6 +29,9 @@ dependencies:
   share: ^0.6.3+1
   datetime_picker_formfield: ^1.0.0
   flutter_map: any
+  user_location: any
+  geolocator: ^5.3.1
+  flutter_map_marker_popup: ^0.1.4
 
 
   # The following adds the Cupertino Icons font to your application.
