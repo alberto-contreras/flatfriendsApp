@@ -75,7 +75,7 @@ class _FlatUpdateAttributesState extends State<FlatUpdateAttributes> {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
           labelText: sharedData.getFlat().getName(),
           hintText: 'Escribe el nuevo nombre del piso',
-          icon: Icon(Icons.assignment),
+          icon: Icon(Icons.subject),
         ),
       );
 
@@ -123,6 +123,9 @@ class _FlatUpdateAttributesState extends State<FlatUpdateAttributes> {
             if (maxPersons >= sharedData.getFlat().getNumPersons()) {
               flatToUpdate.setMaxPersons(maxPersons);
             }
+            else{
+              _alertError(2);
+            }
             maxPersonsGoingUpdate = true;
           }
           print('Dentro Update Flat: ' + nameGoingUpdate.toString() + descriptionGoingUpdate.toString() + maxPersonsGoingUpdate.toString());
@@ -144,11 +147,12 @@ class _FlatUpdateAttributesState extends State<FlatUpdateAttributes> {
                   textDirection: TextDirection.rtl);
             }
             else{
+              _alertError(3);
               print('Error al actualizar piso');
             }
           }
           else {
-            _alertError();
+            _alertError(1);
           }
         },
             child: Text('Actualizar', style: textButtonStyle,),
@@ -173,7 +177,8 @@ class _FlatUpdateAttributesState extends State<FlatUpdateAttributes> {
     );
   }
 
-  Widget _alertError() {
+  // Alerts to see errors with flat update
+  Widget _alertError(int num) {
     showDialog(context: context,
         barrierDismissible: true,
         builder: (context) {
@@ -187,7 +192,21 @@ class _FlatUpdateAttributesState extends State<FlatUpdateAttributes> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 16, right: 16),
-                    child: Text('No has rellenado ningún campo.', style: TextStyle(fontSize: 16), textAlign: TextAlign.center,),
+                    child: Column(
+                      children: [
+                        if (num == 1) Text('No has rellenado ningún campo.',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center,),
+                        if (num == 2) Text(
+                          'El número máximo de inquilinos no puede ser menor a los que ya hay en el piso.',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center,),
+                        if (num == 3) Text(
+                          'Error con la petición. No se ha podido actualizar.',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center,),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 20,),
                   FlatButton(

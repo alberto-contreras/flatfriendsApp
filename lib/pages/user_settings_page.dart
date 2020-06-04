@@ -70,8 +70,6 @@ class _UserSettings extends State<UserSettings> {
     ],
   );
 
-
-
   Widget _onDeleteAccountAlert() {
     showDialog(context: context,
       barrierDismissible: false,
