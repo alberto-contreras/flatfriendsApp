@@ -20,6 +20,8 @@ class AvailableFlats extends StatefulWidget {
 
 class _AvailableFlatsState extends State<AvailableFlats> {
 
+  TextEditingController rangeTextBox = new TextEditingController();
+
   UserService userService = new UserService();
   FlatService flatService = new FlatService();
 
@@ -123,19 +125,7 @@ class _AvailableFlatsState extends State<AvailableFlats> {
                             alignment: Alignment.bottomCenter,
                             child: Column(
                               children: <Widget>[
-                                Card(
-                                  margin: EdgeInsets.all(4),
-                                  child: ListTile(//Link on press function
-                                    title:  Row(children: <Widget>[
-                                      Expanded(
-                                        child: Text(flat.getName(), style: TextStyle(fontWeight: FontWeight.bold),),
-                                      ),
-                                      Text('(a ' + calculateDistance(_position.latitude, _position.longitude, double.parse(flat.getLocation().latitude), double.parse(flat.getLocation().longitude)).round().toString() + ' Km)'),
-                                    ],),
-                                    subtitle: Text(flat.getDescription()),
-                                    trailing: geiInButton(flat.getID()),
-                                  ),
-                                ),
+                                flatCard(flat),
                                 Icon(Icons.location_on, color: Colors.black54,
                                   size: 45.0,),
                               ],
@@ -202,27 +192,7 @@ class _AvailableFlatsState extends State<AvailableFlats> {
                   itemCount: matchedFlats.length,
                   itemBuilder: (context,index){ //This function will make a widget tree of the one we choose
 
-                    return Card(
-                      margin: const EdgeInsets.only(
-                        top: 16.0,
-                        bottom: 1.0,
-                        left: 24.0,
-                        right: 24.0,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(11.0),
-                      ),
-                      child: ListTile(//Link on press function
-                        title:  Row(children: <Widget>[
-                          Expanded(
-                            child: Text(matchedFlats.elementAt(index).getName(), style: TextStyle(fontWeight: FontWeight.bold),),
-                          ),
-                          Text('(a ' + calculateDistance(_position.latitude, _position.longitude, double.parse(matchedFlats.elementAt(index).getLocation().latitude), double.parse(matchedFlats.elementAt(index).getLocation().longitude)).round().toString() + ' Km)'),
-                        ],),
-                        subtitle: Text(matchedFlats.elementAt(index).getDescription()),
-                        trailing: geiInButton(matchedFlats.elementAt(index).getID()),
-                      ),
-                    );
+                    return flatCard(matchedFlats.elementAt(index));
                   },
                 ),
               ),
@@ -254,6 +224,7 @@ class _AvailableFlatsState extends State<AvailableFlats> {
                                       range = input;
                                     }
                                   }),
+                                  controller: rangeTextBox,
                                   decoration: InputDecoration(
                                     hintText: range.toString(),
                                   ),
@@ -270,6 +241,7 @@ class _AvailableFlatsState extends State<AvailableFlats> {
                             value: range.toDouble(),
                             onChanged: (value) => setState(() {
                               range = value.round();
+                              rangeTextBox.text = range.toString();
                             }),
                           ),
                         ],
@@ -316,6 +288,27 @@ class _AvailableFlatsState extends State<AvailableFlats> {
         Navigator.of(context).pop();
       }
     },);
+  }
+
+  Widget flatCard(FlatModel flat) {
+    return Card(
+      margin: const EdgeInsets.only(
+        top: 16.0,
+        bottom: 1.0,
+        left: 24.0,
+        right: 24.0,
+      ),
+      child: ListTile(//Link on press function
+        title:  Row(children: <Widget>[
+          Expanded(
+            child: Text(flat.getName(), style: TextStyle(fontWeight: FontWeight.bold),),
+          ),
+          Text('(a ' + calculateDistance(_position.latitude, _position.longitude, double.parse(flat.getLocation().latitude), double.parse(flat.getLocation().longitude)).round().toString() + ' Km)'),
+        ],),
+        subtitle: Text(flat.getDescription()),
+        trailing: geiInButton(flat.getID()),
+      ),
+    );
   }
 
   double calculateDistance(lat1, lon1, lat2, lon2){
