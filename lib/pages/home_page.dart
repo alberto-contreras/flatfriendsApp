@@ -7,7 +7,6 @@ import 'package:flatfriendsapp/transitions/horizontal_transition_left_to_right.d
 import 'package:flatfriendsapp/transitions/horizontal_transition_right_to_left.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'flat_page.dart';
@@ -80,7 +79,7 @@ class _HomeState extends State<Home> {
     _saveSharedPreferences();
   }
 
-  // Save logging in data to auto logging in the next time
+  // Save log in in data to auto log in the next time
   void _saveSharedPreferences() async {
     // obtain shared preferences
     final prefs = await SharedPreferences.getInstance();
@@ -102,6 +101,7 @@ class _HomeState extends State<Home> {
           Navigator.of(context).pop();
           Navigator.push(context,
               EnterLeftExitRightRoute(exitPage: Home(), enterPage: User()));
+
           break;
         case 2:
           Navigator.of(context).pop();

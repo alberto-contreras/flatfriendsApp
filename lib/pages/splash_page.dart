@@ -54,13 +54,12 @@ class Splash extends StatelessWidget {
     );
   }
 
-
   // Function to see if shared preferences have content or not
   void _loadSharedPreferences(final context) async {
     final prefs = await SharedPreferences.getInstance();
 
     // If shared preferences are empty, we obtain a 0
-    // If 0 --> regular login, If != 0 --> auto logging in
+    // If 0 --> regular log in, If != 0 --> auto log in
     final credentials = prefs.getString('user') ?? 0;
     if (credentials != 0) {
       userToLog.setEmail(prefs.getString('user'));

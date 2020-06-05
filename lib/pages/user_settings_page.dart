@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/pages/user_attributes_update.dart';
 import 'package:flatfriendsapp/pages/user_pass_update_page.dart';
@@ -105,9 +107,10 @@ class _UserSettings extends State<UserSettings> {
                     SizedBox(height: 8,),
                     SliderButton(
                       action: () async {
-                        if (passwordController.text == sharedData.getUser().getPassword()){
+                        if (passwordController.text == sharedData.getUser().getPassword() || sharedData.getUser().getGoogleAuth() == true){
                           Navigator.pop(context);
-                          int res = await userService.deleteUser();
+                          int res = await flatService.removeTenant(sharedData.getUser().getIdUser(), sharedData.getFlat().getID());
+                          res = await userService.deleteUser();
                           if (res == 0){
                             _goodByePopUp();
                           }
