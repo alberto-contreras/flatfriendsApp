@@ -132,7 +132,7 @@ class _YourTaskStatsState extends State<YourTaskStats> {
                 showTitles: true,
                 textStyle: TextStyle(
                     color: const Color(0xff7589a2), fontWeight: FontWeight.bold, fontSize: 14),
-                margin: 20,
+                margin: 25,
                 getTitles: (double value) {
                   switch (value.toInt()) {
                     case 0:
