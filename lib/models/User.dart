@@ -9,6 +9,8 @@ class UserModel {
   String _password;
   bool _googleAuth;
   String _urlUserAvatar;
+  int _allTasks;
+
 
   UserModel();
 
@@ -42,6 +44,9 @@ class UserModel {
   setGoogleAuth(bool value){
     this._googleAuth = value;
   }
+  setAllTasks(int value){
+    this._allTasks = value;
+  }
 
   setUrlAvatar(String value){
     this._urlUserAvatar = value;
@@ -63,5 +68,9 @@ class UserModel {
 
   bool getGoogleAuth() => this._googleAuth;
 
+
   String getUrlAvatar() => this._urlUserAvatar;
+
+  int getAllTasks() => this._allTasks;
+
 }

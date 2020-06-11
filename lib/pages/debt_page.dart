@@ -1,14 +1,18 @@
-import 'package:flatfriendsapp/models/Event.dart';
+import 'dart:convert';
+import 'package:flatfriendsapp/models/Debt.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:platform_alert_dialog/platform_alert_dialog.dart';
+import 'package:http/http.dart'as http;
 
-class Event extends StatefulWidget {
+class Debt extends StatefulWidget {
   @override
-  _EventState createState() => _EventState();
+  _DebtState createState() => _DebtState();
 }
 
-class _EventState extends State<Event> {
-  List<EventModel> events = sharedData.getEvents();
+class _DebtState extends State<Debt> {
+  List<DebtModel> debts = sharedData.getDebts();
   FlatService flatService = new FlatService();
   //This function it's going use getTime on wherever instance and then once we have the data re root to the home page
   @override
@@ -16,28 +20,27 @@ class _EventState extends State<Event> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.yellow[800],
-        title: Text('Eventos'),
+        backgroundColor: Colors.purple[800],
+        title: Text('Gastos'),
         centerTitle: true,
         elevation: 0,
       ),
       floatingActionButton: FlatButton(
           onPressed: () async{
-            await flatService.getUsersFlatForEvent();
-            await Navigator.pushNamed(context,'/regevent');
+            await flatService.getUsersFlatForDebt();
+            await Navigator.pushNamed(context,'/regdebt');
             //we put in a dynamic variable because when are doing a big async task
             //first we go to the event page and then after adding a new one we pop with a refresh
-            await flatService.getEventFlat();
-            print('Hola');
+            await flatService.getDebtsFlat();
             setState(() { });
           },
-          child: Text('Añadir Evento'),
+          child: Text('Añadir Gasto'),
           shape: StadiumBorder(),
-          color: Colors.yellow[800],
+          color: Colors.purple[800],
           textColor: Colors.white),
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(vertical:1.0, horizontal: 4.0),
-        itemCount: events.length,
+        itemCount: debts.length,
         itemBuilder: (context,index){ //This function will make a widget tree of the one we choose
 
           return Card(
@@ -47,28 +50,29 @@ class _EventState extends State<Event> {
               left: 24.0,
               right: 24.0,
             ),
-            color: getColorEvent(index),
+            color: getColorDebt(index),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(11.0),
             ),
 
             child: ListTile(
               onTap: () async {
-                print(events.elementAt(index).getName().toString());
-                sharedData.setEventDetails(events.elementAt(index));
-                await Navigator.pushNamed(context,'/eventDetails');
+                print(debts.elementAt(index).getConcept().toString());
+                sharedData.setDebtDetails(debts.elementAt(index));
+                await Navigator.pushNamed(context,'/debtDetails');
                 //we put in a dynamic variable because when are doing a big async task
                 //first we go to the event page and then after adding a new one we pop with a refresh
-                await flatService.getEventFlat();
+                await flatService.getDebtsFlat();
               },//Link on press function
               leading: Container(
                 padding: EdgeInsets.only(right: 12.0),
                 decoration: new BoxDecoration(
                     border: new Border(
                         right: new BorderSide(width: 1.0, color: Colors.white24))),
-                child: Icon(Icons.local_bar, color: Colors.white, size: 30,),
+                child: Icon(Icons.attach_money, color: Colors.green, size: 30,),
               ),
-              title: Text(events.elementAt(index).getName().toString()+' ('+events.elementAt(index).getOrganizer().toString()+')',
+              title: Text(debts.elementAt(index).getTotalAmount().toString() + 
+                          '€ - ' + debts.elementAt(index).getConcept().toString(),                          
                 style:TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
               subtitle: Row(
                 children: <Widget>[
@@ -85,7 +89,7 @@ class _EventState extends State<Event> {
                     flex: 4,
                     child: Padding(
                         padding: EdgeInsets.only(left: 10.0),
-                        child: Text('Aceptación',
+                        child: Text('Estado del pago',
                             style: TextStyle(color: Colors.white))),
                   )
                 ],
@@ -103,40 +107,32 @@ class _EventState extends State<Event> {
   }
   double getAccept(int position){
     double accept = 0;
-    for(int i = 0; i<events.elementAt(position).getUsers().length;i++){
-      if(events.elementAt(position).getUsers().elementAt(i).getStatus() == '1'){
+    for(int i = 0; i<debts.elementAt(position).getUsers().length;i++){
+      if(debts.elementAt(position).getUsers().elementAt(i).getIsPaid()){
         accept = accept +1;
       }
     }
-    double percent = accept/events.elementAt(position).getUsers().length;
+    double percent = accept/debts.elementAt(position).getUsers().length;
     return percent;
   }
-  Color getColorEvent(int element){
+  Color getColorDebt(int element){
     //Change the color of the events card depending on
     // the number of people that have accepted, declined or not decided
-    EventModel event = events.elementAt(element);
-    int accepted = 0;
-    int declined =0;
-    int notdecide =0;
+    DebtModel event = debts.elementAt(element);
+    int paid = 0;
+    int notdecide = 0;
+    
     for(int i=0;i<event.getUsers().length;i++){
-      if(event.getUsers().elementAt(i).getStatus() == '1'){
-        accepted = accepted +1;
-      }
-      else if(event.getUsers().elementAt(i).getStatus() == '2'){
-        declined = declined +1;
-      }
-      else{
+      if(event.getUsers().elementAt(i).getIsPaid() ){
+        paid = paid +1;
+      } else{
         notdecide = notdecide +1;
       }
     }
-    if(accepted/event.getUsers().length > 0.5){
+    if(paid/event.getUsers().length == 1){
       return Colors.green[200];
-    }
-    else if(declined/event.getUsers().length >0.5){
-      return Colors.red[200];
-    }
-    else{
-      return Colors.blue[900];
+    }else{
+      return Colors.purple[100];
     }
   }
 }

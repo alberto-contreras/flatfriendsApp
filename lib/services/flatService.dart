@@ -3,9 +3,11 @@ import 'package:flatfriendsapp/models/Event.dart';
 import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/Task.dart';
 import 'package:flatfriendsapp/models/User.dart';
+import 'package:flatfriendsapp/models/Debt.dart';
 import 'package:flatfriendsapp/pages/task_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
+import 'package:flatfriendsapp/models/UsersInDebtModel.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
 
@@ -120,7 +122,7 @@ class FlatService {
         'description': eventToAdd.getDescription(),
         'date': eventToAdd.getDate(),
         'users': jsonList,
-        },
+      },
       ),
           headers: {"accept": "application/json", "content-type": "application/json"});
       if (response.statusCode == 500) {
@@ -226,7 +228,7 @@ class FlatService {
       final response = await http.get(this.url + '/event/'+sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
 
-          //print(response.body);
+      //print(response.body);
 
 
       if (response.statusCode == 404) {
@@ -271,12 +273,12 @@ class FlatService {
   }
 
   Future<int> getUsersFlatForEvent() async {
-    print('Searching all the users of a Flat');
+    //print('Searching all the users of a Flat');
     try {
       final response = await http.get(this.url + '/usersFlat/'+sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
 
-      print(response.body);
+      //print(response.body);
 
 
       if (response.statusCode == 404) {
@@ -345,12 +347,6 @@ class FlatService {
     try {
       final response = await http.get(this.url + '/task/getFlatTask/'+sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
-
-      print('----');
-      print(response.body);
-      print('----');
-
-
       if (response.statusCode == 404) {
         print('No tasks found');
         return 1;
@@ -390,7 +386,7 @@ class FlatService {
       final response = await http.put(this.url + '/task/rotateTask/' + sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
 
-      print(response.body);
+      //print(response.body);
 
 
       if (response.statusCode == 404) {
@@ -431,7 +427,7 @@ class FlatService {
       final response = await http.get(this.url + '/usersFlat/'+sharedData.getUser().getIdPiso(),
           headers: {"accept": "application/json", "content-type": "application/json"});
 
-      print(response.body);
+      //print(response.body);
 
 
       if (response.statusCode == 404) {
@@ -491,6 +487,7 @@ class FlatService {
       return 1;
     }
   }
+
 
   Future<int> addTenant(String tenantId, String flatId) async {
     try {
@@ -569,11 +566,14 @@ class FlatService {
         extractTenants.forEach((tenant) {
           if (sharedData.getUser().getEmail() != tenant['email']) {
             UserModel tenantToAdd = new UserModel();
+            tenantToAdd.setIdUser(tenant['_id']);
             tenantToAdd.setFirstname(tenant['firstname']);
             tenantToAdd.setLastname(tenant['lastname']);
             tenantToAdd.setPhoneNumber(tenant['phoneNumber']);
             tenantToAdd.setEmail(tenant['email']);
             tenantToAdd.setUrlAvatar(tenant['urlAvatar']);
+            tenantToAdd.setAllTasks(tenant['allTasks']);
+
             sharedData.setTenant(tenantToAdd);
           }
         });
@@ -612,4 +612,196 @@ class FlatService {
       return 1;
     }
   }
+
+
+  Future<List<FlatModel>> getAvalibleFlats() async {
+    print('Getting the data of available Flats');
+    List<FlatModel> availableFlats = List<FlatModel>();
+    try {
+      final response = await http.get(
+          this.url + '/available',
+          headers: {
+            "accept": "application/json",
+            "content-type": "application/json"
+          });
+      List extractAvailableFlats = jsonDecode(response.body);
+      sharedData.getTenants().clear();
+      extractAvailableFlats.forEach((flat) {
+        FlatModel flatToAdd = new FlatModel();
+        Map extractLocation = flat['location'];
+        flatToAdd.setID(flat['_id']);
+        flatToAdd.setName(flat['name']);
+        flatToAdd.setDescription(flat['description']);
+        flatToAdd.setMaxPersons(flat['maxPersons']);
+        flatToAdd.setFull(flat['full']);
+        flatToAdd.setLocation(
+            extractLocation['latitude'], extractLocation['longitude']);
+        availableFlats.add(flatToAdd);
+      });
+      return availableFlats;
+    }
+    catch (error) {
+      print(error);
+      return error;
+    }
+  }
+
+  Future<int> addDebtFlat(DebtModel debtToAdd) async {
+
+    List jsonList = UsersInDebtModel.encondeToJson(debtToAdd.getUsers());
+    print("jsonList: ${jsonList}");
+    
+    try {
+      print('Sending new Debt');
+      var response = await http.post(this.url + '/gasto/addGasto', body: json.encode({
+        'idPiso': debtToAdd.getIdPiso(),
+        'idUser': debtToAdd.getIdUser(),
+        'totalAmount': debtToAdd.getTotalAmount(),
+        'concept':debtToAdd.getConcept(),
+        'date': debtToAdd.getDate(),
+        'users': jsonList,
+        },
+      ),
+          headers: {"accept": "application/json", "content-type": "application/json"});
+      if (response.statusCode == 500) {
+        print('Error');
+        return 1;
+      }
+      else if (response.statusCode == 201) {
+        print('Succesfully created');
+        return 0;
+      }
+      else {
+        print('General Error adding User');
+        return 1;
+      }
+    }
+    catch (error) {
+      print(error);
+      return 1;
+    }
+  }
+
+  Future<int> getUsersFlatForDebt() async {
+    print('Searching all the users of a Flat');
+    try {
+      final response = await http.get(this.url + '/usersFlat/'+sharedData.getUser().getIdPiso(),
+          headers: {"accept": "application/json", "content-type": "application/json"});
+      print(response.body);
+
+      if (response.statusCode == 404) {
+        print('Not users found');
+        return 1;
+      }
+      else if (response.statusCode == 200) {
+        var extractusers = jsonDecode(response.body);
+        List users;
+        users = extractusers;
+        sharedData.usersInFlatToShareDebts.clear(); //In case there is a new user in the flat and we update the list
+        for(int i = 0;i<users.length;i++){
+          UsersInDebtModel addUserInFlat = new UsersInDebtModel();          
+          addUserInFlat.setId(users[i]['_id']);          
+          addUserInFlat.setFirstname(users[i]['firstname']);
+          addUserInFlat.setAmountToPay('0');
+          addUserInFlat.setIsPaid(false);
+          sharedData.setUserToShareDebt(addUserInFlat);
+        }
+        return 0;
+      }
+      else {
+        print('General Error adding User');
+        return 1;
+      }
+    }
+    catch (error) {
+      print(error);
+      return 1;
+    }
+  }
+
+  Future<int> getDebtsFlat() async {
+    print('Searching all the Debts of a Flat');
+    try {
+      final response = await http.get(this.url + '/gasto/getgastos/'+sharedData.getUser().getIdPiso().toString(),
+          headers: {"accept": "application/json", "content-type": "application/json"});
+          print(response.body);
+
+      if (response.statusCode == 404) {
+        print('Not debts found');
+        return 1;
+      }
+      else if (response.statusCode == 200) {
+        var extractdebts = jsonDecode(response.body);
+        List debts;
+        debts = extractdebts;
+        sharedData.debtFlat.clear();
+        for(int i = 0;i<debts.length;i++){
+          DebtModel addDebt = new DebtModel();
+          addDebt.setId(debts[i]['_id']);
+          addDebt.setIdUser(debts[i]['idUser']);
+          addDebt.setIdPiso(debts[i]['idPiso']);
+          addDebt.setTotalAmount(debts[i]['totalAmount'].toString());
+          addDebt.setConcept(debts[i]['concept']);
+          addDebt.setDate(debts[i]['date']);
+          List users = debts[i]['users'];
+          for(int j=0;j<users.length;j++) {
+            UsersInDebtModel addUser = new UsersInDebtModel();
+            addUser.setId(users[j]['id']);            
+            addUser.setFirstname(users[j]['firstname']);
+            addUser.setIsPaid(users[j]['isPaid']);
+            addUser.setAmountToPay((double.parse(addDebt.getTotalAmount())/users.length).toString());
+            addDebt.setSpecificUser(addUser);
+          }
+          sharedData.setDebt(addDebt);
+        }
+        print(''+sharedData.getDebts().elementAt(0).getUsers().length.toString());
+        return 0;
+      }
+      else {
+        print('General Error adding User');
+        return 1;
+      }
+    }
+    catch (error) {
+      print(error);
+      return 1;
+    }
+  }
+
+Future<int> updateDebtFlat(DebtModel debtToAdd) async {
+
+    List jsonList = UsersInDebtModel.encondeToJson(debtToAdd.getUsers());
+    print("jsonList: ${jsonList}");
+    try {
+      print('Sending new Event');
+      var response = await http.put(this.url + '/gasto/updateGasto', body: json.encode({
+        'idPiso': debtToAdd.getIdPiso(),
+        'idUser': debtToAdd.getIdUser(),
+        'totalAmount': debtToAdd.getTotalAmount(),
+        'concept':debtToAdd.getConcept(),
+        'date': debtToAdd.getDate(),
+        'users': jsonList,
+      },
+      ),
+          headers: {"accept": "application/json", "content-type": "application/json"});
+      if (response.statusCode == 400) {
+        print('Error');
+        return 1;
+      }
+      else if (response.statusCode == 200) {
+        print('Succesfully updated');
+        return 0;
+      }
+      else {
+        print('General Error updating User');
+        return 1;
+      }
+    }
+    catch (error) {
+      print(error);
+      return 1;
+    }
+  }
+
+
 }

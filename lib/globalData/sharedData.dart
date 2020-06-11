@@ -6,9 +6,14 @@ import 'package:flatfriendsapp/models/Flat.dart';
 import 'package:flatfriendsapp/models/Task.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
+import 'package:flatfriendsapp/pages/available_flats_page.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:flatfriendsapp/models/UsersInDebtModel.dart';
+import 'package:flatfriendsapp/models/Debt.dart';
+import 'package:flatfriendsapp/services/chatService.dart';
 
 class SharedData {
 
@@ -17,24 +22,42 @@ class SharedData {
   UserModel infoUser;
   FlatModel infoFlat;
   String token;
-  String apiUrl = 'http://10.0.2.2:3702';
 
+//  String apiUrl = 'http://10.0.2.2:3702';
 //  String apiUrl = 'http://147.83.7.155:3702';
-//  String apiUrl = 'http://localhost:3702';
+  String apiUrl = 'http://localhost:3702';
+
 
   String urlUser;
   String urlFlat;
   bool chatRunning = false;
+
   List<ChatMessageModel> messages = new List<ChatMessageModel>();
   List<EventModel> eventsFlat = new List<EventModel>();
   List<UserModel> tenantsFlat = new List<UserModel>();
   List<TaskModel> tasksFlat = new List<TaskModel>();
+  List<DebtModel> debtFlat = new List<DebtModel>();
+
   ChatService chatService = new ChatService();
-  final chatStream = new StreamController<List<ChatMessageModel>>.broadcast();
+
+  //final chatStream = new StreamController<List<ChatMessageModel>>.broadcast();
+  final chatStream = new StreamController<List<ChatMessageModel>>();
+
+
   Map usersInFlat = new Map();
   EventModel eventDetails = new EventModel();
-  List<UsersInFlatModel> usersInFlatToCreateEvent = new List<
-      UsersInFlatModel>();
+  List<UsersInFlatModel> usersInFlatToCreateEvent = new List<UsersInFlatModel>();
+
+  DebtModel debtDetails = new DebtModel();
+  List<UsersInDebtModel> usersInFlatToShareDebts = new List<UsersInDebtModel>();
+
+  List<FlatModel> availableFlats = new List<FlatModel>();
+
+  Position currentPosition = new Position();
+
+  StreamSubscription<Position> _positionStreamSubscription;
+
+
 
 
   SharedData() {
@@ -67,6 +90,10 @@ class SharedData {
     this.eventsFlat.add(event);
   }
 
+  setDebt(DebtModel debt){
+    this.debtFlat.add(debt);
+  }
+
   setTenant(UserModel value) {
     this.tenantsFlat.add(value);
   }
@@ -84,13 +111,38 @@ class SharedData {
     this.usersInFlatToCreateEvent.add(user);
   }
 
+  setUserToShareDebt(UsersInDebtModel user){
+    this.usersInFlatToShareDebts.add(user);
+  }
+
   setEventDetails(EventModel event) {
     this.eventDetails = event;
   }
 
+
+  setAvailableFlats(List<FlatModel> availableFlats) {
+    this.availableFlats = availableFlats;
+  }
+
+  setCurrentPosition(Position position) {
+    this.currentPosition = position;
+  }
+
+  Position getCurrentPosition() => this.currentPosition;
+
+  List<FlatModel> getAvailableFlats() => this.availableFlats;
+
+
+  setDebtDetails(DebtModel debt) {
+    this.debtDetails = debt;
+  }
+
+
   List<ChatMessageModel> getMessages() => this.messages;
 
   List<EventModel> getEvents() => this.eventsFlat;
+
+  List<DebtModel> getDebts() => this.debtFlat;
 
   List<UserModel> getTenants() => this.tenantsFlat;
 
@@ -98,6 +150,8 @@ class SharedData {
 
   List<UsersInFlatModel> getUsersInFlatForEvent() =>
       this.usersInFlatToCreateEvent;
+
+  List<UsersInDebtModel> getUsersInFlatToShareDebts() => this.usersInFlatToShareDebts;
 
   UserModel getUser() => this.infoUser;
 
@@ -110,6 +164,7 @@ class SharedData {
   Map getUsersInFlatForTask() => this.usersInFlat;
 
   EventModel getEventDetails() => this.eventDetails;
+
 
   clearFlat() {
     this.infoUser.setIdPiso(null);
@@ -141,4 +196,7 @@ class SharedData {
     this.usersInFlat.clear();
     this.usersInFlatToCreateEvent.clear();
   }
+
+  DebtModel getDebtDetails() => this.debtDetails;
+
 }

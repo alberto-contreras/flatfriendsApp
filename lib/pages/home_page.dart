@@ -8,6 +8,8 @@ import 'package:flatfriendsapp/transitions/horizontal_transition_right_to_left.d
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
+
 
 import 'flat_page.dart';
 
@@ -18,6 +20,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
   TextEditingController idFlatController = new TextEditingController();
   var ioConnection;
   bool visible = false;
@@ -32,6 +35,8 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flat & Friends'),
+        actions: <Widget>[
+        ],
       ),
       body: Center(
           child:GridView.count(
@@ -44,6 +49,8 @@ class _HomeState extends State<Home> {
               _chatButton(),
               _eventButton(),
               _taskButton(),
+              _debtButton(),
+              _StatsButton(),
             ],
           )
       ),
@@ -112,7 +119,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-
   // Pop de warning en caso de que el usuario aún no tenga su piso registrado
   Widget _warningNoFlat() {
     showDialog(context: context,
@@ -137,31 +143,44 @@ class _HomeState extends State<Home> {
                     ],
                   ),
 
-                 if (!visible) Row(
+                  if (!visible) Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       FlatButton(
-                            child: Text('Registrar nuevo'),
-                            shape: StadiumBorder(),
-                            color: Colors.green,
-                            textColor: Colors.white,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              Navigator.pushNamed(context, '/regflat');
-                            }
-                        ),
+                          child: Text('Registrar nuevo'),
+                          shape: StadiumBorder(),
+                          color: Colors.green,
+                          textColor: Colors.white,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.pushNamed(context, '/regflat');
+                          }
+                      ),
                       FlatButton(
-                            child: Text('Añadir el tuyo'),
-                            shape: StadiumBorder(),
-                            color: Colors.blueAccent,
-                            textColor: Colors.white,
-                            onPressed: () {
-                              setState(() {
-                                visible = !visible;
-                              });
-                            }
+                          child: Text('Añadir el tuyo'),
+                          shape: StadiumBorder(),
+                          color: Colors.blueAccent,
+                          textColor: Colors.white,
+                          onPressed: () {
+                            setState(() {
+                              visible = !visible;
+                            });
+                          }
                       ),
                     ],
+                  ),
+                  if (!visible) FlatButton(
+                      child: Text('Ver pisos disponibles'),
+                      shape: StadiumBorder(),
+                      color: Colors.black,
+                      textColor: Colors.white,
+                      onPressed: () async {
+                        Position currentPosition = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                        sharedData.setCurrentPosition(currentPosition);
+                        sharedData.availableFlats = await flatService.getAvalibleFlats();
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, '/availableFlats');
+                      }
                   ),
                   if (!visible) SizedBox(height: 16,),
                   if (visible) Column(
@@ -284,9 +303,12 @@ class _HomeState extends State<Home> {
   // Button to access to the chat
   Widget _chatButton() {
     return FlatButton(
-        onPressed: () {
+        onPressed: () async {
           if (sharedData.chatRunning == true && sharedData.getUser().getIdPiso() != null){
-            Navigator.pushNamed(context, '/chat');
+            await Navigator.pushNamed(context, '/chat');
+            print("antes");
+            sharedData.chatStream.close();
+            print("despues");
           }
           else{
             _alertNotInAFlat();
@@ -341,7 +363,33 @@ class _HomeState extends State<Home> {
         color: Colors.yellow[800],
         textColor: Colors.white);
   }
-
+  Widget _StatsButton() {
+    return FlatButton(onPressed: () async {
+      if(sharedData.getUser().getIdPiso() != null) {
+        await flatService.getTaskFlat();
+        await flatService.getUsersFlatForTask();
+        //print(sharedData.eventsFlat);
+        Navigator.pushNamed(context, '/stats');
+      }
+      else{
+        _alertNotInAFlat();
+      }
+    },
+        child: Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Icon(Icons.show_chart,size: 120,),
+              Text('Estadísticas',)
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
+        ),
+        color: Colors.black,
+        textColor: Colors.white);
+  }
   Widget _textFielRegFlat() {
     return Container(
       margin: EdgeInsets.all(10),
@@ -360,13 +408,13 @@ class _HomeState extends State<Home> {
 
   Widget _taskButton() {
     return FlatButton(onPressed: () async {
-      if(sharedData.getUser().getIdPiso() != null) {
+      if (sharedData.getUser().getIdPiso() != null) {
         await flatService.getTaskFlat();
         await flatService.getUsersFlatForTask();
         //print(sharedData.eventsFlat);
         Navigator.pushNamed(context, '/task');
       }
-      else{
+      else {
         _alertNotInAFlat();
       }
     },
@@ -374,15 +422,43 @@ class _HomeState extends State<Home> {
           margin: const EdgeInsets.only(top: 10.0),
           child: Column(
             children: <Widget>[
-              Image.asset('graphics/tasks icon.png',scale: 2,),
+              Image.asset('graphics/tasks icon.png', scale: 2,),
               Text('Tareas')
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+                top: Radius.circular(10), bottom: Radius.circular(10))
+        ),
+        color: Colors.red,
+        textColor: Colors.white);
+  }
+
+  Widget _debtButton() {
+    return FlatButton(onPressed: () async {
+      if(sharedData.getUser().getIdPiso() != null) {
+        await flatService.getDebtsFlat();
+        //print(sharedData.eventsFlat);
+        Navigator.pushNamed(context, '/debt');
+      }
+      else{
+        _alertNotInAFlat();
+      }
+    },
+        child: Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Image.asset('graphics/piggy bank.png',scale: 4.5,),
+              Text('Gastos',)
             ],
           ),
         ),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
         ),
-        color: Colors.red,
+        color: Colors.purple[800],
         textColor: Colors.white);
   }
 

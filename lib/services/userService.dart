@@ -19,6 +19,7 @@ class UserService {
         'idPiso': null,
         'password' : userToAdd.getPassword(),
         'googleAuth' : userToAdd.getGoogleAuth(),
+        'allTasks': '0',
       }),
         headers: {"accept": "application/json", "content-type": "application/json" });
       if(response.statusCode == 409)
@@ -68,6 +69,8 @@ class UserService {
         userToLog.setIdPiso(userData['idPiso']);
         userToLog.setPassword(userData['password']);
         userToLog.setUrlAvatar(userData['urlAvatar']);
+        userToLog.setAllTasks(userData['allTasks']);
+
         sharedData.setUser(userToLog);
         //sharedData.setToken(tokensiko);
         return 0;
@@ -113,7 +116,37 @@ class UserService {
         '_id' : sharedData.getUser().getIdUser(),
         'email' : u.getEmail(),
         'phoneNumber':u.getPhoneNumber(),
-        'urlAvatar': u.getUrlAvatar()
+        'urlAvatar': u.getUrlAvatar(),
+        'password' : u.getPassword(),
+        'idPiso' : u.getIdPiso(),
+        'allTasks': u.getAllTasks()
+      }),
+          headers: {"accept": "application/json", "content-type": "application/json" });
+      if(response.statusCode == 400)
+      {
+        print('Error updating user');
+        return 1;
+      }
+      else if(response.statusCode == 200){
+        print('Succesfully updated');
+        return 0;
+      }
+      else {
+        print('General Error updating User');
+        return 1;
+      }
+    }
+    catch(error){
+      print(error);
+      return 1;
+    }
+  }
+  Future<int> updateUserAllTasks(UserModel u) async {
+    try {
+      print('Updating usuario');
+      var response = await http.put(this.url + '/tasksupdate', body: json.encode({
+        '_id' : u.getIdUser(),
+        'allTasks': u.getAllTasks()
       }),
           headers: {"accept": "application/json", "content-type": "application/json" });
       if(response.statusCode == 400) {
@@ -134,7 +167,6 @@ class UserService {
       return 1;
     }
   }
-
   Future<int> getUserByEmail(String emailUser) async {
     try {
       var response = await http.get(this.url + '/getUserByEmail/'+emailUser);
