@@ -86,7 +86,6 @@ class _LoginState extends State<Login> {
         userLogin.setEmail(useremailController.text);
         userLogin.setPassword(passwordController.text);
         int res = await userService.logUser(this.userLogin);
-        print(res);
         if( res == 0){
           if (sharedData.getUser().getIdPiso() != null && sharedData.getUser().getIdPiso().length == 24) {
             print('antes de llamar initChatService');

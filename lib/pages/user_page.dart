@@ -3,6 +3,8 @@ import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/transitions/horizontal_transition_left_to_right.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 import 'flat_page.dart';
 import 'home_page.dart';
@@ -26,18 +28,7 @@ class _UserState extends State<User> {
       appBar: AppBar(
         title: Text('Flat & Friends'),
         actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/userSettings');
-                },
-                child: Icon(
-                  Icons.settings,
-                  size: 26.0,
-                ),
-              )
-          ),
+          _settingsPopUpMenu(),
         ],
       ),
       body: Padding(padding: const EdgeInsets.only(left: 16, top: 16),
@@ -58,6 +49,7 @@ class _UserState extends State<User> {
                 textAlign: TextAlign.start,
                 alignment: AlignmentDirectional.topStart // or Alignment.topLeft
             ),
+            SizedBox(height: 16,),
             _showUserData(),
           ],
         ),
@@ -103,6 +95,63 @@ class _UserState extends State<User> {
     });
   }
 
+  Widget _userAvatar() {
+    if (sharedData.getUser().getUrlAvatar() == null) {
+      return CircleAvatar(
+        radius: 45,
+        child: Text(sharedData.getUser().getFirstname()[0] + sharedData.getUser().getLastname()[0], style: TextStyle(fontSize: 40),),
+      );
+    }
+    else{
+      return CircleAvatar(
+          radius: 45,
+          backgroundImage: NetworkImage(sharedData.getUser().getUrlAvatar())
+      );
+    }
+  }
+
+  Widget _settingsPopUpMenu() => PopupMenuButton(
+    itemBuilder: (context) => [
+      PopupMenuItem(child: Text('Ajustes'),
+      value: 0,),
+      PopupMenuItem(child: Text('Cerrar sesión'),
+        value: 1,)
+      ],
+    icon: Icon(Icons.settings),
+    onSelected: (value) {
+      switch (value) {
+        case 0:
+          {
+            Navigator.pushNamed(context, '/userSettings').whenComplete(() => _setState());
+          }
+          break;
+        case 1:
+          {
+            sharedData.clear();
+            showToast('.Se ha cerrado la sesión',
+                context: context,
+                textStyle: TextStyle(fontSize: 16.0, color: Colors.white),
+                backgroundColor: Colors.deepPurple,
+                textPadding:
+                EdgeInsets.symmetric(vertical: 15, horizontal: 30.0),
+                borderRadius: BorderRadius.circular(15),
+                textAlign: TextAlign.justify,
+                textDirection: TextDirection.rtl);
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login', (Route<dynamic> route) => false);
+            });
+          }
+          break;
+      }
+    },
+  );
+
+  void _setState(){
+    setState(() {
+    });
+  }
+
   Widget _showUserData() {
     print('Showing user data.');
     return Card(
@@ -115,16 +164,8 @@ class _UserState extends State<User> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (sharedData.getUrlUserAvatar() != null) Column(
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 45,
-                    backgroundImage: NetworkImage(sharedData.getUrlUserAvatar()),
-                  ),
-                  SizedBox(height: 16,)
-                ],
-              ),
-
+             _userAvatar(),
+              SizedBox(height: 16,),
               Text('Nombre de usuario:', style: inMainCardStyle,),
               SizedBox(height: 5),
               Row(children: <Widget>[
@@ -181,6 +222,7 @@ class _UserState extends State<User> {
                          Icon(Icons.phone, color: Colors.white,),
                        ],
                      ),
+                     SizedBox(width: 10,),
                      Text(sharedData.getUser().getPhoneNumber(), style: inMainCardInfoStyle,),
                    ],
                  ),

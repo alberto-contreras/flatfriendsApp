@@ -48,6 +48,7 @@ class UserService {
       var response = await http.post(this.url + '/login', body: json.encode({
         'email' : userToLog.getEmail(),
         'password' : userToLog.getPassword(),
+        'googleAuth': userToLog.getGoogleAuth()
       }),
           headers: {"accept": "application/json", "content-type": "application/json" });
       print(response.statusCode);
@@ -67,7 +68,9 @@ class UserService {
         userToLog.setPhoneNumber(userData['phoneNumber']);
         userToLog.setIdPiso(userData['idPiso']);
         userToLog.setPassword(userData['password']);
+        userToLog.setUrlAvatar(userData['urlAvatar']);
         userToLog.setAllTasks(userData['allTasks']);
+
         sharedData.setUser(userToLog);
         //sharedData.setToken(tokensiko);
         return 0;
@@ -80,18 +83,18 @@ class UserService {
   }
 
   // Delete an user account
-  Future<int> deleteUser(String email) async {
+  Future<int> deleteUser() async {
     try {
       //make the request
       print('Erasing user');
-      var response = await http.delete(this.url + '/del/' + email);
+      var response = await http.delete(this.url + '/' + sharedData.getUser().getIdUser());
       if(response.statusCode == 404)
       {
         print('Error erasing user');
         return 1;
       }
       else if(response.statusCode == 200){
-        print('Succesfully created');
+        print('Succesfully deleted');
         return 0;
       }
       else {
@@ -110,12 +113,10 @@ class UserService {
     try {
       print('Updating usuario');
       var response = await http.put(this.url + '/update', body: json.encode({
-        ///TAMBIEN EL TOKEN!
-        '_id' : u.getIdUser(),
-        'firstname': u.getFirstname(),
-        'lastname' : u.getLastname(),
+        '_id' : sharedData.getUser().getIdUser(),
         'email' : u.getEmail(),
         'phoneNumber':u.getPhoneNumber(),
+        'urlAvatar': u.getUrlAvatar(),
         'password' : u.getPassword(),
         'idPiso' : u.getIdPiso(),
         'allTasks': u.getAllTasks()
@@ -148,12 +149,11 @@ class UserService {
         'allTasks': u.getAllTasks()
       }),
           headers: {"accept": "application/json", "content-type": "application/json" });
-      if(response.statusCode == 400)
-      {
+      if(response.statusCode == 400) {
         print('Error updating user');
         return 1;
       }
-      else if(response.statusCode == 200){
+      else if(response.statusCode == 200) {
         print('Succesfully updated');
         return 0;
       }
@@ -193,6 +193,9 @@ class UserService {
       return 1;
     }
   }
+
+
+
 
 
 }

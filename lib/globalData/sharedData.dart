@@ -9,11 +9,11 @@ import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
 import 'package:flatfriendsapp/pages/available_flats_page.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flatfriendsapp/models/UsersInDebtModel.dart';
 import 'package:flatfriendsapp/models/Debt.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
-
 
 class SharedData {
 
@@ -30,7 +30,6 @@ class SharedData {
 
   String urlUser;
   String urlFlat;
-  String urlUserAvatar; // Provisional! Lo suyo sería meterlo como atributo no requerido de user (No lo implemento para no dificultar más aún en el merge)
   bool chatRunning = false;
 
   List<ChatMessageModel> messages = new List<ChatMessageModel>();
@@ -40,10 +39,12 @@ class SharedData {
   List<DebtModel> debtFlat = new List<DebtModel>();
 
   ChatService chatService = new ChatService();
+
+  //final chatStream = new StreamController<List<ChatMessageModel>>.broadcast();
   final chatStream = new StreamController<List<ChatMessageModel>>();
 
-  Map usersInFlat = new Map();
 
+  Map usersInFlat = new Map();
   EventModel eventDetails = new EventModel();
   List<UsersInFlatModel> usersInFlatToCreateEvent = new List<UsersInFlatModel>();
 
@@ -95,10 +96,6 @@ class SharedData {
 
   setTenant(UserModel value) {
     this.tenantsFlat.add(value);
-  }
-
-  setUserUrlAvatar(String value) {
-    this.urlUserAvatar = value;
   }
 
   setTask(TaskModel task) {
@@ -164,11 +161,41 @@ class SharedData {
 
   String getUrlFlat() => this.urlFlat;
 
-  String getUrlUserAvatar() => this.urlUserAvatar;
-
   Map getUsersInFlatForTask() => this.usersInFlat;
 
   EventModel getEventDetails() => this.eventDetails;
+
+
+  clearFlat() {
+    this.infoUser.setIdPiso(null);
+    this.infoFlat = null;
+    this.chatRunning = false;
+    this.eventsFlat.clear();
+    this.tenantsFlat.clear();
+    this.tasksFlat.clear();
+    this.chatService.stopChatService();
+    this.usersInFlat.clear();
+    this.usersInFlatToCreateEvent.clear();
+  }
+
+  // Clear the the content of this single tone
+  clear() async {
+//    instance = new SharedData();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('user');
+    prefs.remove('password');
+    prefs.remove('googleAuth');
+    this.infoUser = null;
+    this.infoFlat = null;
+    this.chatRunning = false;
+    this.messages.clear();
+    this.eventsFlat.clear();
+    this.tenantsFlat.clear();
+    this.tasksFlat.clear();
+    this.chatService.stopChatService();
+    this.usersInFlat.clear();
+    this.usersInFlatToCreateEvent.clear();
+  }
 
   DebtModel getDebtDetails() => this.debtDetails;
 

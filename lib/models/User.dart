@@ -8,7 +8,9 @@ class UserModel {
   String _idPiso;
   String _password;
   bool _googleAuth;
+  String _urlUserAvatar;
   int _allTasks;
+
 
   UserModel();
 
@@ -46,6 +48,10 @@ class UserModel {
     this._allTasks = value;
   }
 
+  setUrlAvatar(String value){
+    this._urlUserAvatar = value;
+  }
+
   String getIdUser() => this._id;
 
   String getFirstname() => this._firstname;
@@ -62,5 +68,9 @@ class UserModel {
 
   bool getGoogleAuth() => this._googleAuth;
 
+
+  String getUrlAvatar() => this._urlUserAvatar;
+
   int getAllTasks() => this._allTasks;
+
 }

@@ -5,6 +5,7 @@ class FlatModel {
   String _name;
   String _description;
   bool _full;
+  int _numPersons;
   int _maxPersons;
   LocationModel _location;
 
@@ -29,6 +30,10 @@ class FlatModel {
     this._full = f;
   }
 
+  setNumPersons(int value){
+    this._numPersons = value;
+  }
+
   setMaxPersons(int mp){
     this._maxPersons = mp;
   }
@@ -49,6 +54,8 @@ class FlatModel {
   String getDescription() => this._description;
 
   bool getFull() => this._full;
+
+  int getNumPersons() => this._numPersons;
 
   int getMaxPersons() => this._maxPersons;
 
