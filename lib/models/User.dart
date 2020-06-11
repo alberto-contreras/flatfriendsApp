@@ -8,6 +8,7 @@ class UserModel {
   String _idPiso;
   String _password;
   bool _googleAuth;
+  int _allTasks;
 
   UserModel();
 
@@ -41,6 +42,9 @@ class UserModel {
   setGoogleAuth(bool value){
     this._googleAuth = value;
   }
+  setAllTasks(int value){
+    this._allTasks = value;
+  }
 
   String getIdUser() => this._id;
 
@@ -57,4 +61,6 @@ class UserModel {
   String getEmail() => this._email;
 
   bool getGoogleAuth() => this._googleAuth;
+
+  int getAllTasks() => this._allTasks;
 }
