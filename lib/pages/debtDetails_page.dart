@@ -74,7 +74,7 @@ class _DebtDetailsState extends State<DebtDetails> {
             ),
             SizedBox(height: 10.0), //Space between two widgets
             Text(
-              '' + debt.getTotalAmount().toString(),
+              '' + debt.getTotalAmount().toString() + ' €',
               style: TextStyle(
                 color: Colors.blue[800],
                 fontWeight: FontWeight.bold,
@@ -82,7 +82,22 @@ class _DebtDetailsState extends State<DebtDetails> {
               ),
             ),
             SizedBox(height: 20.0), //Space between two widgets
-            
+            Text(
+              'A pagar por persona: ',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Text(
+              'Precio a pagar por persona',
+              style: TextStyle(
+                color: Colors.blue[800],
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
             SizedBox(height: 20.0),
             Text(
               'Fecha: ',

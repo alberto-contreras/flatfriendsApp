@@ -37,6 +37,7 @@ class UsersInDebtModel {
       "isPaid": this._isPaid,
     };
   }
+
   static List encondeToJson(List<UsersInDebtModel>list){
     List jsonList = List();
     list.map((item)=>

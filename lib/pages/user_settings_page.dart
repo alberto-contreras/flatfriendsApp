@@ -109,8 +109,14 @@ class _UserSettings extends State<UserSettings> {
                       action: () async {
                         if (passwordController.text == sharedData.getUser().getPassword() || sharedData.getUser().getGoogleAuth() == true){
                           Navigator.pop(context);
-                          int res = await flatService.removeTenant(sharedData.getUser().getIdUser(), sharedData.getFlat().getID());
+                          int res;
+                          if (sharedData.getFlat() != null) {
+                            res = await flatService.removeTenant(
+                                sharedData.getUser().getIdUser(),
+                                sharedData.getFlat().getID());
+                          }
                           res = await userService.deleteUser();
+                          print('Esto es lo que hay al querer borrar usuario' + res.toString());
                           if (res == 0){
                             _goodByePopUp();
                           }
