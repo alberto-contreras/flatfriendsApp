@@ -1,6 +1,7 @@
 import 'package:flatfriendsapp/pages/chat_page.dart';
 import 'package:flatfriendsapp/pages/eventDetails_page.dart';
 import 'package:flatfriendsapp/pages/event_page.dart';
+import 'package:flatfriendsapp/pages/ranking_tasks.dart';
 import 'package:flatfriendsapp/pages/task_page.dart';
 import 'package:flatfriendsapp/pages/flat_page.dart';
 import 'package:flatfriendsapp/pages/home_page.dart';
@@ -10,8 +11,10 @@ import 'package:flatfriendsapp/pages/register_task_page.dart';
 import 'package:flatfriendsapp/pages/register_flat_page.dart';
 import 'package:flatfriendsapp/pages/register_page.dart';
 import 'package:flatfriendsapp/pages/splash_page.dart';
+import 'package:flatfriendsapp/pages/tasks_stats.dart';
 import 'package:flatfriendsapp/pages/user_settings_page.dart';
 import 'package:flatfriendsapp/pages/user_page.dart';
+import 'package:flatfriendsapp/pages/yourTask_stats.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -38,6 +41,9 @@ class MyApp extends StatelessWidget {
         '/task': (context) => Task(),
         '/regtask': (context) => RegisterTask(),
         '/eventDetails': (context) => EventDetails(),
+        '/stats':(context) => TaskStats(),
+        '/rankingTasks':(context) => RankingTasks(),
+        '/yourTaskStats':(context) => YourTaskStats(),
       },
     );
   }

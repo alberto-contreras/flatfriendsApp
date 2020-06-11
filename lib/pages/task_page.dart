@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/Task.dart';
+import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/flatService.dart';
+import 'package:flatfriendsapp/services/userService.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_alert_dialog/platform_alert_dialog.dart';
 import 'package:http/http.dart'as http;
 
+SharedData sharedData = SharedData.getInstance();
 class Task extends StatefulWidget {
   @override
   _TaskState createState() => _TaskState();
@@ -13,11 +17,16 @@ class Task extends StatefulWidget {
 
 class _TaskState extends State<Task> {
   List<TaskModel> tasks = sharedData.getTasks();
+  UserService userService = new UserService();
   FlatService flatService = new FlatService();
 
   updateTask(TaskModel task) async {
     print(task.getDone());
     await flatService.updateTask(task);
+  }
+  updateUserTasksStatus(UserModel value) async {
+    print('Hello testing');
+    await userService.updateUserAllTasks(value);
   }
   //This function it's going use getTime on wherever instance and then once we have the data re root to the home page
   @override
@@ -103,14 +112,56 @@ class _TaskState extends State<Task> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Switch(
+                                  //We need to check the status of the task in order to add it to the
+                                  //total number of tasks done by the user
                                   activeColor: Colors.white,
                                   activeTrackColor: Colors.green,
                                   inactiveTrackColor: Colors.red,
                                   value: tasks.elementAt(index).getDone(),
                                   onChanged: (value) => setState(() {
-                                    value = !value;
-                                    tasks.elementAt(index).switchDone();
-                                    updateTask(tasks.elementAt(index));
+                                    if(tasks.elementAt(index).getDone() == true){
+                                      String idUser = tasks.elementAt(index).getIdUser();
+                                      if(idUser == sharedData.getUser().getIdUser()){
+                                        sharedData.getUser().setAllTasks(sharedData.getUser().getAllTasks() -1);
+                                        updateUserTasksStatus(sharedData.getUser());
+                                      }
+                                      else{
+                                        for(int i =0;  i < sharedData.getTenants().length;i++){
+                                          if(sharedData.getTenants().elementAt(i).getIdUser() == idUser){
+                                            sharedData.getTenants().elementAt(i).setAllTasks(sharedData.getTenants().elementAt(i).getAllTasks() -1);
+                                            UserModel u = new UserModel();
+                                            u.setAllTasks(sharedData.getTenants().elementAt(i).getAllTasks());
+                                            u.setIdUser(sharedData.getTenants().elementAt(i).getIdUser());
+                                            updateUserTasksStatus(u);
+                                          }
+                                        }
+                                      }
+                                      value = !value;
+                                      tasks.elementAt(index).switchDone();
+                                      updateTask(tasks.elementAt(index));
+                                    }
+                                    else {
+                                      String idUser = tasks.elementAt(index).getIdUser();
+                                      if(idUser == sharedData.getUser().getIdUser()){
+                                        sharedData.getUser().setAllTasks(sharedData.getUser().getAllTasks() +1);
+                                        updateUserTasksStatus(sharedData.getUser());
+                                      }
+                                      else{
+                                        for(int i =0;  i < sharedData.getTenants().length;i++){
+
+                                          if(sharedData.getTenants().elementAt(i).getIdUser() == idUser){
+                                            sharedData.getTenants().elementAt(i).setAllTasks(sharedData.getTenants().elementAt(i).getAllTasks() +1);
+                                            UserModel u = new UserModel();
+                                            u.setAllTasks(sharedData.getTenants().elementAt(i).getAllTasks());
+                                            u.setIdUser(sharedData.getTenants().elementAt(i).getIdUser());
+                                            updateUserTasksStatus(u);
+                                          }
+                                        }
+                                      }
+                                      value = !value;
+                                      tasks.elementAt(index).switchDone();
+                                      updateTask(tasks.elementAt(index));
+                                    }
                                   }),
                                 ),
                                 IconButton(

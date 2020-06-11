@@ -32,6 +32,8 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flat & Friends'),
+        actions: <Widget>[
+        ],
       ),
       body: Center(
           child:GridView.count(
@@ -44,6 +46,7 @@ class _HomeState extends State<Home> {
               _chatButton(),
               _eventButton(),
               _taskButton(),
+              _StatsButton(),
             ],
           )
       ),
@@ -322,7 +325,33 @@ class _HomeState extends State<Home> {
         color: Colors.yellow[800],
         textColor: Colors.white);
   }
-
+  Widget _StatsButton() {
+    return FlatButton(onPressed: () async {
+      if(sharedData.getUser().getIdPiso() != null) {
+        await flatService.getTaskFlat();
+        await flatService.getUsersFlatForTask();
+        //print(sharedData.eventsFlat);
+        Navigator.pushNamed(context, '/stats');
+      }
+      else{
+        _alertNotInAFlat();
+      }
+    },
+        child: Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: <Widget>[
+              Icon(Icons.show_chart,size: 120,),
+              Text('Estadísticas',)
+            ],
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
+        ),
+        color: Colors.black,
+        textColor: Colors.white);
+  }
   Widget _textFielRegFlat() {
     return Container(
       margin: EdgeInsets.all(10),
@@ -341,13 +370,13 @@ class _HomeState extends State<Home> {
 
   Widget _taskButton() {
     return FlatButton(onPressed: () async {
-      if(sharedData.getUser().getIdPiso() != null) {
+      if (sharedData.getUser().getIdPiso() != null) {
         await flatService.getTaskFlat();
         await flatService.getUsersFlatForTask();
         //print(sharedData.eventsFlat);
         Navigator.pushNamed(context, '/task');
       }
-      else{
+      else {
         _alertNotInAFlat();
       }
     },
@@ -355,13 +384,14 @@ class _HomeState extends State<Home> {
           margin: const EdgeInsets.only(top: 10.0),
           child: Column(
             children: <Widget>[
-              Image.asset('graphics/tasks icon.png',scale: 2,),
+              Image.asset('graphics/tasks icon.png', scale: 2,),
               Text('Tareas')
             ],
           ),
         ),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.circular(10))
+            borderRadius: BorderRadius.vertical(
+                top: Radius.circular(10), bottom: Radius.circular(10))
         ),
         color: Colors.red,
         textColor: Colors.white);

@@ -7,7 +7,7 @@ import 'package:flatfriendsapp/models/Task.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/models/UsersInFlatModel.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
-import 'package:flutter/cupertino.dart';
+
 
 class SharedData {
 
@@ -17,8 +17,8 @@ class SharedData {
   FlatModel infoFlat;
   String token;
 //  String apiUrl = 'http://10.0.2.2:3702';
-  String apiUrl = 'http://147.83.7.155:3702';
-//  String apiUrl = 'http://localhost:3702';
+//  String apiUrl = 'http://147.83.7.155:3702';
+  String apiUrl = 'http://localhost:3702';
 
   String urlUser;
   String urlFlat;
