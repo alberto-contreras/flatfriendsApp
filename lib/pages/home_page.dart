@@ -175,8 +175,16 @@ class _HomeState extends State<Home> {
                       color: Colors.black,
                       textColor: Colors.white,
                       onPressed: () async {
-                        Position currentPosition = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                        Position currentPosition;
+                        bool geolocationStatus  = await Geolocator().isLocationServiceEnabled();
+                        print(geolocationStatus);
+                        if (geolocationStatus) {
+                          currentPosition = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                        } else {
+                          currentPosition = await Geolocator().getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
+                        }
                         sharedData.setCurrentPosition(currentPosition);
+
                         sharedData.availableFlats = await flatService.getAvalibleFlats();
                         Navigator.of(context).pop();
                         Navigator.pushNamed(context, '/availableFlats');

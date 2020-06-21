@@ -7,7 +7,7 @@ import 'dart:convert';
 SharedData sharedData = SharedData.getInstance();
 
 class ChatService {
-  Socket socket = io('http://147.83.7.155:8080', <String, dynamic>{
+  Socket socket = io('http://10.0.2.2:8080', <String, dynamic>{
     'transports': ['websocket'],
     'autoConnect': false,
     'extraHeaders': {'foo': 'bar'} // optional

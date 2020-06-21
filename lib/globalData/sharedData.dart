@@ -40,8 +40,8 @@ class SharedData {
 
   ChatService chatService = new ChatService();
 
-  //final chatStream = new StreamController<List<ChatMessageModel>>.broadcast();
-  final chatStream = new StreamController<List<ChatMessageModel>>();
+  final chatStream = new StreamController<List<ChatMessageModel>>.broadcast();
+  //final chatStream = new StreamController<List<ChatMessageModel>>();
 
 
   Map usersInFlat = new Map();

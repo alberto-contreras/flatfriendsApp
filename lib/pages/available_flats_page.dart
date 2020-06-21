@@ -46,8 +46,7 @@ class _AvailableFlatsState extends State<AvailableFlats> {
     if (_positionStreamSubscription == null) {
       const LocationOptions locationOptions =
       LocationOptions(accuracy: LocationAccuracy.best);
-      final Stream<Position> positionStream =
-      Geolocator().getPositionStream(locationOptions);
+      final Stream<Position> positionStream = Geolocator().getPositionStream(locationOptions);
       _positionStreamSubscription = positionStream.listen(
               (Position position) => setState(() => _position = position));
       _positionStreamSubscription.pause();
@@ -76,26 +75,38 @@ class _AvailableFlatsState extends State<AvailableFlats> {
   void initState() {
     super.initState();
 
+    var locationOptions = LocationOptions(accuracy: LocationAccuracy.high, distanceFilter: 10);
+
+//    StreamSubscription<Position> positionStream = Geolocator().getPositionStream(locationOptions).listen(
+//            (Position position) => setState(() => _position = position)
+//    );
     _toggleListening();
 
-    availableFlats.sort((a,b) => calculateDistance(_position.latitude, _position.longitude, double.parse(a.getLocation().latitude), double.parse(a.getLocation().longitude))
-        .compareTo(calculateDistance(_position.latitude, _position.longitude, double.parse(b.getLocation().latitude), double.parse(b.getLocation().longitude))));
+    if (_position != null) {
+      availableFlats.sort((a,b) => calculateDistance(_position.latitude, _position.longitude, double.parse(a.getLocation().latitude), double.parse(a.getLocation().longitude))
+          .compareTo(calculateDistance(_position.latitude, _position.longitude, double.parse(b.getLocation().latitude), double.parse(b.getLocation().longitude))));
 
-    minDistance = calculateDistance(_position.latitude, _position.longitude, double.parse(availableFlats[0].getLocation().latitude), double.parse(availableFlats[0].getLocation().longitude)).round();
-    maxDistance = calculateDistance(_position.latitude, _position.longitude, double.parse(availableFlats[availableFlats.length - 1].getLocation().latitude), double.parse(availableFlats[availableFlats.length - 1].getLocation().longitude)).round();
-    range = maxDistance;
+      minDistance = calculateDistance(_position.latitude, _position.longitude, double.parse(availableFlats[0].getLocation().latitude), double.parse(availableFlats[0].getLocation().longitude)).round();
+      maxDistance = calculateDistance(_position.latitude, _position.longitude, double.parse(availableFlats[availableFlats.length - 1].getLocation().latitude), double.parse(availableFlats[availableFlats.length - 1].getLocation().longitude)).round();
+      range = maxDistance;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
 
     matchedFlats = [];
-    for (int i = 0; i < availableFlats.length; i++) {
-      if (range < calculateDistance(_position.latitude, _position.longitude, double.parse(availableFlats[i].getLocation().latitude), double.parse(availableFlats[i].getLocation().longitude)).round()) {
-        i = availableFlats.length;
-      } else {
-        matchedFlats.add(availableFlats[i]);
+
+    if (range != null) {
+      for (int i = 0; i < availableFlats.length; i++) {
+        if (range < calculateDistance(_position.latitude, _position.longitude, double.parse(availableFlats[i].getLocation().latitude), double.parse(availableFlats[i].getLocation().longitude)).round()) {
+          i = availableFlats.length;
+        } else {
+          matchedFlats.add(availableFlats[i]);
+        }
       }
+    } else {
+      matchedFlats = availableFlats;
     }
 
     markers = [];
@@ -147,11 +158,12 @@ class _AvailableFlatsState extends State<AvailableFlats> {
       );
     });
 
-    markers.add(Marker(
-        point: LatLng(_position.latitude,_position.longitude),
-        builder: (context) => Icon(Icons.my_location, color: Colors.blueAccent, size: 25)
-    ));
-
+    if (range != null) {
+      markers.add(Marker(
+          point: LatLng(_position.latitude,_position.longitude),
+          builder: (context) => Icon(Icons.my_location, color: Colors.blueAccent, size: 25)
+      ));
+    }
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
@@ -169,7 +181,7 @@ class _AvailableFlatsState extends State<AvailableFlats> {
               if (viewMap) Expanded(
                 child: FlutterMap(
                   options: MapOptions(
-                    center: new LatLng(_position.latitude,_position.longitude),
+                    center: _position == null? new LatLng(41.3887901, 2.1589899) : new LatLng(_position.latitude,_position.longitude),
                     zoom: 10.0,
                     interactive: true,
                   ),
@@ -199,7 +211,7 @@ class _AvailableFlatsState extends State<AvailableFlats> {
               Container(
                   child: Column(
                     children: <Widget>[
-                      Column(
+                      if (range != null) Column(
                         children: <Widget>[
                           Container(
                             padding: EdgeInsets.only(top: 10),
@@ -233,7 +245,7 @@ class _AvailableFlatsState extends State<AvailableFlats> {
                               Text('Km')
                             ],
                           ),
-                          Slider(
+                          if (maxDistance - minDistance > 0) Slider(
                             divisions: maxDistance - minDistance,
                             max: maxDistance.toDouble(),
                             min: minDistance.toDouble(),
@@ -244,6 +256,10 @@ class _AvailableFlatsState extends State<AvailableFlats> {
                               rangeTextBox.text = range.toString();
                             }),
                           ),
+                          if (maxDistance - minDistance == 0) Container(
+                            padding: EdgeInsets.all(15),
+                            child: Text('Solo hay pisos disponibles a ' + calculateDistance(_position.latitude, _position.longitude, double.parse(availableFlats[0].getLocation().latitude), double.parse(availableFlats[0].getLocation().longitude)).round().toString() + ' Km'),
+                          )
                         ],
                       ),
                       Container(
@@ -303,7 +319,7 @@ class _AvailableFlatsState extends State<AvailableFlats> {
           Expanded(
             child: Text(flat.getName(), style: TextStyle(fontWeight: FontWeight.bold),),
           ),
-          Text('(a ' + calculateDistance(_position.latitude, _position.longitude, double.parse(flat.getLocation().latitude), double.parse(flat.getLocation().longitude)).round().toString() + ' Km)'),
+          if (range != null) Text('(a ' + calculateDistance(_position.latitude, _position.longitude, double.parse(flat.getLocation().latitude), double.parse(flat.getLocation().longitude)).round().toString() + ' Km)'),
         ],),
         subtitle: Text(flat.getDescription()),
         trailing: geiInButton(flat.getID()),
