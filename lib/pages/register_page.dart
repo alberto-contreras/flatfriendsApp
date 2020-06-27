@@ -8,6 +8,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final TextStyle textButtonStyle = new TextStyle(fontSize: 16);
   TextEditingController firstnameController = new TextEditingController();
   TextEditingController lastnameController = new TextEditingController();
   TextEditingController useremailController = new TextEditingController();
@@ -30,25 +31,26 @@ class _RegisterState extends State<Register> {
         child: ListView(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(height: 16,),
             Text('Registro',
                 textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-            Divider(),
+            SizedBox(height: 20,),
             _textFirstname(),
-            Divider(),
+            SizedBox(height: 16,),
             _textLastname(),
-            Divider(),
+            SizedBox(height: 16,),
             _textUseremail(),
-            Divider(),
+            SizedBox(height: 16,),
             _textPassword(),     // Creating a text field widget to get password
-            Divider(),
+            SizedBox(height: 16,),
             _textRepitePassword(),
-            Divider(),
+            SizedBox(height: 16,),
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 _registerButton(),     // Creating a button widget for Login
-                SizedBox(width: 60,),
+                SizedBox(width: 30,),
                 _cancelButton()
               ],
             ), // Creating a button widget for Register
@@ -129,7 +131,10 @@ class _RegisterState extends State<Register> {
   }
 
   Widget _registerButton() {
-    return FlatButton(onPressed: () async  {
+    return SizedBox(
+        height: 45,
+        width: 160,
+        child: FlatButton(onPressed: () async  {
       print('Dentro Registro');
       if(passwordController.text == repitePasswordController.text) {
         userToAdd.setFirstname(firstnameController.text);
@@ -151,20 +156,23 @@ class _RegisterState extends State<Register> {
         }
       }
     },
-        child: Text('Register'),
+        child: Text('Registrar', style: textButtonStyle),
         shape: StadiumBorder(),
         color: Colors.green,
-        textColor: Colors.white);
+        textColor: Colors.white));
   }
 
   Widget _cancelButton() {
-    return FlatButton(onPressed: () {
+    return SizedBox(
+        height: 45,
+        width: 160,
+        child: FlatButton(onPressed: () {
       Navigator.pop(context);
     },
-        child: Text('Cancel'),
+        child: Text('Cancelar', style: textButtonStyle,),
         shape: StadiumBorder(),
         color: Colors.red,
-        textColor: Colors.white);
+        textColor: Colors.white));
   }
 
   Widget _alertRegisterUser(){

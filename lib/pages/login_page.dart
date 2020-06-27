@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/User.dart';
 import 'package:flatfriendsapp/services/userService.dart';
@@ -17,6 +18,8 @@ class _LoginState extends State<Login> {
   UserService userService = new UserService();
   Oauth2ClientExample googleAuth = new Oauth2ClientExample();
   SharedData sharedData = SharedData.getInstance();
+  static const TextStyle tilesStyle = TextStyle(
+    fontSize: 40, fontWeight: FontWeight.bold, );
 
 
   Widget build(BuildContext context) {
@@ -29,26 +32,45 @@ class _LoginState extends State<Login> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
+        child: SingleChildScrollView(
+    child: Column(
+      children: <Widget>[
+        SizedBox(height: 50,),
+        Image.asset('graphics/logo.png'),
+        SizedBox(height: 20,),
+        ColorizeAnimatedTextKit(
+            text: [
+              "Flat & Friends",
+            ],
+            textStyle: tilesStyle,
+            colors: [
+              Colors.purple,
+              Colors.blue,
+              Colors.purple,
+              Colors.blue,
+            ],
+            textAlign: TextAlign.start,
+            alignment: AlignmentDirectional.topStart // or Alignment.topLeft
+        ),
+        SizedBox(height: 80,),
+        _textUseremail(),
+        SizedBox(height: 16,),
+        _textPassword(),
+        SizedBox(height: 16,),
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _textUseremail(),
-            Divider(),
-            _textPassword(),
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _loginButton(),     // Creating a button widget for Login
-                SizedBox(width: 60,),
-                _registerButton()
-              ],
-            ),
-            SizedBox(height: 10,),
-            _registerGoogleButton(),
+            _loginButton(),     // Creating a button widget for Login
+            SizedBox(width: 60,),
+            _registerButton()
           ],
         ),
-      ),
+        SizedBox(height: 10,),
+        _registerGoogleButton(),
+      ],
+    )
+        ),
+    )
     );
   }
 
@@ -58,7 +80,7 @@ class _LoginState extends State<Login> {
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          labelText: 'Correo electónico',
+          labelText: 'Correo electrónico',
           hintText: 'Escribe tu correo electrónico',
           suffixIcon: Icon(Icons.alternate_email, color: Colors.blue),
           icon: Icon(Icons.email)

@@ -142,6 +142,9 @@ class _UserUpdateAttributesState extends State<UserUpdateAttributes> {
           userToUpdate.setEmail(sharedData.getUser().getEmail());
           userToUpdate.setPhoneNumber(sharedData.getUser().getPhoneNumber());
           userToUpdate.setUrlAvatar(sharedData.getUser().getUrlAvatar());
+          userToUpdate.setIdPiso(sharedData.getUser().getIdPiso());
+          userToUpdate.setPassword(sharedData.getUser().getPassword());
+          userToUpdate.setAllTasks(sharedData.getUser().getAllTasks());
           if (newEmailController.text == repeatEmailController.text && newEmailController.text.length > 0){
             userToUpdate.setEmail(newEmailController.text);
             emailGoingUpdate = true;
