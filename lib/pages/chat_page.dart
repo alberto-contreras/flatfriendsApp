@@ -154,11 +154,8 @@ class _ChatState extends State<Chat> {
         _messageToSend.setUserName(sharedData.getUser().getFirstname());
         _messageToSend.setDateTime(DateTime.now().toString());
         await sharedData.chatService.sendMessage(_messageToSend);
-        // Navigator.pushReplacementNamed(context, '/chat');
+//         Navigator.pushReplacementNamed(context, '/chat');
         messageController.clear();
-        setState(() {
-
-        });
       }
 
     },

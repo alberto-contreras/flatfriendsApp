@@ -111,9 +111,15 @@ class _LoginState extends State<Login> {
         if( res == 0){
           if (sharedData.getUser().getIdPiso() != null && sharedData.getUser().getIdPiso().length == 24) {
             print('antes de llamar initChatService');
-            await sharedData.chatService.initChatService(
-                sharedData.getUser().getIdPiso());
-            sharedData.chatService.onMessage();
+            if (sharedData.getIdChatRoom() != sharedData.getUser().getIdPiso()) {
+             sharedData.setChatRoomStatus(false);
+              print('PISO DIFERENTEEEE, LOGINNNN');
+            }
+            if (sharedData.getChatRoomStatus() == false){
+              await sharedData.chatService.initChatService(
+                  sharedData.getUser().getIdPiso());
+//              sharedData.chatService.onMessage();
+            }
             sharedData.chatRunning = true;
               int getFlat = await flatService.getFlat();
               int getTenants = await flatService.getTenantsFlat();

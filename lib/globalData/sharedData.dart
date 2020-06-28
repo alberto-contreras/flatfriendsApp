@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flatfriendsapp/models/ChatMessage.dart';
 import 'package:flatfriendsapp/models/Event.dart';
@@ -14,6 +15,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flatfriendsapp/models/UsersInDebtModel.dart';
 import 'package:flatfriendsapp/models/Debt.dart';
 import 'package:flatfriendsapp/services/chatService.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 class SharedData {
 
@@ -32,6 +34,8 @@ class SharedData {
   String urlFlat;
   String idChatRoom;
   bool chatRunning = false;
+  bool chatRoomExists = false;
+  bool socketStatusOn = false;
 
   List<ChatMessageModel> messages = new List<ChatMessageModel>();
   List<EventModel> eventsFlat = new List<EventModel>();
@@ -59,8 +63,6 @@ class SharedData {
   StreamSubscription<Position> _positionStreamSubscription;
 
 
-
-
   SharedData() {
     this.urlUser = this.apiUrl + '/user';
     this.urlFlat = this.apiUrl + '/flat';
@@ -82,8 +84,8 @@ class SharedData {
     this.infoFlat = a;
   }
 
-  setIdChatRoom(String value){
-    this.idChatRoom = value;
+  setChatRoomStatus(bool value){
+    this.chatRoomExists = value;
   }
 
   setMessage(ChatMessageModel message) async {
@@ -133,6 +135,14 @@ class SharedData {
     this.currentPosition = position;
   }
 
+  setIdChatRoom(String value){
+    this.idChatRoom = value;
+  }
+
+  setSocketStatusOn(bool value){
+    this.socketStatusOn = value;
+  }
+
   Position getCurrentPosition() => this.currentPosition;
 
   List<FlatModel> getAvailableFlats() => this.availableFlats;
@@ -166,11 +176,15 @@ class SharedData {
 
   String getUrlFlat() => this.urlFlat;
 
-  String getIdChatRoom() => this.idChatRoom;
+  bool getChatRoomStatus() => this.chatRoomExists;
 
   Map getUsersInFlatForTask() => this.usersInFlat;
 
   EventModel getEventDetails() => this.eventDetails;
+
+  String getIdChatRoom() => this.idChatRoom;
+
+  bool getSocketStatusOn() => this.socketStatusOn;
 
 
   clearFlat() {
@@ -180,7 +194,7 @@ class SharedData {
     this.eventsFlat.clear();
     this.tenantsFlat.clear();
     this.tasksFlat.clear();
-    this.chatService.stopChatService();
+//    this.chatService.stopChatService();
     this.usersInFlat.clear();
     this.usersInFlatToCreateEvent.clear();
   }
@@ -199,7 +213,7 @@ class SharedData {
     this.eventsFlat.clear();
     this.tenantsFlat.clear();
     this.tasksFlat.clear();
-    this.chatService.stopChatService();
+//    this.chatService.stopChatService();
     this.usersInFlat.clear();
     this.usersInFlatToCreateEvent.clear();
   }

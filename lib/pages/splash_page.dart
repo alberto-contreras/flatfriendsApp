@@ -75,12 +75,15 @@ class Splash extends StatelessWidget {
             .getUser()
             .getIdPiso()
             .length == 24) {
-          print('antes de llamar initChatService');
-          await sharedData.chatService.initChatService(
-              sharedData.getUser().getIdPiso());
-          print('UNIENDO A LA SALA SITIO 1');
-          sharedData.chatService.onMessage();
-          print('SOCKET EN ESCUCHA SITIO 1');
+          if (sharedData.getIdChatRoom() != sharedData.getUser().getIdPiso()){
+            sharedData.setChatRoomStatus(false);
+          }
+          if (sharedData.getChatRoomStatus() == false){
+            print('antes de llamar initChatService');
+            await sharedData.chatService.initChatService(
+                sharedData.getUser().getIdPiso());
+//            sharedData.chatService.onMessage();
+          }
           sharedData.chatRunning = true;
           int getFlat = await flatService.getFlat();
           int getTenants = await flatService.getTenantsFlat();

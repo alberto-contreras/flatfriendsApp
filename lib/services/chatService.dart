@@ -1,6 +1,7 @@
 import 'package:flatfriendsapp/globalData/sharedData.dart';
 import 'package:flatfriendsapp/models/ChatMessage.dart';
 import 'package:flatfriendsapp/pages/chat_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'dart:convert';
 
@@ -15,8 +16,19 @@ class ChatService {
 
   initChatService(String flatId) {
     print('initiating chat');
-    socket.connect();
-    socket.emit('joinToTheRoom', flatId);
+    if (sharedData.getSocketStatusOn() == false){
+      socket.connect();
+      onMessage();
+      sharedData.setSocketStatusOn(true);
+      print('Estableciendo socket!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    }
+
+    if (sharedData.getChatRoomStatus() == false){
+      sharedData.setChatRoomStatus(true);
+      sharedData.setIdChatRoom(flatId);
+      socket.emit('joinToTheRoom', flatId);
+      print('SE ACABA DE DEFINIR UNA SALAAAA !!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    }
   }
 
   stopChatService(){
