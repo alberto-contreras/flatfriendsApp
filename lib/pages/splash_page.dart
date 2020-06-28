@@ -13,11 +13,14 @@ class Splash extends StatelessWidget {
   UserModel userToLog = new UserModel();
   UserService userService = new UserService();
   FlatService flatService = new FlatService();
+  bool timerTriggered = false;
 
   Widget build(BuildContext context) {
-    new Future.delayed(const Duration(seconds: 3), () {
-      // Function to see if shared preferences have content or not
-      _loadSharedPreferences(context);
+    Timer(Duration(seconds: 3), () {
+      if (!timerTriggered) {
+        _loadSharedPreferences(context);
+        timerTriggered = true;
+      }
     });
 
     return Scaffold(
@@ -56,6 +59,7 @@ class Splash extends StatelessWidget {
 
   // Function to see if shared preferences have content or not
   void _loadSharedPreferences(final context) async {
+    timerTriggered = true;
     final prefs = await SharedPreferences.getInstance();
 
     // If shared preferences are empty, we obtain a 0
@@ -74,7 +78,9 @@ class Splash extends StatelessWidget {
           print('antes de llamar initChatService');
           await sharedData.chatService.initChatService(
               sharedData.getUser().getIdPiso());
+          print('UNIENDO A LA SALA SITIO 1');
           sharedData.chatService.onMessage();
+          print('SOCKET EN ESCUCHA SITIO 1');
           sharedData.chatRunning = true;
           int getFlat = await flatService.getFlat();
           int getTenants = await flatService.getTenantsFlat();
@@ -83,12 +89,11 @@ class Splash extends StatelessWidget {
                 'Success getting Flat Data and Tenants Data through Flat&Friends Logging In.');
           }
         }
-        Navigator.pushReplacementNamed(context, '/home');
+        await Navigator.pushReplacementNamed(context, '/home');
       }
     }
     else {
       Navigator.pushReplacementNamed(context, '/login');
     }
   }
-
 }

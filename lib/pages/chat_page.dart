@@ -156,6 +156,9 @@ class _ChatState extends State<Chat> {
         await sharedData.chatService.sendMessage(_messageToSend);
         // Navigator.pushReplacementNamed(context, '/chat');
         messageController.clear();
+        setState(() {
+
+        });
       }
 
     },

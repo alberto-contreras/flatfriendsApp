@@ -30,6 +30,7 @@ class SharedData {
 
   String urlUser;
   String urlFlat;
+  String idChatRoom;
   bool chatRunning = false;
 
   List<ChatMessageModel> messages = new List<ChatMessageModel>();
@@ -41,7 +42,7 @@ class SharedData {
   ChatService chatService = new ChatService();
 
   final chatStream = new StreamController<List<ChatMessageModel>>.broadcast();
-  //final chatStream = new StreamController<List<ChatMessageModel>>();
+//  final chatStream = new StreamController<List<ChatMessageModel>>();
 
 
   Map usersInFlat = new Map();
@@ -79,6 +80,10 @@ class SharedData {
 
   setFlat(FlatModel a) {
     this.infoFlat = a;
+  }
+
+  setIdChatRoom(String value){
+    this.idChatRoom = value;
   }
 
   setMessage(ChatMessageModel message) async {
@@ -160,6 +165,8 @@ class SharedData {
   String getUrlUser() => this.urlUser;
 
   String getUrlFlat() => this.urlFlat;
+
+  String getIdChatRoom() => this.idChatRoom;
 
   Map getUsersInFlatForTask() => this.usersInFlat;
 
