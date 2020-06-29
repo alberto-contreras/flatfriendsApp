@@ -60,8 +60,6 @@ class Splash extends StatelessWidget {
     // If 0 --> regular log in, If != 0 --> auto log in
     final credentials = prefs.getString('user') ?? 0;
     if (credentials != 0) {
-      print(prefs.getString('user'));
-      print(prefs.getString('password'));
       userToLog.setEmail(prefs.getString('user'));
       userToLog.setPassword(prefs.getString('password'));
       userToLog.setGoogleAuth(prefs.getBool('googleAuth'));
