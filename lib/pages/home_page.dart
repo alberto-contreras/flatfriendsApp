@@ -273,12 +273,10 @@ class _HomeState extends State<Home> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15)),
             title: Text(s),
+            content: Text('¡Gracias por usar Flat&Friends!'),
             actions: <Widget>[
               if (res == 0) Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('¡Gracias por usar Flat&Friends!'),
-                  SizedBox(height: 10,),
                   FlatButton(
                       child: Text('Aceptar'),
                       shape: StadiumBorder(),

@@ -23,6 +23,7 @@ class _FlatUpdateAttributesState extends State<FlatUpdateAttributes> {
   bool nameGoingUpdate = false;
   bool descriptionGoingUpdate = false;
   bool maxPersonsGoingUpdate = false;
+  bool maxPersonsError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -122,11 +123,12 @@ class _FlatUpdateAttributesState extends State<FlatUpdateAttributes> {
             int maxPersons = int.parse(maxPersonsController.text);
             if (maxPersons >= sharedData.getFlat().getNumPersons()) {
               flatToUpdate.setMaxPersons(maxPersons);
+              maxPersonsGoingUpdate = true;
             }
             else{
+              maxPersonsError = true;
               _alertError(2);
             }
-            maxPersonsGoingUpdate = true;
           }
           print('Dentro Update Flat: ' + nameGoingUpdate.toString() + descriptionGoingUpdate.toString() + maxPersonsGoingUpdate.toString());
           if (nameGoingUpdate || descriptionGoingUpdate || maxPersonsGoingUpdate){
@@ -152,7 +154,9 @@ class _FlatUpdateAttributesState extends State<FlatUpdateAttributes> {
             }
           }
           else {
-            _alertError(1);
+            if (!maxPersonsError){
+              _alertError(1);
+            }
           }
         },
             child: Text('Actualizar', style: textButtonStyle,),
@@ -180,7 +184,7 @@ class _FlatUpdateAttributesState extends State<FlatUpdateAttributes> {
   // Alerts to see errors with flat update
   Widget _alertError(int num) {
     showDialog(context: context,
-        barrierDismissible: true,
+        barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
@@ -215,6 +219,7 @@ class _FlatUpdateAttributesState extends State<FlatUpdateAttributes> {
                     color: Colors.blue[900],
                     textColor: Colors.white,
                     onPressed: () {
+                      maxPersonsError = false;
                       Navigator.of(context).pop();
                     },
                   ),

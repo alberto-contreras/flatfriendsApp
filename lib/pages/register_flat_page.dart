@@ -185,14 +185,16 @@ class _RegisterFlat extends State<RegisterFlat> {
           Navigator.pop(context, () {
             setState(() {});
           });
+          _warningOnTryRegFlat(res);
         }
         else {
           //Error adding new flat
-          showDialog<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return _alertRegisterFlat();
-              });
+          _warningOnTryRegFlat(res);
+//          showDialog<void>(
+//              context: context,
+//              builder: (BuildContext context) {
+//                return _alertRegisterFlat();
+//              });
         }
       }
       else{
@@ -282,4 +284,52 @@ class _RegisterFlat extends State<RegisterFlat> {
       print('latitude: ' + latitude);
     });
   }
+
+  Widget _warningOnTryRegFlat(int res) {
+    showDialog(context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15)),
+            title: Text('¡Has registrado tu piso!'),
+            content: Text('¡Gracias por usar Flat&Friends!'),
+            actions: <Widget>[
+              if (res == 0) Column(
+                children: <Widget>[
+                  FlatButton(
+                      child: Text('Aceptar'),
+                      shape: StadiumBorder(),
+                      color: Colors.green,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }
+                  ),
+                ],
+              ),
+              if (res != 0) Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  if (res != 2)Text('Vaya... Parece que ha habido algún problema.' + '\n' +
+                      'Por favor, revisa el identificador e inténtalo de nuevo.'),
+                  if (res == 2)Text('¡Este piso ya está lleno! Contacta con el Flat admin.'),
+                  SizedBox(height: 10,),
+                  FlatButton(
+                      child: Text('Volver a intentar'),
+                      shape: StadiumBorder(),
+                      color: Colors.green,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }
+                  ),
+                ],
+              ),
+            ],
+          );
+        }
+    );
+  }
+
 }

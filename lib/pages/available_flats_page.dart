@@ -296,7 +296,6 @@ class _AvailableFlatsState extends State<AvailableFlats> {
       if (res == 0) {
         await flatService.getFlat();
         await flatService.getTenantsFlat();
-
         if (sharedData.getIdChatRoom() != sharedData.getUser().getIdPiso()) {
           sharedData.setChatRoomStatus(false);
           print('PISO DIFERENTEEEE, LOGINNNN');
@@ -309,9 +308,11 @@ class _AvailableFlatsState extends State<AvailableFlats> {
 //        sharedData.chatService.onMessage();
         sharedData.chatRunning = true;
         Navigator.of(context).pop();
+        _warningOnTryRegFlat(res);
       }
       else {
         Navigator.of(context).pop();
+        _warningOnTryRegFlat(res);
       }
     },);
   }
@@ -345,4 +346,52 @@ class _AvailableFlatsState extends State<AvailableFlats> {
             (1 - c((lon2 - lon1) * p))/2;
     return 12742 * asin(sqrt(a));
   }
+
+  Widget _warningOnTryRegFlat(int res) {
+    showDialog(context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15)),
+            title: Text('¡Te has unido al piso!'),
+            content: Text('¡Gracias por usar Flat&Friends!'),
+            actions: <Widget>[
+              if (res == 0) Column(
+                children: <Widget>[
+                  FlatButton(
+                      child: Text('Aceptar'),
+                      shape: StadiumBorder(),
+                      color: Colors.green,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }
+                  ),
+                ],
+              ),
+              if (res != 0) Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  if (res != 2)Text('Vaya... Parece que ha habido algún problema.' + '\n' +
+                      'Por favor, revisa el identificador e inténtalo de nuevo.'),
+                  if (res == 2)Text('¡Este piso ya está lleno! Contacta con el Flat admin.'),
+                  SizedBox(height: 10,),
+                  FlatButton(
+                      child: Text('Volver a intentar'),
+                      shape: StadiumBorder(),
+                      color: Colors.green,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }
+                  ),
+                ],
+              ),
+            ],
+          );
+        }
+    );
+  }
+  
 }
