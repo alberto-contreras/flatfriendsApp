@@ -116,9 +116,7 @@ class _RankingTasksState extends State<RankingTasks> {
                  shape: RoundedRectangleBorder(
                    borderRadius: BorderRadius.circular(11.0),
                  ),
-
                  child: _pieChart() ),
-
            ],
          ),
        ),
@@ -131,7 +129,7 @@ class _RankingTasksState extends State<RankingTasks> {
    */
   Widget _pieChart(){
 
-   for(int i =0; i <  tenentsForChart.length;i++){
+   for(int i =0; i < tenentsForChart.length;i++){
      dataMap.putIfAbsent(""+tenentsForChart.elementAt(i).getFirstname(), () => tenentsForChart.elementAt(i).getAllTasks().toDouble());
    }
      return  Container(

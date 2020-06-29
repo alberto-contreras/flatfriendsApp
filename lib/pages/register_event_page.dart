@@ -33,7 +33,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Events of your Flat'),
+        title: Text('Eventos'),
         centerTitle: true,
         backgroundColor: Colors.yellow[800],
         elevation: 0.0,

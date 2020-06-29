@@ -75,9 +75,18 @@ class Oauth2ClientExample {
          */
         if (sharedData.getUser().getIdPiso() != null) {
           print('antes de llamar initChatService');
-          await sharedData.chatService.initChatService(
-              sharedData.getUser().getIdPiso());
-          sharedData.chatService.onMessage();
+          if (sharedData.getIdChatRoom() != sharedData.getUser().getIdPiso()) {
+            sharedData.setChatRoomStatus(false);
+            print('PISO DIFERENTEEEE, LOGINNNN');
+          }
+          if (sharedData.getChatRoomStatus() == false) {
+            await sharedData.chatService.initChatService(
+                sharedData.getUser().getIdPiso());
+//              sharedData.chatService.onMessage();
+          }
+//          await sharedData.chatService.initChatService(
+//              sharedData.getUser().getIdPiso());
+//          sharedData.chatService.onMessage();
           sharedData.chatRunning = true;
         }
         return 0;

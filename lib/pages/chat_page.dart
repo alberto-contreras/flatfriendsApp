@@ -40,7 +40,7 @@ class _ChatState extends State<Chat> {
                     height: MediaQuery
                         .of(context)
                         .size
-                        .height * 0.80,
+                        .height * 0.82,
                     child: StreamBuilder(
                       stream: sharedData.chatStream.stream,
                       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

@@ -213,8 +213,15 @@ class _HomeState extends State<Home> {
                                     sharedData.getUser().setIdPiso(idFlatController.text);
                                     await flatService.getFlat();
                                     await flatService.getTenantsFlat();
-                                    await sharedData.chatService.initChatService(sharedData.getUser().getIdPiso());
-                                    sharedData.chatService.onMessage();
+
+                                    if (sharedData.getIdChatRoom() != sharedData.getUser().getIdPiso()) {
+                                      sharedData.setChatRoomStatus(false);
+                                      print('PISO DIFERENTEEEE, LOGINNNN');
+                                    }
+                                    if (sharedData.getChatRoomStatus() == false){
+                                      await sharedData.chatService.initChatService(
+                                          sharedData.getUser().getIdPiso());
+                                    }
                                     sharedData.chatRunning = true;
                                     Navigator.of(context).pop();
                                     _warningOnTryRegFlat(
@@ -315,7 +322,7 @@ class _HomeState extends State<Home> {
           if (sharedData.chatRunning == true && sharedData.getUser().getIdPiso() != null){
             await Navigator.pushNamed(context, '/chat');
             print("antes");
-            sharedData.chatStream.close();
+//            sharedData.chatStream.close();
             print("despues");
           }
           else{

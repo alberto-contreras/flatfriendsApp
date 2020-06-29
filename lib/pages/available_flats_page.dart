@@ -288,15 +288,25 @@ class _AvailableFlatsState extends State<AvailableFlats> {
     );
   }
 
-  Widget geiInButton (String id) {
+  Widget getInButton (String id) {
     return IconButton(icon: Icon(Icons.input, size: 20,), onPressed: () async {
       sharedData.getUser().setIdPiso(id);
-      int res = await userService.updateUser(sharedData.getUser());
+//      int res = await userService.updateUser(sharedData.getUser());
+      int res = await flatService.addTenant(sharedData.getUser().getIdUser(), sharedData.getUser().getIdPiso());
       if (res == 0) {
         await flatService.getFlat();
         await flatService.getTenantsFlat();
-        await sharedData.chatService.initChatService(sharedData.getUser().getIdPiso());
-        sharedData.chatService.onMessage();
+
+        if (sharedData.getIdChatRoom() != sharedData.getUser().getIdPiso()) {
+          sharedData.setChatRoomStatus(false);
+          print('PISO DIFERENTEEEE, LOGINNNN');
+        }
+        if (sharedData.getChatRoomStatus() == false){
+          await sharedData.chatService.initChatService(
+              sharedData.getUser().getIdPiso());
+        }
+//        await sharedData.chatService.initChatService(sharedData.getUser().getIdPiso());
+//        sharedData.chatService.onMessage();
         sharedData.chatRunning = true;
         Navigator.of(context).pop();
       }
@@ -322,7 +332,7 @@ class _AvailableFlatsState extends State<AvailableFlats> {
           if (range != null) Text('(a ' + calculateDistance(_position.latitude, _position.longitude, double.parse(flat.getLocation().latitude), double.parse(flat.getLocation().longitude)).round().toString() + ' Km)'),
         ],),
         subtitle: Text(flat.getDescription()),
-        trailing: geiInButton(flat.getID()),
+        trailing: getInButton(flat.getID()),
       ),
     );
   }

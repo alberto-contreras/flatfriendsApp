@@ -173,8 +173,14 @@ class _RegisterFlat extends State<RegisterFlat> {
         int res = await flatService.registerFlat(flat);
         print(res);
         if (res == 0) {
-          await sharedData.chatService.initChatService(sharedData.getUser().getIdPiso());
-          sharedData.chatService.onMessage();
+          if (sharedData.getIdChatRoom() != sharedData.getUser().getIdPiso()) {
+            sharedData.setChatRoomStatus(false);
+            print('PISO DIFERENTEEEE, LOGINNNN');
+          }
+          if (sharedData.getChatRoomStatus() == false){
+            await sharedData.chatService.initChatService(
+                sharedData.getUser().getIdPiso());
+          }
           sharedData.chatRunning = true;
           Navigator.pop(context, () {
             setState(() {});
