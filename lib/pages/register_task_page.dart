@@ -48,7 +48,7 @@ class _RegisterTaskState extends State<RegisterTask> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tasks of your Flat'),
+        title: Text('Tareas'),
         centerTitle: true,
         backgroundColor: Colors.red,
         elevation: 0.0,

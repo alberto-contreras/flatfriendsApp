@@ -16,29 +16,25 @@ class Splash extends StatelessWidget {
   bool timerTriggered = false;
 
   Widget build(BuildContext context) {
-    Timer(Duration(seconds: 3), () {
-      if (!timerTriggered) {
-        _loadSharedPreferences(context);
-        timerTriggered = true;
-      }
-    });
+      Future.delayed(Duration(seconds: 3), () {
+        if (!timerTriggered) {
+          _loadSharedPreferences(context);
+          timerTriggered = true;
+        }
+      });
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 18),
         color: Color.fromRGBO(100, 100, 100, 0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            //Image(image: AssetImage('graphics/splashlogo.png'))
-            ColorizeAnimatedTextKit(
+        child: Center(
+          child: ColorizeAnimatedTextKit(
                 text: [
                   "Flat&Friends"
                 ],
                 textStyle: TextStyle(
-                    fontSize: 70.0,
+                    fontSize: 63.0,
                     fontFamily: "Horizon"
                 ),
                 colors: [
@@ -47,10 +43,9 @@ class Splash extends StatelessWidget {
                   Colors.yellow,
                   Colors.red,
                 ],
-                textAlign: TextAlign.center,
-                alignment: AlignmentDirectional.center // or Alignment.topLeft
+//                textAlign: TextAlign.center,
+//                alignment: AlignmentDirectional.center // or Alignment.topLeft
             ),
-          ],
         ),
       ),
 
@@ -59,13 +54,14 @@ class Splash extends StatelessWidget {
 
   // Function to see if shared preferences have content or not
   void _loadSharedPreferences(final context) async {
-    timerTriggered = true;
     final prefs = await SharedPreferences.getInstance();
 
     // If shared preferences are empty, we obtain a 0
     // If 0 --> regular log in, If != 0 --> auto log in
     final credentials = prefs.getString('user') ?? 0;
     if (credentials != 0) {
+      print(prefs.getString('user'));
+      print(prefs.getString('password'));
       userToLog.setEmail(prefs.getString('user'));
       userToLog.setPassword(prefs.getString('password'));
       userToLog.setGoogleAuth(prefs.getBool('googleAuth'));

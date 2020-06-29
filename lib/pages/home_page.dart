@@ -94,7 +94,7 @@ class _HomeState extends State<Home> {
     final credentials = prefs.getString('user') ?? 0;
     if (credentials == 0){
       prefs.setString('user', sharedData.getUser().getEmail());
-      prefs.setString('password', sharedData.getUser().getEmail());
+      prefs.setString('password', sharedData.getUser().getPassword());
       prefs.setBool('googleAuth', sharedData.getUser().getGoogleAuth());
     }
   }

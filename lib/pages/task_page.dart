@@ -25,7 +25,6 @@ class _TaskState extends State<Task> {
     await flatService.updateTask(task);
   }
   updateUserTasksStatus(UserModel value) async {
-    print('Hello testing');
     await userService.updateUserAllTasks(value);
   }
   //This function it's going use getTime on wherever instance and then once we have the data re root to the home page
